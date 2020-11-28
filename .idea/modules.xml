@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../laravelday/laravelday2020-workshop/.idea/laravelday2020-workshop.iml" filepath="$PROJECT_DIR$/../laravelday/laravelday2020-workshop/.idea/laravelday2020-workshop.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/trello-monitor.iml" filepath="$PROJECT_DIR$/.idea/trello-monitor.iml" />
     </modules>
   </component>
