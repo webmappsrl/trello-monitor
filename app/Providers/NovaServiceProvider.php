@@ -17,6 +17,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+        Nova::style('trelloStyle',asset('css/trello_style.css'));
     }
 
     /**

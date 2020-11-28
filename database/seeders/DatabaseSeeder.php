@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             'name'=>'Alessio Piccioli',
             'email'=>'alessiopiccioli@webmapp.it',
             'password'=>bcrypt('webmapp'),
-            'remember_token'=>'g2BOTXhe5IfYVTXYmxTfDu1ribuh52lSdoqMj76Bk58MsUl1IuMdBzcg7JYq'
         ]);
 
         \App\Models\User::factory(1)->create([
@@ -26,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'name'=>'Pedram Katanchi',
             'email'=>'pedramkatanchi@webmapp.it',
             'password'=>bcrypt('webmapp'),
-            
+
         ]);
 
         \App\Models\User::factory(1)->create([
