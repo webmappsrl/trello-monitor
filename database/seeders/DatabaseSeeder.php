@@ -13,6 +13,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(1)->create([
+
+            'name'=>'Alessio Piccioli',
+            'email'=>'alessiopiccioli@webmapp.it',
+            'password'=>bcrypt('webmapp'),
+            'remember_token'=>'g2BOTXhe5IfYVTXYmxTfDu1ribuh52lSdoqMj76Bk58MsUl1IuMdBzcg7JYq'
+        ]);
+
+        \App\Models\User::factory(1)->create([
+
+            'name'=>'Pedram Katanchi',
+            'email'=>'pedramkatanchi@webmapp.it',
+            'password'=>bcrypt('webmapp'),
+            
+        ]);
+
+        \App\Models\User::factory(1)->create([
+
+            'name'=>'Davide Pizzato',
+            'email'=>'davidepizzato@webmapp.it',
+            'password'=>bcrypt('webmapp'),
+        ]);
+
+        \App\Models\User::factory(1)->create([
+
+            'name'=>'Gianmarco Gagliardi',
+            'email'=>'gianmarcogagliardi@webmapp.it',
+            'password'=>bcrypt('webmapp'),
+        ]);
+
     }
 }
