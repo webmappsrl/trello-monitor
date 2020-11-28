@@ -25,7 +25,6 @@ class TrelloCardFactory extends Factory
         return [
             'name' => $this->faker->unique()->name(),
             'trello_id' => $this->faker->unique()->sha1(),
-            'date_last_activity' => $this->faker->dateTime(),
             'board_id' => \App\Models\TrelloBoard::factory(),
             'list_id' => \App\Models\TrelloList::factory(),
             'member_id' => \App\Models\TrelloMember::factory(),

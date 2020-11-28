@@ -3,26 +3,27 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Text;;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Text;
 
-class AllCards extends Resource
+
+class TrelloList extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Card::class;
+    public static $model = \App\Models\TrelloList::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -30,7 +31,7 @@ class AllCards extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id',
     ];
 
     /**
@@ -42,22 +43,9 @@ class AllCards extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
-
-
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('Board')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('List')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-
+            ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Name'),
+            HasMany::make('TrelloCard')
         ];
     }
 
