@@ -16,12 +16,12 @@ class CreateTrelloCardsTable extends Migration
         Schema::create('trello_cards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->dateTime('date_last_activity');
+            $table->text('name');
+//            $table->dateTime('date_last_activity');
             $table->string('trello_id')->unique();
             $table->foreignId('board_id');
             $table->foreignId('list_id');
-            $table->foreignId('member_id');
+            $table->foreignId('member_id')->nullable();
 
             $table->foreign('board_id')
                 ->references('id')
