@@ -128,5 +128,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="laravelday2020-workshop" />
   </component>
 </module>
