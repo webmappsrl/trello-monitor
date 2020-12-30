@@ -41,7 +41,7 @@ class TrelloCardPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
