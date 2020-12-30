@@ -47,6 +47,7 @@ class TrelloCard extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name'),
+            Text::make('Link'),
             DateTime::make('created_at'),
             DateTime::make('updated_at'),
             BelongsTo::make('TrelloBoard'),

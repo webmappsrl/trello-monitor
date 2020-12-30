@@ -17,6 +17,7 @@ class CreateTrelloCardsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->text('name');
+            $table->text('link');
 //            $table->dateTime('date_last_activity');
             $table->string('trello_id')->unique();
             $table->foreignId('board_id');

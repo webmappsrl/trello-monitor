@@ -1,0 +1,7 @@
+{
+    "viewportWidth": 1300,
+    "viewportHeight": 960,
+    "baseUrl": "http://trello-monitor.test",
+    "chromeWebSecurity": false,
+    "parseSpecialCharSequences":false
+}

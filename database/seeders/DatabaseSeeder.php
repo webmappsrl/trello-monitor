@@ -17,14 +17,16 @@ class DatabaseSeeder extends Seeder
 
             'name'=>'Alessio Piccioli',
             'email'=>'alessiopiccioli@webmapp.it',
-            'password'=>bcrypt('webmapp'),
+            'password'=>bcrypt('webmapp2020'),
+            'role' => 'admin'
         ]);
 
         \App\Models\User::factory(1)->create([
 
             'name'=>'Pedram Katanchi',
             'email'=>'pedramkatanchi@webmapp.it',
-            'password'=>bcrypt('webmapp'),
+            'password'=>bcrypt('webmapp2020'),
+            'role' => 'developer'
 
         ]);
 
@@ -32,14 +34,16 @@ class DatabaseSeeder extends Seeder
 
             'name'=>'Davide Pizzato',
             'email'=>'davidepizzato@webmapp.it',
-            'password'=>bcrypt('webmapp'),
+            'password'=>bcrypt('webmapp2020'),
+            'role' => 'developer'
         ]);
 
         \App\Models\User::factory(1)->create([
 
             'name'=>'Gianmarco Gagliardi',
             'email'=>'gianmarcogagliardi@webmapp.it',
-            'password'=>bcrypt('webmapp'),
+            'password'=>bcrypt('webmapp2020'),
+            'role' => 'developer'
         ]);
 
     }

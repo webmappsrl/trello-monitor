@@ -14,6 +14,7 @@ class TrelloMemberFactory extends Factory
      */
     protected $model = TrelloMember::class;
 
+
     /**
      * Define the model's default state.
      *

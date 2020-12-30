@@ -17,6 +17,8 @@ class TrelloList extends Resource
      * @var string
      */
     public static $model = \App\Models\TrelloList::class;
+    public static $displayInNavigation = false;
+
 
     /**
      * The single value that should be used to represent the resource when being displayed.

@@ -14,7 +14,7 @@ define("TRELLO_BASE_URL", "https://trello.con/b/");
 define("TRELLO_API_BASE_URL", "https://api.trello.com/1");
 define("TRELLO_BOARDS", [
     "SPRINT" => "qxqVS51D",
-    "DEV" => "SRPXlaBI",
+//    "DEV" => "SRPXlaBI",
 //    "PROD",
 //    "SISTECO"
 ]);
@@ -55,7 +55,7 @@ class sync extends Command
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
-
+//            dd($cards);
             foreach($cards as $card) {
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
@@ -69,9 +69,11 @@ class sync extends Command
                 if (is_null($dbCard)) {
                     // if not INSERT INTO creating the eventually missing board/list/member
                     Log::debug("INSERT INTO");
+//                    dd($card);
                     $newCard = new TrelloCard([
                         'trello_id' => $card->id,
                         'name' => $card->name,
+                        'link' => $card->shortUrl,
 //                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
                     ]);
 
@@ -105,8 +107,10 @@ class sync extends Command
             if (!is_null($res)) {
                 $board = new TrelloBoard([
                     'trello_id' => $res->id,
-                    'name' => $res->name
+                    'name' => $res->name,
+                    'link' => $res->url
                 ]);
+//                dd($board);
 
                 $board->save();
             }
@@ -121,11 +125,12 @@ class sync extends Command
             Log::debug("Updating list");
             $url = TRELLO_API_BASE_URL . "/lists/{$listId}";
             $res = $this->_unirest($url);
+//            dd($res);
 
             if (!is_null($res)) {
                 $list = new TrelloList([
                     'trello_id' => $res->id,
-                    'name' => $res->name
+                    'name' => $res->name,
                 ]);
 
                 $list->save();
@@ -141,11 +146,10 @@ class sync extends Command
             Log::debug("Updating member");
             $url = TRELLO_API_BASE_URL . "/members/{$memberId}";
             $res = $this->_unirest($url);
-
             if (!is_null($res)) {
                 $member = new TrelloMember([
                     'trello_id' => $res->id,
-                    'name' => $res->fullName
+                    'name' => $res->fullName,
                 ]);
 
                 $member->save();

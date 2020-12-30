@@ -12,6 +12,7 @@ class TrelloCard extends Model
     protected $fillable = [
         'trello_id',
         'name',
+        'link'
 //        'date_last_activity'
     ];
 
