@@ -59,7 +59,7 @@ class sync extends Command
             foreach($cards as $card) {
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
-
+//                dd($card);
                 $board = $this->_updateBoard($card->idBoard);
                 $list = $this->_updateList($card->idList);
                 $member = null;
@@ -103,7 +103,7 @@ class sync extends Command
             Log::debug("Updating board");
             $url = TRELLO_API_BASE_URL . "/boards/{$boardId}";
             $res = $this->_unirest($url);
-
+//dd($res);
             if (!is_null($res)) {
                 $board = new TrelloBoard([
                     'trello_id' => $res->id,
