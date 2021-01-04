@@ -56,6 +56,7 @@ class sync extends Command
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
 //            dd($cards);
+//            dd($cards[83]);
             foreach($cards as $card) {
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
@@ -146,6 +147,7 @@ class sync extends Command
             Log::debug("Updating member");
             $url = TRELLO_API_BASE_URL . "/members/{$memberId}";
             $res = $this->_unirest($url);
+//            dd($res);
             if (!is_null($res)) {
                 $member = new TrelloMember([
                     'trello_id' => $res->id,
