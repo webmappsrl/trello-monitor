@@ -36,7 +36,8 @@ class TrelloList extends Filter
     public function options(Request $request)
     {
         return [
-            'Done' => '11',
+            'Done' => '12',
+            'Testing' => '11',
             'To be Tested' => 10,
             'Almost there' => 9,
             'Progress' => 8,

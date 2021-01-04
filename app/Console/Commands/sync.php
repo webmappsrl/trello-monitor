@@ -9,6 +9,7 @@ use App\Models\TrelloCard;
 use App\Models\TrelloBoard;
 use App\Models\TrelloList;
 use App\Models\TrelloMember;
+use function PHPUnit\Framework\isEmpty;
 
 define("TRELLO_BASE_URL", "https://trello.con/b/");
 define("TRELLO_API_BASE_URL", "https://api.trello.com/1");
@@ -55,9 +56,15 @@ class sync extends Command
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
+//            dd($cf);
 //            dd($cards);
 //            dd($cards[83]);
+//            $estimate = $this->_downloadCardsEstimate($cards[213]->id);
+//            dd($estimate);
+
             foreach($cards as $card) {
+
+
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
 //                dd($card);
@@ -67,16 +74,40 @@ class sync extends Command
                 if (is_array($card->idMembers) && count($card->idMembers) > 0)
                     $member = $this->_updateMember($card->idMembers[0]);
 
+                $cf = $this->_downloadCardsCF($card->id);
+                $estimate = $this->_downloadCardsEstimate($card->id);
+//                dd(strlen($estimate[0]->value));
+
+
+
                 if (is_null($dbCard)) {
                     // if not INSERT INTO creating the eventually missing board/list/member
                     Log::debug("INSERT INTO");
 //                    dd($card);
-                    $newCard = new TrelloCard([
-                        'trello_id' => $card->id,
-                        'name' => $card->name,
-                        'link' => $card->shortUrl,
+
+                    if (isset($estimate[0]) && strlen($estimate[0]->value) > 0 && strpos($estimate[0]->value, 'estimate')) {
+                        $estimate = explode("\"", $estimate[0]->value);
+                        $newCard = new TrelloCard([
+                            'trello_id' => $card->id,
+                            'name' => $card->name,
+                            'link' => $card->shortUrl,
+                            'customer'=>"",
+                            'estimate'=> $estimate[3]
 //                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
-                    ]);
+                        ]);
+                    }
+                    else
+                    {
+                        $newCard = new TrelloCard([
+                            'trello_id' => $card->id,
+                            'name' => $card->name,
+                            'link' => $card->shortUrl,
+                            'customer'=>"",
+                            'estimate'=> 0
+//                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
+                        ]);
+                    }
+
 
                     $newCard->board_id = $board->id;
                     $newCard->list_id = $list->id;
@@ -108,8 +139,7 @@ class sync extends Command
             if (!is_null($res)) {
                 $board = new TrelloBoard([
                     'trello_id' => $res->id,
-                    'name' => $res->name,
-                    'link' => $res->url
+                    'name' => $res->name
                 ]);
 //                dd($board);
 
@@ -173,6 +203,19 @@ class sync extends Command
         return $res;
     }
 
+    private function _downloadCardsCF(string $cardId) {
+        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/customFieldItems";
+        $res = $this->_unirest($url);
+
+        return $res;
+    }
+
+    private function _downloadCardsEstimate(string $cardId) {
+        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/pluginData";
+        $res = $this->_unirest($url);
+
+        return $res;
+    }
     /**
      * Retrieve the data from the given trello url
      *

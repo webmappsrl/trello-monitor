@@ -50,8 +50,11 @@ class TrelloCard extends Resource
             BelongsTo::make('TrelloBoard'),
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
-            Text::make('Link'),
-            DateTime::make('created_at'),
+            Text::make('Estimate'),
+            Text::make('URL', function () {
+                return '<a href="' . $this->link . '">URL Card</a>';
+            })
+                ->asHtml(),            DateTime::make('created_at'),
             DateTime::make('updated_at'),
         ];
     }
