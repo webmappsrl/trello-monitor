@@ -65,7 +65,7 @@ class TrelloCardPolicy
      */
     public function delete(User $user, TrelloCard $trelloCard)
     {
-        //
+        return true;
     }
 
     /**

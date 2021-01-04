@@ -2,7 +2,7 @@ describe('Field readonly', () => {
 
     it('Field readonly', () => {
         cy.visit('/nova/login')
-        cy.get('input[name=email]').type('gianmarcogagliardi@webmapp.it')
+        cy.get('input[name=email]').type('alessiopiccioli@webmapp.it')
         cy.get('input[name=password]').type('webmapp2020')
         cy.get('button').contains('Login').click()
         cy.url().should('contain', '/')
