@@ -15,8 +15,6 @@ describe('Login Admin Trello', () => {
         cy.get('span.text-90').click()
         cy.contains('Logout').click()
 
-
-
     })
 
 

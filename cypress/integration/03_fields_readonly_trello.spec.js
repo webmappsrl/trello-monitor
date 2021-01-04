@@ -135,8 +135,8 @@ describe('Field readonly', () => {
 
 
 
-        // cy.get('span.text-90').click()
-        // cy.contains('Logout').click()
+        cy.get('span.text-90').click()
+        cy.contains('Logout').click()
 
 
 
