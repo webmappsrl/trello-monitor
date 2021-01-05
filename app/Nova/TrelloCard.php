@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\TrelloCustomer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -51,6 +52,7 @@ class TrelloCard extends Resource
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),
+            Text::make('Customer'),
             Text::make('URL', function () {
                 return '<a href="' . $this->link . '">URL Card</a>';
             })
@@ -79,7 +81,8 @@ class TrelloCard extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\TrelloList()
+            new \App\Nova\Filters\TrelloList(),
+            new TrelloCustomer(),
         ];
     }
 
