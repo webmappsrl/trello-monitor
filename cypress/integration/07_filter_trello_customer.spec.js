@@ -1,6 +1,6 @@
-describe('Not create Card', () => {
+describe('Filter Customer', () => {
 
-    it('Not create Card', () => {
+    it('Filter Customer', () => {
         cy.visit('/nova/login')
         cy.get('input[name=email]').type('gianmarcogagliardi@webmapp.it')
         cy.get('input[name=password]').type('webmapp2020')

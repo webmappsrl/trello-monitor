@@ -3,5 +3,6 @@
     "viewportHeight": 960,
     "baseUrl": "http://trello-monitor.test",
     "chromeWebSecurity": false,
-    "parseSpecialCharSequences":false
+    "parseSpecialCharSequences":false,
+    "retries": 2
 }
