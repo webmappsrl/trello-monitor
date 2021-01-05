@@ -14,7 +14,8 @@ class TrelloCard extends Model
         'name',
         'link',
         'customer',
-        'estimate'
+        'estimate',
+        'total_time'
 //        'date_last_activity'
     ];
 

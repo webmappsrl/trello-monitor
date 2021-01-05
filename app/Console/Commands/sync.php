@@ -56,21 +56,9 @@ class sync extends Command
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
-//            $c = $this->_downloadCardsAction($cards[83]->id);
-
-//            dd($cf);
-//            dd($cards);
-//            dd($c);
-//            $estimate = $this->_downloadCardsEstimate($cards[213]->id);
-//                $cf = $this->_downloadCardsCF($cards[47]->id);
-//                dd(empty($cf));
-
             foreach($cards as $card) {
-
-
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
-//                dd($card);
                 $board = $this->_updateBoard($card->idBoard);
                 $list = $this->_updateList($card->idList);
                 $member = null;
@@ -79,6 +67,23 @@ class sync extends Command
 
                 $cf = $this->_downloadCardsCF($card->id);
                 $estimate = $this->_downloadCardsEstimate($card->id);
+                $total_time = $this->_downloadCardsAction($card->id);
+                $m=0;
+                for ($i = count($total_time)-1; $i > 0; $i--)
+                {
+                    if (isset($total_time[$i]->data->listAfter->name))
+                    {
+                        if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
+                        {
+                            $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
+                            $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
+                            $m += $minutes - $minutes1;
+                        }
+
+                    }
+
+
+                }
 
                 if (is_null($dbCard)) {
                     // if not INSERT INTO creating the eventually missing board/list/member
@@ -100,7 +105,8 @@ class sync extends Command
                             'name' => $card->name,
                             'link' => $card->shortUrl,
                             'customer'=>$customer,
-                            'estimate'=> $estimate[3]
+                            'estimate'=> $estimate[3],
+                            'total_time'=>round($m)
 //                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
                         ]);
                     }
@@ -111,7 +117,8 @@ class sync extends Command
                             'name' => $card->name,
                             'link' => $card->shortUrl,
                             'customer'=>$customer,
-                            'estimate'=> 0
+                            'estimate'=> 0,
+                            'total_time'=>round($m)
 //                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
                         ]);
                     }
@@ -143,14 +150,11 @@ class sync extends Command
             Log::debug("Updating board");
             $url = TRELLO_API_BASE_URL . "/boards/{$boardId}";
             $res = $this->_unirest($url);
-//dd($res);
             if (!is_null($res)) {
                 $board = new TrelloBoard([
                     'trello_id' => $res->id,
                     'name' => $res->name
                 ]);
-//                dd($board);
-
                 $board->save();
             }
         }
@@ -164,7 +168,6 @@ class sync extends Command
             Log::debug("Updating list");
             $url = TRELLO_API_BASE_URL . "/lists/{$listId}";
             $res = $this->_unirest($url);
-//            dd($res);
 
             if (!is_null($res)) {
                 $list = new TrelloList([
@@ -185,7 +188,6 @@ class sync extends Command
             Log::debug("Updating member");
             $url = TRELLO_API_BASE_URL . "/members/{$memberId}";
             $res = $this->_unirest($url);
-//            dd($res);
             if (!is_null($res)) {
                 $member = new TrelloMember([
                     'trello_id' => $res->id,

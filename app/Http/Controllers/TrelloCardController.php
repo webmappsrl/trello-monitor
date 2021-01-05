@@ -7,79 +7,40 @@ use Illuminate\Http\Request;
 
 class TrelloCardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function _downloadCardsFromBoard(string $boardId) {
+        $url = TRELLO_API_BASE_URL . "/boards/{$boardId}/cards";
+        $res = $this->_unirest($url);
+
+        return $res;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function _downloadCardsCF(string $cardId) {
+        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/customFieldItems";
+        $res = $this->_unirest($url);
+
+        return $res;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function _downloadCardsAction(string $cardId) {
+        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/actions";
+        $res = $this->_unirest($url);
+
+        return $res;
+    }
+    public function _downloadCardsEstimate(string $cardId) {
+        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/pluginData";
+        $res = $this->_unirest($url);
+
+        return $res;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TrelloCard  $trelloCard
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TrelloCard $trelloCard)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TrelloCard  $trelloCard
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TrelloCard $trelloCard)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TrelloCard  $trelloCard
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TrelloCard $trelloCard)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TrelloCard  $trelloCard
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TrelloCard $trelloCard)
-    {
-        //
+    private function _unirest(string $url) {
+        if (empty(env('TRELLO_KEY')) || empty(env('TRELLO_TOKEN'))) {
+            throw new \Exception("Configuration missing: TRELLO_KEY and/or TRELLO_TOKEN are mandatory");
+        }
+        $headers = array('Accept' => 'application/json');
+        $query = array('key' => env('TRELLO_KEY'), 'token' => env('TRELLO_TOKEN'));
+        $r = \Unirest\Request::get($url, $headers, $query);
+        return $r->body;
     }
 }

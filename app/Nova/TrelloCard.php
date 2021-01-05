@@ -6,6 +6,7 @@ use App\Nova\Filters\TrelloCustomer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Date;
@@ -53,8 +54,10 @@ class TrelloCard extends Resource
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),
             Text::make('Customer'),
+            Number::make('Total Time'),
+
             Text::make('URL', function () {
-                return '<a href="' . $this->link . '">URL Card</a>';
+                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
             })
                 ->asHtml(),            DateTime::make('created_at'),
             DateTime::make('updated_at'),

@@ -20,6 +20,8 @@ class CreateTrelloCardsTable extends Migration
             $table->text('link');
             $table->text('customer');
             $table->integer('estimate');
+            $table->integer('total_time');
+
 
 //            $table->dateTime('date_last_activity');
             $table->string('trello_id')->unique();
