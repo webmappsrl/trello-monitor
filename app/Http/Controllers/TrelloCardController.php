@@ -43,18 +43,9 @@ class TrelloCardController extends Controller
 
 
     public function _downloadCard(string $cardId, string $filter) {
-        $match = ['actions', 'pluginData', 'customFieldItems'];
-        if (in_array($filter,$match))
-        {
             $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
             $res = $this->_unirest($url);
             return $res;
-        }
-        else
-        {
-            return "select the correct filter: {$filter}";
-        }
-
     }
 
     public function _downloadBoard(string $cardId, string $filter) {
@@ -159,6 +150,7 @@ class TrelloCardController extends Controller
         return $member;
     }
 
+    //calc card time in -> progress ->
     public function totalTime($min, $total_time)
     {
         if (is_array($total_time))
@@ -169,21 +161,14 @@ class TrelloCardController extends Controller
                 {
                     if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
                     {
-
                         $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
                         $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
                         $min += $minutes - $minutes1;
-
                     }
-
                 }
-
-
             }
-
         }
         else $min = 0;
-
         return $min;
     }
 

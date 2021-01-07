@@ -37,14 +37,6 @@ class PathTest extends TestCase
 
     }
 
-    public function test_get_wrong_filter()
-    {
-        $tcc = new TrelloCardController();
-        $cards = json_decode(Storage::get('test_data/cards.json'),TRUE);
-        $this->assertSame("select the correct filter: customFieldItemsxxx", $tcc->_downloadCard($cards[0]['id'], 'customFieldItemsxxx'));
-
-    }
-
     public function test_get_storage_card_estimate()
     {
         $tcc = new TrelloCardController();

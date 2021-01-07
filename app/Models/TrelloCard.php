@@ -20,7 +20,6 @@ class TrelloCard extends Model
     ];
 
 
-
     public function trelloList() {
         return $this->belongsTo(TrelloList::class, 'list_id');
     }
