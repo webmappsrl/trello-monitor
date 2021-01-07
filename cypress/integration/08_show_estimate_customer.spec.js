@@ -9,7 +9,6 @@ describe('Check Estimate Show', () => {
 
         cy.contains('Trello Card').click()
 
-
             cy.get('#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr:nth-child(1) > td:nth-child(6) > div ').each(($e, index, $list) => {
                 cy.log($e.text())
                 const estimateHome = $e.text()
@@ -19,8 +18,6 @@ describe('Check Estimate Show', () => {
 
                 })
             })
-
-
     })
 
 

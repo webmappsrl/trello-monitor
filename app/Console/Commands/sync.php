@@ -53,11 +53,15 @@ class sync extends Command
      */
     public function handle()
     {
+
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
+//            $c = $this->_downloadCardsArchive($boardId,'closed');
+//            dd($c);
             foreach($cards as $card) {
                 // find the card
+
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
                 $board = $this->_updateBoard($card->idBoard);
                 $list = $this->_updateList($card->idList);
@@ -69,19 +73,23 @@ class sync extends Command
                 $estimate = $this->_downloadCardsEstimate($card->id);
                 $total_time = $this->_downloadCardsAction($card->id);
                 $m=0;
-                for ($i = count($total_time)-1; $i > 0; $i--)
+                if (is_array($total_time))
                 {
-                    if (isset($total_time[$i]->data->listAfter->name))
+                    for ($i = count($total_time)-1; $i > 0; $i--)
                     {
-                        if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
+                        if (isset($total_time[$i]->data->listAfter->name))
                         {
-                            $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
-                            $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
-                            $m += $minutes - $minutes1;
+                            if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
+                            {
+                                $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
+                                $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
+                                $m += $minutes - $minutes1;
+                            }
+
                         }
 
-                    }
 
+                    }
 
                 }
 
@@ -217,6 +225,12 @@ class sync extends Command
         $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/customFieldItems";
         $res = $this->_unirest($url);
 
+        return $res;
+    }
+
+    private function _downloadCardsArchive(string $boardId, string $filter) {
+        $url = TRELLO_API_BASE_URL . "/boards/{$boardId}/cards/{$filter}";
+        $res = $this->_unirest($url);
         return $res;
     }
 
