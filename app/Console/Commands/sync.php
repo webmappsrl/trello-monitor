@@ -60,7 +60,6 @@ class sync extends Command
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $tcc->_downloadCardsFromBoard($boardId);
-//            $c = $tcc->_downloadCardsArchive($boardId,'closed');
 
             foreach($cards as $card) {
                 // find the card
@@ -71,9 +70,9 @@ class sync extends Command
                 if (is_array($card->idMembers) && count($card->idMembers) > 0)
                     $member = $tcc->_updateMember($card->idMembers[0]);
 
-                $cf = $tcc->_downloadCardsCF($card->id);
-                $estimate = $tcc->_downloadCardsEstimate($card->id);
-                $total_time = $tcc->_downloadCardsAction($card->id);
+                $cf = $tcc->_downloadCard($card->id, 'customFieldItems');
+                $estimate = $tcc->_downloadCard($card->id, 'pluginData');
+                $total_time = $tcc->_downloadCard($card->id, 'actions');
                 $m=0;
                 $m = $tcc->totalTime($m,$total_time);
 

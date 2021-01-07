@@ -17,15 +17,63 @@ class TrelloCardController extends Controller
      * @param string $boardId_downloadCardsFromBoard
      * @return mixed
      */
-    public function _downloadCardsFromBoard(string $boardId) {
-        $url = TRELLO_API_BASE_URL . "/boards/{$boardId}/cards";
-        $res = $this->_unirest($url);
-
-        return $res;
+    public function _getUrlCard(string $cardId, string $filter)
+    {
+        $url = "/cards/{$cardId}/{$filter}";
+        return $url;
     }
 
-    public function _downloadCardsCF(string $cardId) {
-        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/customFieldItems";
+    public function _getStorageCard(string $cardId, string $filter)
+    {
+        $url = "test_data/{$filter}{$cardId}.json";
+        return $url;
+    }
+
+    public function _getUrlBoard(string $boardId, string $filter)
+    {
+        $url = "/boards/{$boardId}/{$filter}";
+        return $url;
+    }
+
+    public function _getStorageBoard(string $boardId, string $filter)
+    {
+        $url = "test_data/{$filter}{$boardId}.json";
+        return $url;
+    }
+
+
+    public function _downloadCard(string $cardId, string $filter) {
+        $match = ['actions', 'pluginData', 'customFieldItems'];
+        if (in_array($filter,$match))
+        {
+            $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+            $res = $this->_unirest($url);
+            return $res;
+        }
+        else
+        {
+            return "select the correct filter: {$filter}";
+        }
+
+    }
+
+    public function _downloadBoard(string $cardId, string $filter) {
+        $match = ['actions', 'pluginData', 'customFieldItems'];
+        if (in_array($filter,$match))
+        {
+            $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+            $res = $this->_unirest($url);
+            return $res;
+        }
+        else
+        {
+            return "select the correct filter: {$filter}";
+        }
+
+    }
+
+    public function _downloadCardsFromBoard(string $boardId) {
+        $url = TRELLO_API_BASE_URL . "/boards/{$boardId}/cards";
         $res = $this->_unirest($url);
 
         return $res;
@@ -37,18 +85,7 @@ class TrelloCardController extends Controller
         return $res;
     }
 
-    public function _downloadCardsAction(string $cardId) {
-        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/actions";
-        $res = $this->_unirest($url);
 
-        return $res;
-    }
-    public function _downloadCardsEstimate(string $cardId) {
-        $url = TRELLO_API_BASE_URL . "/cards/{$cardId}/pluginData";
-        $res = $this->_unirest($url);
-
-        return $res;
-    }
     /**
      * Retrieve the data from the given trello url
      *
@@ -132,9 +169,11 @@ class TrelloCardController extends Controller
                 {
                     if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
                     {
+
                         $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
                         $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
                         $min += $minutes - $minutes1;
+
                     }
 
                 }
@@ -148,53 +187,5 @@ class TrelloCardController extends Controller
         return $min;
     }
 
-    public function notTotalTime($min, $total_time)
-    {
-        if (is_array($total_time))
-        {
-            for ($i = count($total_time)-1; $i > 0; $i--)
-            {
-                if (isset($total_time[$i]->data->listAfter->name))
-                {
-                    if ($total_time[$i]->data->listAfter->name != 'PROGRESS')
-                    {
-                        $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
-                        $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
-                        $min += $minutes - $minutes1;
-                    }
-
-                }
-
-
-            }
-
-        }
-        else $min = 0;
-
-        return $min;
-    }
-
-    public function allTotalTime($min, $total_time)
-    {
-        if (is_array($total_time))
-        {
-            for ($i = count($total_time)-1; $i > 0; $i--)
-            {
-                if (isset($total_time[$i]->data->listAfter->name))
-                {
-                        $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
-                        $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
-                        $min += $minutes - $minutes1;
-
-                }
-
-
-            }
-
-        }
-        else $min = 0;
-
-        return $min;
-    }
 
 }

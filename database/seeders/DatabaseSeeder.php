@@ -73,13 +73,13 @@ class DatabaseSeeder extends Seeder
                     Storage::put("test_data/member_'{$card->idMembers[0]}'.json", json_encode($member));
                 }
 
-                $cf = $tcc->_downloadCardsCF($card->id);
+                $cf = $tcc->_downloadCard($card->id, 'customFieldItems');
                 Storage::put("test_data/cf_'{$card->id}'.json", json_encode($cf));
 
-                $estimate = $tcc->_downloadCardsEstimate($card->id);
+                $estimate = $tcc->_downloadCard($card->id, 'pluginData');
                 Storage::put("test_data/estimate_'{$card->id}'.json", json_encode($estimate));
 
-                $total_time = $tcc->_downloadCardsAction($card->id);
+                $total_time = $tcc->_downloadCard($card->id, 'actions');
                 Storage::put("test_data/total_time_'{$card->id}'.json", json_encode($total_time));
 
             }
