@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -45,6 +47,13 @@ class DatabaseSeeder extends Seeder
             'password'=>bcrypt('webmapp2020'),
             'role' => 'developer'
         ]);
+
+        Storage::makeDirectory('test_data');
+        foreach (TRELLO_BOARDS as $beardName => $boardId) {
+            $cards = $this->_downloadCardsFromBoard($boardId);
+            Storage::put('test_data/cards.json',json_encode($cards));
+        }
+
 
     }
 }

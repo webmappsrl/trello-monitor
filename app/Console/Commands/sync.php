@@ -58,8 +58,9 @@ class sync extends Command
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $this->_downloadCardsFromBoard($boardId);
 //            $c = $this->_downloadCardsArchive($boardId,'closed');
-//            dd($c);
+
             foreach($cards as $card) {
+
                 // find the card
 
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
@@ -96,27 +97,43 @@ class sync extends Command
                 if (is_null($dbCard)) {
                     // if not INSERT INTO creating the eventually missing board/list/member
                     Log::debug("INSERT INTO");
-                    if (isset($cf[1]->value)){
-                        $customer = $cf[1]->value->text;
-                    }
-                    else if (isset($cf[2]->value)){
-                        $customer = $cf[2]->value->text;
+                    if (is_array($cf))
+                    {
+                        if (isset($cf[1]->value)){
+                            $customer = $cf[1]->value->text;
+                        }
+                        else if (isset($cf[2]->value)){
+                            $customer = $cf[2]->value->text;
+                        }
                     }
                     else {
                         $customer = "";
                     }
-
-                    if (isset($estimate[0]) && strlen($estimate[0]->value) > 0 && strpos($estimate[0]->value, 'estimate')) {
-                        $estimate = explode("\"", $estimate[0]->value);
-                        $newCard = new TrelloCard([
-                            'trello_id' => $card->id,
-                            'name' => $card->name,
-                            'link' => $card->shortUrl,
-                            'customer'=>$customer,
-                            'estimate'=> $estimate[3],
-                            'total_time'=>round($m)
+                    if (is_array($estimate))
+                    {
+                        if (isset($estimate[0]) && strlen($estimate[0]->value) > 0 && strpos($estimate[0]->value, 'estimate')) {
+                            $estimate = explode("\"", $estimate[0]->value);
+                            $newCard = new TrelloCard([
+                                'trello_id' => $card->id,
+                                'name' => $card->name,
+                                'link' => $card->shortUrl,
+                                'customer'=>$customer,
+                                'estimate'=> $estimate[3],
+                                'total_time'=>round($m)
 //                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
-                        ]);
+                            ]);
+                        }
+                        else
+                        {
+                            $newCard = new TrelloCard([
+                                'trello_id' => $card->id,
+                                'name' => $card->name,
+                                'link' => $card->shortUrl,
+                                'customer'=>$customer,
+                                'estimate'=> 0,
+                                'total_time'=>round($m)
+                            ]);
+                        }
                     }
                     else
                     {
@@ -127,9 +144,9 @@ class sync extends Command
                             'customer'=>$customer,
                             'estimate'=> 0,
                             'total_time'=>round($m)
-//                        'date_last_activity' => date('Y-m-d h:i', strtotime($card->dateLastActivity)),
                         ]);
                     }
+
 
 
                     $newCard->board_id = $board->id;
