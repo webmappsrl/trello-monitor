@@ -60,7 +60,6 @@ class sync extends Command
         Log::info("Starting sync");
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = $tcc->_downloadCardsFromBoard($boardId);
-
             foreach($cards as $card) {
                 // find the card
                 $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();

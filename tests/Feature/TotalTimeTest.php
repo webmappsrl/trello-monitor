@@ -79,7 +79,6 @@ class TotalTimeTest extends TestCase
         $calcTime  = round($tcc->totalTime($calcTime,$actionCard));
         $calcTimeAction = 239.0;
         $this->assertSame($calcTime,$calcTimeAction);
-        $calcTime  = 0;
     }
 
 }
