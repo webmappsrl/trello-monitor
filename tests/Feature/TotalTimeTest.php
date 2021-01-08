@@ -24,6 +24,7 @@ class TotalTimeTest extends TestCase
     {
         $tcc = new TrelloCardController();
 
+
         $actionCard = json_decode(Storage::get("test_total_time/total_time_1.json"),FALSE);
         $calcTime  = 0;
         $calcTime  = round($tcc->totalTime($calcTime,$actionCard));
