@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ClassU\Unirest;
 use App\Models\TrelloBoard;
 use App\Models\TrelloCard;
 use App\Models\TrelloList;
@@ -11,16 +12,27 @@ use Illuminate\Support\Facades\Log;
 
 class TrelloCardController extends Controller
 {
+
+
+
     /**
      * Downlaod the cards from the specified board
      *
      * @param string $boardId_downloadCardsFromBoard
      * @return mixed
      */
+
+//    public function _downloadCard(string $cardId, string $filter) {
+//        $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+//        $res = $this->unirest->get_data($url);
+//        return $res;
+//    }
+
     public function _getUrlCard(string $cardId, string $filter)
     {
         $url = "/cards/{$cardId}/{$filter}";
         return $url;
+
     }
 
     public function _getStorageCard(string $cardId, string $filter)
@@ -29,23 +41,10 @@ class TrelloCardController extends Controller
         return $url;
     }
 
-    public function _getUrlBoard(string $boardId, string $filter)
-    {
-        $url = "/boards/{$boardId}/{$filter}";
-        return $url;
-    }
-
-    public function _getStorageBoard(string $boardId, string $filter)
-    {
-        $url = "test_data/{$filter}{$boardId}.json";
-        return $url;
-    }
-
-
     public function _downloadCard(string $cardId, string $filter) {
-            $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
-            $res = $this->_unirest($url);
-            return $res;
+        $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+        $res = $this->_unirest($url);
+        return $res;
     }
 
     public function _downloadBoard(string $cardId, string $filter) {
@@ -66,7 +65,6 @@ class TrelloCardController extends Controller
     public function _downloadCardsFromBoard(string $boardId) {
         $url = TRELLO_API_BASE_URL . "/boards/{$boardId}/cards";
         $res = $this->_unirest($url);
-
         return $res;
     }
 
@@ -150,27 +148,7 @@ class TrelloCardController extends Controller
         return $member;
     }
 
-    //calc card time in -> progress ->
-    public function totalTime($min, $total_time)
-    {
-        if (is_array($total_time))
-        {
-            for ($i = count($total_time)-1; $i > 0; $i--)
-            {
-                if (isset($total_time[$i]->data->listAfter->name))
-                {
-                    if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
-                    {
-                        $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
-                        $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
-                        $min += $minutes - $minutes1;
-                    }
-                }
-            }
-        }
-        else $min = 0;
-        return $min;
-    }
+
 
 
 }

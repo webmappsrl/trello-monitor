@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('TrelloCardService', function ($app) {
+            return new \App\Services\TrelloCardService($app->make('\App\Services\Api\TrelloCardAPIService'));
+        });
     }
 
     /**
