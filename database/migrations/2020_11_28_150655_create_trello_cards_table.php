@@ -18,9 +18,9 @@ class CreateTrelloCardsTable extends Migration
             $table->timestamps();
             $table->text('name');
             $table->text('link');
-            $table->text('customer')->nullable();;
-            $table->integer('estimate')->nullable();;
-            $table->integer('total_time')->nullable();;
+            $table->text('customer');
+            $table->integer('estimate');
+            $table->integer('total_time');
             $table->boolean('is_archived')->default(False);
 
 

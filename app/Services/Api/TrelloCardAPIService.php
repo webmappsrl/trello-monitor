@@ -7,20 +7,18 @@ namespace App\Services\Api;
 use App\Traits\CardTrait;
 use Unirest\Request;
 
-class TrelloCardAPIService
+class TrelloCardAPIService extends UnirestAPIService
 {
-
-    public function call(string $url) {
-        if (empty(env('TRELLO_KEY')) || empty(env('TRELLO_TOKEN'))) {
-            throw new \Exception("Configuration missing: TRELLO_KEY and/or TRELLO_TOKEN are mandatory");
-        }
-        $headers = array('Accept' => 'application/json');
-        $query = array('key' => env('TRELLO_KEY'), 'token' => env('TRELLO_TOKEN'));
-        $r = Request::get($url, $headers, $query);
-        return $r->body;
+    public function _getUrlCard(string $cardId, string $filter)
+    {
+        $url = "/cards/{$cardId}/{$filter}";
+        return $url;
     }
 
-
-
+    public function _downloadThirdPartCard(string $cardId, string $filter) {
+        $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+        $res = $this->call($url);
+        return $res;
+    }
 
 }

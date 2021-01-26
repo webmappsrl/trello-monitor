@@ -25,55 +25,35 @@ class TrelloCard extends Model
     ];
 
 
-    public function setCustomer() {
-        //TODO: mettere in una var di configurazione .ENV
-        $customer_key ='5e2578146cf1856ec493b585';
-        $j = new downloadCard();
-        $res = $j->_downloadCard($this->trello_id,'customFieldItems');
-        $fields = array();
-        if (is_array($res) && count($res)>0)
-        {
-            foreach ($res as $re)
-            {
-                $fields[$re->idCustomField] = $re;
-            }
-
-            if (array_key_exists($customer_key,$fields))
-            {
-                $this->customer = $fields[$customer_key]->value->text;
-            }
-
-        }
-
-    }
 
 
 
-    public function setEstimate() {
-        $j = new downloadCard();
-        $res = $j->_downloadCard($this->trello_id,'pluginData');
-        return $res;
-    }
 
-    public function setEstimateValidate($array_customer) {
-        $j = new downloadCard();
-        $estimate = $j->estimate($array_customer);
-        $this->estimate = $estimate;
-        return $this->estimate;
-    }
-
-    public function setTotalTime() {
-        $j = new downloadCard();
-        $res = $j->_downloadCard($this->trello_id,'actions');
-        return $res;
-    }
-
-    public function setTotalTimeValidate($array_customer) {
-        $j = new downloadCard();
-        $total_time = $j->totalTime($array_customer);
-        $this->total_time = $total_time;
-        return $this->total_time;
-    }
+//    public function setEstimate() {
+//        $j = new downloadCard();
+//        $res = $j->_downloadCard($this->trello_id,'pluginData');
+//        return $res;
+//    }
+//
+//    public function setEstimateValidate($array_customer) {
+//        $j = new downloadCard();
+//        $estimate = $j->estimate($array_customer);
+//        $this->estimate = $estimate;
+//        return $this->estimate;
+//    }
+//
+//    public function setTotalTime() {
+//        $j = new downloadCard();
+//        $res = $j->_downloadCard($this->trello_id,'actions');
+//        return $res;
+//    }
+//
+//    public function setTotalTimeValidate($array_customer) {
+//        $j = new downloadCard();
+//        $total_time = $j->totalTime($array_customer);
+//        $this->total_time = $total_time;
+//        return $this->total_time;
+//    }
 
     public function trelloList() {
         return $this->belongsTo(TrelloList::class, 'list_id');

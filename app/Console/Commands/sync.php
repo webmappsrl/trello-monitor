@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\ClassU\downloadCard;
 use App\ClassU\Unirest;
 use App\Http\Controllers\TrelloCardController;
+use App\Services\TrelloCardsService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Unirest\Request;
@@ -48,9 +49,9 @@ class sync extends Command
      */
     protected $unirest;
 
-    public function __construct(downloadCard $unirest)
+    public function __construct()
     {
-        $this->unirest = $unirest;
+//        $this->unirest = $unirest;
         parent::__construct();
 
     }
@@ -59,12 +60,16 @@ class sync extends Command
     public function handle()
     {
         foreach (TRELLO_BOARDS as $beardName => $boardId) {
-            $cards = $this->unirest->_downloadCardsFromBoard($boardId);
+            $cards = resolve('TrelloCardsService');
+            $cards = $cards->get_cards();
             foreach($cards as $index=>$card) {
                 echo $index.' of '.count($cards)."\r\n";
-                $this->unirest->createCard($card);
-
-
+                $card_di = resolve('TrelloCardService');
+                $itt = $card_di->last_date($card);
+                $total_time = $card_di->total_time($card->id);
+                $customer = $card_di->setCustomer($card->id);
+                $estimate = $card_di->estimate($card->id);
+                $card_di->store_card($card,$total_time,$estimate,$customer,$itt);
             }
         }
         return 0;
