@@ -29,7 +29,7 @@ class estimateTest extends TestCase
         });
 
         $mockedTrelloCardService = new TrelloCardService($mock_estimate);
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
         $this->assertSame($estimate, 1);
 
         $card = json_decode(File::get("tests/Fixtures/card_99.json"),FALSE);
@@ -43,7 +43,7 @@ class estimateTest extends TestCase
         });
 
         $mockedTrelloCardService = new TrelloCardService($mock_estimate);
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
         $this->assertSame($estimate, 2);
 
         $card = json_decode(File::get("tests/Fixtures/card_59.json"),FALSE);
@@ -57,7 +57,7 @@ class estimateTest extends TestCase
         });
 
         $mockedTrelloCardService = new TrelloCardService($mock_estimate);
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
         $this->assertSame($estimate, 3);
 
         $card = json_decode(File::get("tests/Fixtures/card_70.json"),FALSE);
@@ -71,7 +71,7 @@ class estimateTest extends TestCase
         });
 
         $mockedTrelloCardService = new TrelloCardService($mock_estimate);
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
         $this->assertSame($estimate, 2);
 
         $card = json_decode(File::get("tests/Fixtures/card_94.json"),FALSE);
@@ -85,7 +85,7 @@ class estimateTest extends TestCase
         });
 
         $mockedTrelloCardService = new TrelloCardService($mock_estimate);
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
         $this->assertSame($estimate, 1);
     }
 }

@@ -33,7 +33,7 @@ class customerTest extends TestCase
 
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_customer);
-        $customer = $mockedTrelloCardService->setCustomer($card->id);
+        $customer = $mockedTrelloCardService->get_customer($card->id);
         $this->assertSame('UCVS',$customer);
 
         $card = json_decode(File::get("tests/Fixtures/card_47.json"),FALSE);
@@ -48,7 +48,7 @@ class customerTest extends TestCase
 
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_customer);
-        $customer = $mockedTrelloCardService->setCustomer($card->id);
+        $customer = $mockedTrelloCardService->get_customer($card->id);
         $this->assertSame('WM-TRELLO',$customer);
     }
 }

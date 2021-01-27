@@ -4,7 +4,6 @@
 namespace App\Services\Api;
 
 
-use App\Traits\CardTrait;
 use Unirest\Request;
 
 class TrelloCardAPIService extends UnirestAPIService

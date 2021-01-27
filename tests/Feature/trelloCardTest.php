@@ -41,11 +41,11 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
 
         $itt = $mockedTrelloCardService->last_date($card);
-        $total_time = $mockedTrelloCardService->total_time($card->id);
+        $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
 
-        $customer = $mockedTrelloCardService->setCustomer($card->id);
+        $customer = $mockedTrelloCardService->get_Customer($card->id);
 
         $mockedTrelloCardService->store_card($card,$total_time,$estimate,$customer,$itt);
 
@@ -80,11 +80,11 @@ class trelloCardTest extends TestCase
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
         $itt = $mockedTrelloCardService->last_date($card);
-        $total_time = $mockedTrelloCardService->total_time($card->id);
+        $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
 
-        $customer = $mockedTrelloCardService->setCustomer($card->id);
+        $customer = $mockedTrelloCardService->get_Customer($card->id);
 
         $mockedTrelloCardService->store_card($card,$total_time,$estimate,$customer,$itt);
 
@@ -111,11 +111,11 @@ class trelloCardTest extends TestCase
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
         $itt = $mockedTrelloCardService->last_date($card);
-        $total_time = $mockedTrelloCardService->total_time($card->id);
+        $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
-        $estimate = $mockedTrelloCardService->estimate($card->id);
+        $estimate = $mockedTrelloCardService->get_estimate($card->id);
 
-        $customer = $mockedTrelloCardService->setCustomer($card->id);
+        $customer = $mockedTrelloCardService->get_Customer($card->id);
 
         $mockedTrelloCardService->store_card($card,$total_time,$estimate,$customer,$itt);
 

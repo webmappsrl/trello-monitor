@@ -15,7 +15,7 @@ class TrelloCardService
         $this->trelloCardApiService = $trelloCardApiService;
     }
 
-    public function setCustomer($card_id) {
+    public function get_customer($card_id) {
         //TODO: mettere in una var di configurazione .ENV
         $customer_key =env('CUSTOMER_KEY');
 
@@ -38,7 +38,7 @@ class TrelloCardService
 
     }
 
-    public function total_time($card_id)
+    public function get_total_time($card_id)
     {
         $total_time = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'actions');
         $min = 0;
@@ -75,7 +75,7 @@ class TrelloCardService
 
     }
 
-    public function estimate($card_id)
+    public function get_estimate($card_id)
     {
         $estimate = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'pluginData');
 

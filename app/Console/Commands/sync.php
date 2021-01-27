@@ -15,7 +15,16 @@ use App\Models\TrelloList;
 use App\Models\TrelloMember;
 use function PHPUnit\Framework\isEmpty;
 
+define("TRELLO_BASE_URL", "https://trello.con/b/");
+define("TRELLO_API_BASE_URL", "https://api.trello.com/1");
+define("TRELLO_BOARDS_SPRINT", "qxqVS51D");
 
+define("TRELLO_BOARDS", [
+    "SPRINT" => "qxqVS51D",
+//    "DEV" => "SRPXlaBI",
+//    "PROD",
+//    "SISTECO"
+]);
 
 class sync extends Command
 {
@@ -50,7 +59,7 @@ class sync extends Command
 
     public function handle()
     {
-        foreach (TRELLO_BOARDS as $beardName => $boardId) {
+       // foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = resolve('TrelloCardsService');
             $cards = $cards->get_cards();
             foreach($cards as $index=>$card) {
@@ -62,7 +71,7 @@ class sync extends Command
                 $estimate = $card_di->estimate($card->id);
                 $card_di->store_card($card,$total_time,$estimate,$customer,$itt);
             }
-        }
+      //  }
         return 0;
     }
 

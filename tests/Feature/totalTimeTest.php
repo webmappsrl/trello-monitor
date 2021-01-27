@@ -28,7 +28,7 @@ class totalTimeTest extends TestCase
                 ->andReturn($tot_time);
         });
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $calcTime = $mockedTrelloCardService->total_time($card->id);
+        $calcTime = $mockedTrelloCardService->get_total_time($card->id);
         $calcTimeAction = 4.0;
         $this->assertSame($calcTime,$calcTimeAction);
 
@@ -42,7 +42,7 @@ class totalTimeTest extends TestCase
                 ->andReturn($tot_time);
         });
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $calcTime = $mockedTrelloCardService->total_time($card->id);
+        $calcTime = $mockedTrelloCardService->get_total_time($card->id);
         $calcTimeAction = 0.0;
         $this->assertSame($calcTime,$calcTimeAction);
 
@@ -56,7 +56,7 @@ class totalTimeTest extends TestCase
                 ->andReturn($tot_time);
         });
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $calcTime = $mockedTrelloCardService->total_time($card->id);
+        $calcTime = $mockedTrelloCardService->get_total_time($card->id);
         $calcTimeAction = 73.0;
         $this->assertSame($calcTime,$calcTimeAction);
 
@@ -70,7 +70,7 @@ class totalTimeTest extends TestCase
                 ->andReturn($tot_time);
         });
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $calcTime = $mockedTrelloCardService->total_time($card->id);
+        $calcTime = $mockedTrelloCardService->get_total_time($card->id);
         $calcTimeAction = 155.0;
         $this->assertSame($calcTime,$calcTimeAction);
 
@@ -84,7 +84,7 @@ class totalTimeTest extends TestCase
                 ->andReturn($tot_time);
         });
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $calcTime = $mockedTrelloCardService->total_time($card->id);
+        $calcTime = $mockedTrelloCardService->get_total_time($card->id);
         $calcTimeAction = 557.0;
         $this->assertSame($calcTime,$calcTimeAction);
 
