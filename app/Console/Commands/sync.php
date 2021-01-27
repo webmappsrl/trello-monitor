@@ -40,9 +40,7 @@ class sync extends Command
 
     public function __construct()
     {
-//        $this->unirest = $unirest;
         parent::__construct();
-
     }
 
 
@@ -50,15 +48,24 @@ class sync extends Command
     {
             $cards = resolve('TrelloCardsService');
             $cards = $cards->get_cards();
-        foreach($cards as $index=>$card) {
+
+            foreach($cards as $index=>$card) {
                 echo $index.' of '.count($cards)."\r\n";
                 $card_di = resolve('TrelloCardService');
-                $created_at = $card_di->get_first_date($card);
-                $total_time = $card_di->get_total_time($card->id);
-                $customer = $card_di->get_customer($card->id);
-                $estimate = $card_di->get_estimate($card->id);
-                $card_di->store_card($card,$total_time,$estimate,$customer,$created_at);
+                $member_di = resolve('TrelloMemberService');
+                $list_di = resolve('TrelloListService');
+
+
+                $member = $member_di->get_member($card->idMembers);
+                if (!is_null($member)) $member = $member->id ?? $member ='';
+
+                $list = $list_di->get_list($card->idList);
+                if (!is_null($list)) $list = $list->id ?? $list ='';
+
+                //persist in trello_cards
+                $card_di->store_card($card,$member,$list);
             }
+
         return 0;
     }
 

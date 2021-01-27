@@ -4,8 +4,6 @@
 namespace App\Services\Api;
 
 
-use Unirest\Request;
-
 class TrelloCardAPIService extends UnirestAPIService
 {
     public function _getUrlCard(string $cardId, string $filter)

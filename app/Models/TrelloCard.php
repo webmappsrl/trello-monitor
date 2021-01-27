@@ -21,7 +21,8 @@ class TrelloCard extends Model
         'total_time',
         'board',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'member_id'
     ];
 
 

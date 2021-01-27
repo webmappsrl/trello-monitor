@@ -4,7 +4,6 @@
 namespace App\Services\Api;
 
 
-
 class TrelloCardsAPIService extends UnirestAPIService
 {
     public function _downloadCardsFromBoard() {

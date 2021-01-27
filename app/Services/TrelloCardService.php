@@ -61,19 +61,6 @@ class TrelloCardService
 
     }
 
-    public function get_first_date($card)
-    {
-        $data = $this->trelloCardApiService->_downloadThirdPartCard($card->id,'actions');
-        if (count($data)>0 && is_array($data))
-        {
-            $itt = $data[count($data)-1]->date;
-        }
-        else $itt = $card->dateLastActivity;
-
-        return $itt;
-
-    }
-
     public function get_estimate($card_id)
     {
         $estimate = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'pluginData');
@@ -93,38 +80,58 @@ class TrelloCardService
 
     }
 
-    public function store_card($card, $total_time,$estimate,$customer,$itt)
+    public function store_card($card,$member_id,$list_id)
     {
         // find the card
         $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
+
+
 //        echo "nedo ".$dbCard."\n";
         if(is_null($dbCard)) {
-//            echo "inserisco\n";
+
+            $total_time = $this->get_total_time($card->id);
+            $estimate = $this->get_estimate($card->id);
+            $customer = $this->get_customer($card->id);
+
             // NON esiste: lo inserisco sicuramente
-            $newCard = new TrelloCard([
+            $dbCard = new TrelloCard([
                 'trello_id' => $card->id,
                 'name' => $card->name,
                 'link' => $card->shortUrl,
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
                 'customer'=>$customer,
-                'created_at'=>$itt,
-                'updated_at'=>$card->dateLastActivity
             ]);
 
-            $newCard->save();
+            $dbCard->save();
+            if ($member_id!='')
+            {
+                $dbCard->member_id = $member_id;
+                $dbCard->save();
+            }
+            if ($list_id!='')
+            {
+                $dbCard->list_id = $list_id;
+                $dbCard->save();
+            }
 
         } else {
             if(strtotime($dbCard->updated_at)<strtotime($card->dateLastActivity)) {
+                $total_time = $this->get_total_time($card->id);
+                $estimate = $this->get_estimate($card->id);
+                $customer = $this->get_customer($card->id);
+
                 //update
                 $dbCard->name=$card->name;
                 $dbCard->total_time=$total_time;
                 $dbCard->estimate=$estimate;
                 $dbCard->customer=$customer;
-                $dbCard->updated_at = $card->dateLastActivity;
+                $dbCard->member_id = $member_id;
+
                 $dbCard->save();
             }
         }
+        return $dbCard;
     }
 
 }
