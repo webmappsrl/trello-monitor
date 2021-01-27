@@ -16,8 +16,7 @@ class TrelloCardService
     }
 
     public function get_customer($card_id) {
-        //TODO: mettere in una var di configurazione .ENV
-        $customer_key =env('CUSTOMER_KEY');
+        $customer_key = env('CUSTOMER_KEY');
 
         $res = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'customFieldItems');
         $fields = array();
@@ -81,7 +80,6 @@ class TrelloCardService
 
         if (is_array($estimate) && count($estimate)>0)
         {
-
             if (isset($estimate[0]) && strlen($estimate[0]->value) > 0 && strpos($estimate[0]->value, 'estimate') ) {
                 $estimate = explode("\"", $estimate[0]->value);
                 $estimate = $estimate[3];
@@ -103,7 +101,6 @@ class TrelloCardService
         if(is_null($dbCard)) {
 //            echo "inserisco\n";
             // NON esiste: lo inserisco sicuramente
-            //create
             $newCard = new TrelloCard([
                 'trello_id' => $card->id,
                 'name' => $card->name,
