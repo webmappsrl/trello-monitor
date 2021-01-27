@@ -62,7 +62,7 @@ class TrelloCardService
 
     }
 
-    public function last_date($card)
+    public function get_first_date($card)
     {
         $data = $this->trelloCardApiService->_downloadThirdPartCard($card->id,'actions');
         if (count($data)>0 && is_array($data))

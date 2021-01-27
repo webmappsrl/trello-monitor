@@ -40,7 +40,7 @@ class trelloCardTest extends TestCase
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
 
-        $itt = $mockedTrelloCardService->last_date($card);
+        $itt = $mockedTrelloCardService->get_first_date($card);
         $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
         $estimate = $mockedTrelloCardService->get_estimate($card->id);
@@ -79,7 +79,7 @@ class trelloCardTest extends TestCase
 
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $itt = $mockedTrelloCardService->last_date($card);
+        $itt = $mockedTrelloCardService->get_first_date($card);
         $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
         $estimate = $mockedTrelloCardService->get_estimate($card->id);
@@ -110,7 +110,9 @@ class trelloCardTest extends TestCase
 
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_total_time);
-        $itt = $mockedTrelloCardService->last_date($card);
+
+        $itt = $mockedTrelloCardService->get_first_date($card);
+
         $total_time = $mockedTrelloCardService->get_total_time($card->id);
 
         $estimate = $mockedTrelloCardService->get_estimate($card->id);

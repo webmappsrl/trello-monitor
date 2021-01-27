@@ -59,19 +59,17 @@ class sync extends Command
 
     public function handle()
     {
-       // foreach (TRELLO_BOARDS as $beardName => $boardId) {
             $cards = resolve('TrelloCardsService');
             $cards = $cards->get_cards();
-            foreach($cards as $index=>$card) {
+        foreach($cards as $index=>$card) {
                 echo $index.' of '.count($cards)."\r\n";
                 $card_di = resolve('TrelloCardService');
-                $itt = $card_di->last_date($card);
-                $total_time = $card_di->total_time($card->id);
-                $customer = $card_di->setCustomer($card->id);
-                $estimate = $card_di->estimate($card->id);
-                $card_di->store_card($card,$total_time,$estimate,$customer,$itt);
+                $created_at = $card_di->get_first_date($card);
+                $total_time = $card_di->get_total_time($card->id);
+                $customer = $card_di->get_customer($card->id);
+                $estimate = $card_di->get_estimate($card->id);
+                $card_di->store_card($card,$total_time,$estimate,$customer,$created_at);
             }
-      //  }
         return 0;
     }
 

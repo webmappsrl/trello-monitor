@@ -19,8 +19,6 @@ class customerTest extends TestCase
      */
     public function test_check_customer()
     {
-        TrelloCard::truncate();
-
         $card = json_decode(File::get("tests/Fixtures/card_17.json"),FALSE);
         $customer = json_decode(File::get("tests/Fixtures/cf_17.json"),FALSE);
 
