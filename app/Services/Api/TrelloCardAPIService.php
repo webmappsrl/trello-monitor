@@ -16,7 +16,7 @@ class TrelloCardAPIService extends UnirestAPIService
     }
 
     public function _downloadThirdPartCard(string $cardId, string $filter) {
-        $url = TRELLO_API_BASE_URL . $this->_getUrlCard($cardId, $filter);
+        $url = env('TRELLO_API_BASE_URL') . $this->_getUrlCard($cardId, $filter);
         $res = $this->call($url);
         return $res;
     }

@@ -15,16 +15,7 @@ use App\Models\TrelloList;
 use App\Models\TrelloMember;
 use function PHPUnit\Framework\isEmpty;
 
-define("TRELLO_BASE_URL", "https://trello.con/b/");
-define("TRELLO_API_BASE_URL", "https://api.trello.com/1");
-define("TRELLO_BOARDS_SPRINT", "qxqVS51D");
 
-define("TRELLO_BOARDS", [
-    "SPRINT" => "qxqVS51D",
-//    "DEV" => "SRPXlaBI",
-//    "PROD",
-//    "SISTECO"
-]);
 
 class sync extends Command
 {

@@ -17,7 +17,7 @@ class TrelloCardService
 
     public function setCustomer($card_id) {
         //TODO: mettere in una var di configurazione .ENV
-        $customer_key ='5e2578146cf1856ec493b585';
+        $customer_key =env('CUSTOMER_KEY');
 
         $res = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'customFieldItems');
         $fields = array();
