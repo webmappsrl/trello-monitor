@@ -17,22 +17,27 @@ class TrelloMemberService
         $this->trelloMemberApiService = $trelloMemberApiService;
     }
 
-        public function get_member($member1) {
-        if (count($member1)>0 && is_array($member1))
+        public function get_member($member_by_api) {
+        if (count($member_by_api)>0 && is_array($member_by_api))
         {
-            $member = TrelloMember::query()->where("trello_id", "=", $member1[0])->first();
-            if (is_null($member)) {
                 Log::debug("Updating member");
-                $res = $this->trelloMemberApiService->_downloadMemberFromCard($member1[0]);
+                $res = $this->trelloMemberApiService->_downloadMemberFromCard($member_by_api[0]);
                 if (!is_null($res)) {
+                    $member = TrelloMember::where("trello_id", $res->id)->first();
 
-                    $member = new TrelloMember([
-                        'trello_id' => $res->id,
-                        'name' => $res->fullName,
-                    ]);
-                    $member->save();
+                    if (is_null($member))
+                    {
+                        $member = new TrelloMember([
+                            'trello_id' => $res->id,
+                            'name' => $res->fullName,
+                        ]);
+                        $member->save();
+
+                    }
+
+
                 }
-            }
+
         }
         else
         {

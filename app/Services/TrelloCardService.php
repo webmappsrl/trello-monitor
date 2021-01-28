@@ -64,7 +64,6 @@ class TrelloCardService
     public function get_estimate($card_id)
     {
         $estimate = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'pluginData');
-
         if (is_array($estimate) && count($estimate)>0)
         {
             if (isset($estimate[0]) && strlen($estimate[0]->value) > 0 && strpos($estimate[0]->value, 'estimate') ) {
@@ -85,8 +84,6 @@ class TrelloCardService
         // find the card
         $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
 
-
-//        echo "nedo ".$dbCard."\n";
         if(is_null($dbCard)) {
 
             $total_time = $this->get_total_time($card->id);
@@ -127,6 +124,7 @@ class TrelloCardService
                 $dbCard->estimate=$estimate;
                 $dbCard->customer=$customer;
                 $dbCard->member_id = $member_id;
+                $dbCard->list_id = $list_id;
 
                 $dbCard->save();
             }

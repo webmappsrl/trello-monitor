@@ -19,20 +19,20 @@ class TrelloListService
 
     public function get_list($list_id) {
 
-        $list = TrelloList::query()->where("trello_id", "=", $list_id)->first();
-
-        if (is_null($list)) {
             Log::debug("Updating list");
-
             $res = $this->trelloListApiService->_downloadListFromCard($list_id);
             if (!is_null($res)) {
-                $list = new TrelloList([
-                    'trello_id' => $res->id,
-                    'name' => $res->name,
-                ]);
-                $list->save();
+                $list = TrelloList::where("trello_id", $res->id)->first();
+                if (is_null($list))
+                {
+                    $list = new TrelloList([
+                        'trello_id' => $res->id,
+                        'name' => $res->name,
+                    ]);
+                    $list->save();
+                }
+
             }
-        }
         return $list;
     }
 }
