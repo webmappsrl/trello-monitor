@@ -50,19 +50,22 @@ class sync extends Command
             $cards = $cards->get_cards();
 
             foreach($cards as $index=>$card) {
+
                 echo $index.' of '.count($cards)."\r\n";
                 $card_di = resolve('TrelloCardService');
                 $member_di = resolve('TrelloMemberService');
                 $list_di = resolve('TrelloListService');
 
 
-                $member = $member_di->get_member($card->idMembers);
-                if (!is_null($member)) $member = $member->id ?? $member ='';
-
-                $list = $list_di->get_list($card->idList);
-                if (!is_null($list)) $list = $list->id ?? $list ='';
-
+//                $member = $member_di->get_member($card->idMembers);
+//                if (!is_null($member)) $member = $member->id ?? $member ='';
+//
+//                $list = $list_di->get_list($card->idList);
+//                if (!is_null($list)) $list = $list->id ?? $list ='';
+$list = '';$member = '';
                 //persist in trello_cards
+
+                dd($card_di->set_archive($card,$cards));
                 $card_di->store_card($card,$member,$list);
             }
 

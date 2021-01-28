@@ -79,6 +79,24 @@ class TrelloCardService
 
     }
 
+    public function set_archive($cards_archive, $card)
+    {
+        $trello_ids = array_column($cards_archive, 'id');
+        $set_bool = in_array($card->trello_id,$trello_ids);
+
+        if ($set_bool)
+        {
+            $card->is_archived = 1;
+            $card->save();
+        }
+        else
+        {
+            $card->is_archived = 0;
+            $card->save();
+        }
+
+    }
+
     public function store_card($card,$member_id,$list_id)
     {
         // find the card
