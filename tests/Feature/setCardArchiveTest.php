@@ -136,7 +136,6 @@ class setCardArchiveTest extends TestCase
         $card = $mockedTrelloCardService->store_card($card,$member->id,$list->id);
 
         $mockedTrelloCardService->set_archive($cards,$card);
-        dd($card);
 
         $this->assertSame($card->is_archived,0);
     }
