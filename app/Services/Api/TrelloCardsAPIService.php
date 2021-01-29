@@ -12,4 +12,11 @@ class TrelloCardsAPIService extends UnirestAPIService
         $res = $this->call($url);
         return $res;
     }
+
+    public function _downloadCardsFromArchive() {
+        echo "API downloadCardsArchive!\n";
+        $url = env('TRELLO_API_BASE_URL'). "/boards/".env('TRELLO_BOARDS_SPRINT')."/cards/closed";
+        $res = $this->call($url);
+        return $res;
+    }
 }

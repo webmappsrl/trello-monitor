@@ -46,28 +46,48 @@ class sync extends Command
 
     public function handle()
     {
-            $cards = resolve('TrelloCardsService');
-            $cards = $cards->get_cards();
+            $cards_service = resolve('TrelloCardsService');
+            $cards = $cards_service->get_cards();
+            $cards_archive = $cards_service->get_cards_archive();
 
             foreach($cards as $index=>$card) {
-
                 echo $index.' of '.count($cards)."\r\n";
                 $card_di = resolve('TrelloCardService');
                 $member_di = resolve('TrelloMemberService');
                 $list_di = resolve('TrelloListService');
 
 
-//                $member = $member_di->get_member($card->idMembers);
-//                if (!is_null($member)) $member = $member->id ?? $member ='';
-//
-//                $list = $list_di->get_list($card->idList);
-//                if (!is_null($list)) $list = $list->id ?? $list ='';
-$list = '';$member = '';
+                $member = $member_di->get_member($card->idMembers);
+                if (!is_null($member)) $member = $member->id ?? $member ='';
+
+                $list = $list_di->get_list($card->idList);
+                if (!is_null($list)) $list = $list->id ?? $list ='';
+//$list = '';$member = '';
                 //persist in trello_cards
 
-                dd($card_di->set_archive($card,$cards));
-                $card_di->store_card($card,$member,$list);
+                $card_single = $card_di->store_card($card,$member,$list);
+
+                $card_di->set_archive($cards_archive, $card_single);
+
             }
+
+        foreach($cards_archive as $index=>$card) {
+            echo $index.' of '.count($cards_archive)."\r\n";
+            $card_di = resolve('TrelloCardService');
+            $member_di = resolve('TrelloMemberService');
+            $list_di = resolve('TrelloListService');
+
+                $member = $member_di->get_member($card->idMembers);
+                if (!is_null($member)) $member = $member->id ?? $member ='';
+
+                $list = $list_di->get_list($card->idList);
+                if (!is_null($list)) $list = $list->id ?? $list ='';
+//            $list = '';$member = '';
+            //persist in trello_cards
+
+            $card_single = $card_di->store_card($card,$member,$list);
+            $card_di->set_archive($cards_archive, $card_single);
+        }
 
         return 0;
     }

@@ -20,4 +20,9 @@ class TrelloCardsService
         return $this->trelloCardsApiService->_downloadCardsFromBoard();
     }
 
+    public function get_cards_archive()
+    {
+        return $this->trelloCardsApiService->_downloadCardsFromArchive();
+    }
+
 }

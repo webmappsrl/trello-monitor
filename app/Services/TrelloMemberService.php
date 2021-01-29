@@ -22,7 +22,7 @@ class TrelloMemberService
         {
                 Log::debug("Updating member");
                 $res = $this->trelloMemberApiService->_downloadMemberFromCard($member_by_api[0]);
-//            var_dump($res);
+            var_dump($res);
 
             if (!is_null($res)) {
                     $member = TrelloMember::where("trello_id", $res->id)->first();
