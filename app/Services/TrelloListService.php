@@ -17,22 +17,23 @@ class TrelloListService
         $this->trelloListApiService = $trelloListApiService;
     }
 
-    public function get_list($list_id) {
-
+        public function get_list($listId){
+        $list = TrelloList::query()->where("trello_id", $listId)->first();
+        if (is_null($list)) {
+//            echo "dentro if\n";
             Log::debug("Updating list");
-            $res = $this->trelloListApiService->_downloadListFromCard($list_id);
-            if (!is_null($res)) {
-                $list = TrelloList::where("trello_id", $res->id)->first();
-                if (is_null($list))
-                {
-                    $list = new TrelloList([
-                        'trello_id' => $res->id,
-                        'name' => $res->name,
-                    ]);
-                    $list->save();
-                }
+            $res = $this->trelloListApiService->_downloadListFromCard($listId);
+            $list = TrelloList::where("trello_id", $res->id)->first();
 
+            if (is_null($list)) {
+                $list = new TrelloList([
+                    'trello_id' => $res->id,
+                    'name' => $res->name,
+                ]);
+
+                $list->save();
             }
+        }
         return $list;
     }
 }
