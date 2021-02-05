@@ -46,10 +46,7 @@ class TrelloMemberService
             $res = $this
                 ->trelloMemberApiService
                 ->_downloadMemberFromCard($memberId[0]);
-            print_r($res);
-
             $member = TrelloMember::where("trello_id", "=", $res->id)->first();
-
             if (is_null($member)) {
                 Log::debug("Updating member");
                 if (isset($memberId[0]))
