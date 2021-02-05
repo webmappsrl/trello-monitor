@@ -13,14 +13,11 @@ describe('Not create Card', () => {
 
         cy.get('select.block.w-full.form-control-sm.form-select').eq(2).select('Archived')
         cy.get('#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.flex.items-center.py-3.border-b.border-50 > div.flex.items-center.ml-auto.px-3 > div > div > button > div').click()
+cy.wait(1000)
 
-
-        cy.get('#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(8) > div > div').each(($e, index, $list) => {
+        cy.get('#nova > div > div > div > div > div > div > div > table > tbody > tr > td:nth-child(8) > div > svg > path').each(($e, index, $list) => {
             const text = $e.text()
-cy.log(text)
-            // expect(text).to.eq('TO BE TESTED')
-
-
+             expect(text).to.eq('')
         })
 
 
