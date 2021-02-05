@@ -11,6 +11,8 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
+
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 
@@ -51,12 +53,14 @@ class TrelloCard extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name'),
-            BelongsTo::make('TrelloBoard'),
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),
             Text::make('Customer'),
             Number::make('Total Time'),
+            Boolean::make('Is_Archived')
+                ->trueValue('On')
+                ->falseValue('Off'),
 
             Text::make('URL', function () {
                 return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
@@ -110,6 +114,8 @@ class TrelloCard extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+
+        ];
     }
 }

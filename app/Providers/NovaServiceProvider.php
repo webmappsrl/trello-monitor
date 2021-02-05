@@ -17,7 +17,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
-        Nova::style('trelloStyle',asset('css/trello_style.css'));
     }
 
     /**
@@ -44,7 +43,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Gate::define('viewNova', function ($user) {
             return in_array($user->email, [
-                //
+                'alessiopiccioli@webmapp.it',
+                'gianmarcogagliardi@webmapp.it'
             ]);
         });
     }
@@ -78,7 +78,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+//            new \Guratr\CommandRunner\CommandRunner,
+        ];
     }
 
     /**
