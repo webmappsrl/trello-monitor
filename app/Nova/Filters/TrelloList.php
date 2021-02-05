@@ -35,18 +35,12 @@ class TrelloList extends Filter
      */
     public function options(Request $request)
     {
-        return [
-            'Done' => '11',
-            'To be Tested' => 10,
-            'Almost there' => 9,
-            'Progress' => 8,
-            'Today' => '7',
-            'Tomorrow'=>'6',
-            'After Tomorrow'=>'5',
-            'After After Tomorrow'=>'4',
-            'New'=>'3',
-            'Backlog'=>'2',
-            'Cyclando Optimize'=>'1'
-        ];
+        $lists = \App\Models\TrelloList::all()->toArray();
+        $data=[];
+
+        foreach ($lists as $list) {
+            $data += [$list['name'] => $list['id']];
+        }
+        return $data;
     }
 }

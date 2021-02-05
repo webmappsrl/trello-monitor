@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Filters\TrelloCustomer;
+use App\Nova\Filters\TrelloIsArchived;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -92,6 +93,8 @@ class TrelloCard extends Resource
         return [
             new \App\Nova\Filters\TrelloList(),
             new TrelloCustomer(),
+            new TrelloIsArchived(),
+            new \App\Nova\Filters\TrelloMember(),
         ];
     }
 
