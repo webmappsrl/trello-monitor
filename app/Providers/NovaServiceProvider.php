@@ -45,7 +45,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Gate::define('viewNova', function ($user) {
             return in_array($user->email, [
                 'alessiopiccioli@webmapp.it',
-                'gianmarcogagliardi@webmapp.it'
+                'gianmarcogagliardi@webmapp.it',
+                'davidepizzato@webmapp.it',
+                'pedramkatanchi@webmapp.it'
             ]);
         });
     }
