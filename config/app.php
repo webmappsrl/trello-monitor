@@ -10,7 +10,10 @@ return [
     | This value represents the HOQU version number
     |
     */
-    'version' => "1.0.1",
+
+
+    'version' => "1.0.2",
+
 
 
     /*

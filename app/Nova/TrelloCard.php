@@ -61,11 +61,11 @@ class TrelloCard extends Resource
             Number::make('Total Time'),
             Boolean::make('Is_Archived')
                 ->trueValue('On')
-                ->falseValue('Off'),
+                ->falseValue('Off')
 
-            Text::make('URL', function () {
-                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
-            })
+//            Text::make('URL', function () {
+//                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
+//            })
                 ->asHtml(),            DateTime::make('created_at'),
             DateTime::make('updated_at'),
         ];
