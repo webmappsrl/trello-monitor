@@ -17,6 +17,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+        Nova::style('field-text',public_path('css/fieldText.css'));
     }
 
     /**
