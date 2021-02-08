@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Filters\TrelloCustomer;
+use App\Nova\Filters\TrelloIsArchived;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -39,7 +40,7 @@ class TrelloCard extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name'
     ];
 
     /**
@@ -60,11 +61,11 @@ class TrelloCard extends Resource
             Number::make('Total Time'),
             Boolean::make('Is_Archived')
                 ->trueValue('On')
-                ->falseValue('Off'),
+                ->falseValue('Off')
 
-            Text::make('URL', function () {
-                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
-            })
+//            Text::make('URL', function () {
+//                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
+//            })
                 ->asHtml(),            DateTime::make('created_at'),
             DateTime::make('updated_at'),
         ];
@@ -92,6 +93,8 @@ class TrelloCard extends Resource
         return [
             new \App\Nova\Filters\TrelloList(),
             new TrelloCustomer(),
+            new TrelloIsArchived(),
+            new \App\Nova\Filters\TrelloMember(),
         ];
     }
 

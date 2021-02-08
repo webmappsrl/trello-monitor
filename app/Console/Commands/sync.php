@@ -47,10 +47,16 @@ class sync extends Command
     public function handle()
     {
             $cards_service = resolve('TrelloCardsService');
+
             $cards = $cards_service->get_cards();
             $cards_archive = $cards_service->get_cards_archive();
 
-            foreach($cards as $index=>$card) {
+            $cards_service->delete_cards($cards, $cards_archive);
+
+
+
+
+        foreach($cards as $index=>$card) {
                 echo $index.' of '.count($cards)."\r\n";
                 $card_di = resolve('TrelloCardService');
                 $member_di = resolve('TrelloMemberService');
@@ -71,6 +77,8 @@ class sync extends Command
 
             }
 
+
+
         foreach($cards_archive as $index=>$card) {
             echo $index.' of '.count($cards_archive)."\r\n";
             $card_di = resolve('TrelloCardService');
@@ -88,6 +96,7 @@ class sync extends Command
             $card_single = $card_di->store_card($card,$member,$list);
             $card_di->set_archive($cards_archive, $card_single);
         }
+
 
         return 0;
     }

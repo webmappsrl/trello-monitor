@@ -4,9 +4,8 @@ namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
-use Illuminate\Support\Facades\DB;
 
-class TrelloCustomer extends Filter
+class TrelloIsArchived extends Filter
 {
     /**
      * The filter's component.
@@ -25,7 +24,7 @@ class TrelloCustomer extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('customer','like', $value);
+        return $query->where('is_archived','like', $value);
     }
 
     /**
@@ -36,12 +35,9 @@ class TrelloCustomer extends Filter
      */
     public function options(Request $request)
     {
-        $customers = \App\Models\TrelloCard::select('customer')->distinct()->get()->toArray();
-        $data=[];
-
-        foreach ($customers as $customer) {
-            if (!empty($customer['customer'])) $data += [$customer['customer'] => $customer['customer']];
-        }
-        return $data;
+        return [
+            'Archived' => '1',
+            'Not Archived' => 0,
+            ];
     }
 }
