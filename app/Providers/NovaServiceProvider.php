@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Nova\Metrics\CardDoneCount;
+use App\Nova\Metrics\CardProgressCount;
+use App\Nova\Metrics\CardRejectedCount;
+use App\Nova\Metrics\CardToBeTestedCount;
+use App\Nova\Metrics\CardTodayCount;
+use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
@@ -60,7 +66,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+//            new Help,
+        new CardTomorrowCount(),
+            new CardTodayCount,
+            new CardProgressCount,
+            new CardToBeTestedCount,
+            new CardRejectedCount,
+            new CardDoneCount,
         ];
     }
 
