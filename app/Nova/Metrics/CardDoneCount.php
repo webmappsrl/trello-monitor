@@ -28,8 +28,13 @@ class CardDoneCount extends Value
     public function ranges()
     {
         return [
+            30 => __('30 Days'),
             'TODAY' => __('Today'),
-
+            2 => __('Yesterday'),//bad solutions
+            7 => __('Week'),
+            60 => __('60 Days'),
+            90 => __('90 Days'),
+            365 => __('365 Days'),
         ];
     }
 

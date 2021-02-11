@@ -116,6 +116,7 @@ class TrelloCardService
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
                 'customer'=>$customer,
+                'created_at'=>$card->dateLastActivity
             ]);
 
             $dbCard->save();
