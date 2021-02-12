@@ -81,7 +81,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
 
-        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','DONE'])->pluck('id');
+        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','DONE','TO BE TESTED'])->pluck('id');
 
         $didDoYesterday = DB::table('trello_cards')
             ->select('trello_cards.*','trello_members.name as member_name','trello_lists.name as list_name')
@@ -110,17 +110,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->whereDate('last_activity','<=', Carbon::now()->subDay())->whereDate('last_activity','>=', Carbon::now()->subDay(2))
             ->get();
 
+
         $filtered = $problemsHavEncountered->filter(function ($value) {
+
             if ($value->estimate > 0)
             {
                 $minEstimate = ($value->estimate * 20);
                 $minEstimate = $minEstimate + ($minEstimate *0.5);
+
                 if ($minEstimate <= $value->total_time)
                 {
                     return $value;
-
                 }
+                else return 0;
             }
+            else return 0;
 
         });
 
