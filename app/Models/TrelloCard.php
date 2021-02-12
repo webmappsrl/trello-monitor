@@ -23,7 +23,8 @@ class TrelloCard extends Model
         'created_at',
         'updated_at',
         'member_id',
-        'is_archived'
+        'is_archived',
+        'last_activity'
     ];
 
 

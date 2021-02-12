@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use App\Models\TrelloCard;
+use App\Models\TrelloList;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -16,8 +17,8 @@ class CardTomorrowCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',5));
-    }
+        $t= TrelloList::where('name','TOMORROW')->first();
+        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$t->id));     }
 
     /**
      * Get the ranges available for the metric.

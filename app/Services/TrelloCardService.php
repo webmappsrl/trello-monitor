@@ -130,7 +130,7 @@ class TrelloCardService
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
                 'customer'=>$customer,
-                'created_at'=>$card->dateLastActivity,
+                'last_activity'=>date('Y-m-d h:i:s', strtotime($card->dateLastActivity)),
             ]);
 
             $dbCard->save();
@@ -158,7 +158,7 @@ class TrelloCardService
                 $dbCard->customer=$customer;
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
-                $dbCard->created_at = $card->dateLastActivity;
+                $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
                 $dbCard->save();
             }
         }

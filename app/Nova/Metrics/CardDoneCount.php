@@ -4,6 +4,7 @@ namespace App\Nova\Metrics;
 
 
 use App\Models\TrelloCard;
+use App\Models\TrelloList;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -17,7 +18,9 @@ class CardDoneCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',10));
+        $done = TrelloList::where('name','DONE')->first();
+
+        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$done->id));
     }
 
     /**

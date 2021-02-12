@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use App\Models\TrelloCard;
+use App\Models\TrelloList;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -16,7 +17,8 @@ class CardProgressCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',7));
+        $progress= TrelloList::where('name','PROGRESS')->first();
+        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$progress->id));
     }
 
     /**
