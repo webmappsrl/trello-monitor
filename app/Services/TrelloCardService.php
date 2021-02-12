@@ -97,6 +97,19 @@ class TrelloCardService
 
     }
 
+    public function last_date($card)
+    {
+        $data = $this->trelloCardApiService->_downloadThirdPartCard($card->id,'actions');
+        if (count($data)>0 && is_array($data))
+        {
+            $itt = $data[count($data)-1]->date;
+        }
+        else $itt = $card->dateLastActivity;
+
+        return $itt;
+
+    }
+
     public function store_card($card,$member_id,$list_id)
     {
         // find the card
@@ -107,6 +120,7 @@ class TrelloCardService
             $total_time = $this->get_total_time($card->id);
             $estimate = $this->get_estimate($card->id);
             $customer = $this->get_customer($card->id);
+            $dateFirst = $this->last_date($card);
 
             // NON esiste: lo inserisco sicuramente
             $dbCard = new TrelloCard([
@@ -116,6 +130,7 @@ class TrelloCardService
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
                 'customer'=>$customer,
+                'last_activity'=>date('Y-m-d h:i:s', strtotime($card->dateLastActivity)),
             ]);
 
             $dbCard->save();
@@ -143,7 +158,7 @@ class TrelloCardService
                 $dbCard->customer=$customer;
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
-
+                $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
                 $dbCard->save();
             }
         }

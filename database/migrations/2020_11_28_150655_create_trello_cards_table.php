@@ -16,6 +16,7 @@ class CreateTrelloCardsTable extends Migration
         Schema::create('trello_cards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->dateTime('last_activity');
             $table->text('name');
             $table->text('link');
             $table->text('customer');

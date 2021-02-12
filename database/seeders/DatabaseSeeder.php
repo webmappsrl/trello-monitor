@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory(1)->create([
 
-            'name' => 'Pedram Katanchi',
+            'name' => 'pedramkat',
             'email' => 'pedramkatanchi@webmapp.it',
             'password' => bcrypt('webmapp2020'),
             'role' => 'developer'
