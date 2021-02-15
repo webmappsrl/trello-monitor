@@ -5,6 +5,12 @@ namespace App\Nova;
 use App\Nova\Filters\Time;
 use App\Nova\Filters\TrelloCustomer;
 use App\Nova\Filters\TrelloIsArchived;
+use App\Nova\Metrics\CardDoneCount;
+use App\Nova\Metrics\CardProgressCount;
+use App\Nova\Metrics\CardRejectedCount;
+use App\Nova\Metrics\CardToBeTestedCount;
+use App\Nova\Metrics\CardTodayCount;
+use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -28,7 +34,7 @@ class Sprint extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'trello_id';
 
     /**
      * The columns that should be searched.
@@ -36,7 +42,7 @@ class Sprint extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'trello_id','name',
     ];
 
     /**
@@ -48,8 +54,11 @@ class Sprint extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name'),
+            Text::make('Trello ID','trello_id', function () {
+                return '<a href="trello-cards/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
+            })->asHtml()->sortable(),
+            Text::make('Name')->sortable(),
+//            ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),
@@ -76,7 +85,14 @@ class Sprint extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new CardTomorrowCount,
+            new CardTodayCount,
+            new CardProgressCount,
+            new CardToBeTestedCount,
+            new CardRejectedCount,
+            new CardDoneCount,
+        ];
     }
 
     /**

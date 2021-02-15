@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova;
 
+use App\Models\TrelloCard;
 use ArrayAccess;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -130,7 +131,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      *
      * @var array
      */
-    public static $perPageOptions = [25, 50, 100];
+    public static $perPageOptions = [10,25, 50, 100];
 
     /**
      * The number of resources to show per page via relationships.

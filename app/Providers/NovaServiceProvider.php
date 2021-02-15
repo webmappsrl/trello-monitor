@@ -122,7 +122,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         return [
 //            new Help,
-        new CardTomorrowCount(),
+        new CardTomorrowCount,
             new CardTodayCount,
             new CardProgressCount,
             new CardToBeTestedCount,

@@ -40,7 +40,7 @@ class TrelloCard extends Resource
      * @var array
      */
     public static $search = [
-        'id','trello_id','name'
+        'trello_id','name'
     ];
 
     /**
@@ -84,7 +84,9 @@ class TrelloCard extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+
+        ];
     }
 
     /**
