@@ -1,17 +1,17 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://webmapp.it/wp-content/uploads/2016/07/webamapp-logo-1.png" width="400"></a></p>
 
-## HOQU
-HOQU was born as a bridge between Instances and Servers to improve and increase the generation performance on Webmapp maps
+## TRELLO-MONITOR
+TRELLO-MONITOR was born as a bridge between Instances and Servers to improve and increase the generation performance on Webmapp maps
 
 
 ### Server Requirements
-- composer version : 1.10.17
+- composer version : 1.10.20
 - php: 7.4.12
 - MySQL: >= 8.0.0
 - Laravel Version: >= 8.x
 
 ### Local Installation
-After doing ``` git pull``` and entering the newly downloaded project  ```cd trello```. Now configure mysql by creating a new DB:
+After doing ``` git pull``` and entering the newly downloaded project  ```cd trello-monitor```. Now configure mysql by creating a new DB:
 
 #### configure db MySQL:
 - if MySQL is not installed: **[Guide](https://flaviocopes.com/mysql-how-to-install)**
@@ -19,7 +19,7 @@ After doing ``` git pull``` and entering the newly downloaded project  ```cd tre
 - enter MySQL if it does not have the password set: ```mysql -u <username>``` otherwise ```mysql -u <username> -p```
 - create db: ```CREATE DATABASE <mydatabasename>;```
 
-#### configure .ENV in project hoqu-laravel :
+#### configure .ENV in project trello-monitor :
 set the connection to the Laravel db, open the .ENV file with ide (VS code, sublime, etc) and modify the following items as follows:
 ```
 DB_CONNECTION=mysql
@@ -30,20 +30,10 @@ DB_USERNAME=<username>
 DB_PASSWORD=<password>
 ```
 
-Enable or disable registration at the link **[register](http://hoqu-laravel.test/register)**:
-- to disable the link **[register](http://hoqu-laravel.test/register)** ```DISABLE_REGISTRATION=false``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
-- to enable the link **[register](http://hoqu-laravel.test/register)** ```DISABLE_REGISTRATION=true``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
+Enable or disable registration at the link **[register](http://trello-monitor.test/register)**:
+- to disable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=false``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
+- to enable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=true``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
 
-As a last step you have to configure the mail always from .ENV file:
-```
-MAIL_DRIVER=smtp
-MAIL_HOST=smtp.googlemail.com
-MAIL_PORT=465
-MAIL_USERNAME=<setMail>
-MAIL_PASSWORD=<setPassword>
-MAIL_ENCRYPTION=ssl
-MAIL_MAILER=smtp
-```
 
 ## Run TRELLO-MONITOR
 
@@ -103,7 +93,7 @@ to be able to view the test code just go trello-monitor/tests/
 - **Davide Pizzato** - _App Developer_ - [Webmapp](https://github.com/dvdpzzt-webmapp)
 - **Marco Barbieri** - _Map Maker_ - [Webmapp](https://github.com/marchile)
 - **Pedram Katanchi** - _Web developer_ - [Webmapp](https://github.com/padramkat)
-- **Antonella Puglia** - _UX Designer_ - [Webmapp](https://github.com/padramkat)
+- **Antonella Puglia** - _UX Designer_ - [Webmapp](https://github.com/antonellapuglia)
 
 ## License
 
