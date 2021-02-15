@@ -2,23 +2,25 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\Time;
 use App\Nova\Filters\TrelloCustomer;
 use App\Nova\Filters\TrelloIsArchived;
+use App\Nova\Metrics\CardDoneCount;
+use App\Nova\Metrics\CardProgressCount;
+use App\Nova\Metrics\CardRejectedCount;
+use App\Nova\Metrics\CardToBeTestedCount;
+use App\Nova\Metrics\CardTodayCount;
+use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-
-
-class TrelloCard extends Resource
+class Sprint extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -32,7 +34,7 @@ class TrelloCard extends Resource
      *
      * @var string
      */
-    public static $title ='trello_id';
+    public static $title = 'trello_id';
 
     /**
      * The columns that should be searched.
@@ -40,7 +42,7 @@ class TrelloCard extends Resource
      * @var array
      */
     public static $search = [
-        'trello_id','name'
+        'trello_id','name',
     ];
 
     /**
@@ -57,7 +59,6 @@ class TrelloCard extends Resource
             })->asHtml()->sortable(),
             Text::make('Name')->sortable(),
 //            ID::make(__('ID'), 'id')->sortable(),
-
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),
@@ -85,7 +86,12 @@ class TrelloCard extends Resource
     public function cards(Request $request)
     {
         return [
-
+            new CardTomorrowCount,
+            new CardTodayCount,
+            new CardProgressCount,
+            new CardToBeTestedCount,
+            new CardRejectedCount,
+            new CardDoneCount,
         ];
     }
 
@@ -102,6 +108,7 @@ class TrelloCard extends Resource
             new TrelloCustomer(),
             new TrelloIsArchived(),
             new \App\Nova\Filters\TrelloMember(),
+            new Time(),
         ];
     }
 
@@ -124,8 +131,6 @@ class TrelloCard extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-
-        ];
+        return [];
     }
 }

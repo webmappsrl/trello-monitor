@@ -1,61 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://webmapp.it/wp-content/uploads/2016/07/webamapp-logo-1.png" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## TRELLO-MONITOR
+TRELLO-MONITOR was created to analyze and measure the quality and effectiveness with which the works are carried out within the webmapp. Both to be able to measure and analyze the works commissioned by customers
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Server Requirements
+- composer version : 1.10.20
+- php: 7.4.12
+- MySQL: >= 8.0.0
+- Laravel Version: >= 8.x
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Local Installation
+After downloading the trello-monitor project. enter the project folder with the ```cd trello-monitor``` command. After that check that the git project is updated with the local project, then use the ``` git pull``` command. Now configure mysql by creating a new DB:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### configure db MySQL:
+- if MySQL is not installed: **[Guide](https://flaviocopes.com/mysql-how-to-install)**
+- open MySQL: ```mysql.server start```
+- enter MySQL if it does not have the password set: ```mysql -u <username>``` otherwise ```mysql -u <username> -p```
+- create db: ```CREATE DATABASE <mydatabasename>;```
 
-## Learning Laravel
+#### configure .ENV in project trello-monitor :
+set the connection to the Laravel db, open the .ENV file with ide (VS code, sublime, etc) and modify the following items as follows:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=<mydatabasename>
+DB_USERNAME=<username>
+DB_PASSWORD=<password>
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Enable or disable registration at the link **[register](http://trello-monitor.test/register)**:
+- to disable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=false``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
+- to enable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=true``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Run TRELLO-MONITOR
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+After configuring the .ENV file we can run configure and populate our DB with the following command:
+- ```php artisan migrate --seed```
+- otherwise to empty the DB and load the data again ```php artisan migrate:fresh --seed```
+- finally run the command ```php artisan trello-monitor:sync``` which will download and save the cards on the DB locally
 
-### Premium Partners
+now possible to start trello-monitor by running the command: ```php artisan serve```,otherwise it is possible to use [Valet](https://opensource.org/licenses/MIT)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+### Test
+to perform these operations you must be in the trello-monitor project folder:
 
-## Contributing
+### test e2e with Cypress
+Cypress version supported for testing> = 6.4.0
+if you don't have cypress installed, you can do it with the following command:
+```
+npm install cypress --save-dev
+```
+if already available or just installed lunch cypress:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+npx cypress open
+```
+select the test or tests to run
 
-## Code of Conduct
+to be able to view the test code just go trello-monitor/cypress/integration
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+N.B. before launching Cypress set the baseUrl in the cypress.json file if you use valet you can leave the default setting: 
+```
+"baseUrl": "http://trello-monitor.test"
+```
+otherwise if you use the classic ```php artisan serve``` command. Set the baseUrl with the following configuration:
+```
+"baseUrl": "http://127.0.0.1:8000"
+```
+### test Feature with Phpunit
+Phpunit is natively supported by Laravel
+to launch all Feature Tests
+```
+vendor/bin/phpunit
+```
+launch the single test or single method:
+```
+vendor/bin/phpunit --filter <nomeTest>
+```
+alternatively it is possible to launch the tests also from Laravel
+```
+php artisan test
+```
+to be able to view the test code just go trello-monitor/tests/
 
-## Security Vulnerabilities
+## Authors
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Alessio Piccioli** - CTO - [Webmapp](https://github.com/piccioli).
+- **Gianmarco Gagliardi** - Developer - [Webmapp](https://github.com/gianmarxWebmapp).
+- **Davide Pizzato** - _App Developer_ - [Webmapp](https://github.com/dvdpzzt-webmapp)
+- **Marco Barbieri** - _Map Maker_ - [Webmapp](https://github.com/marchile)
+- **Pedram Katanchi** - _Web developer_ - [Webmapp](https://github.com/padramkat)
+- **Antonella Puglia** - _UX Designer_ - [Webmapp](https://github.com/antonellapuglia)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - [MIT license](https://opensource.org/licenses/MIT).
