@@ -89,6 +89,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereNotIn('trello_lists.id',  $trelloListNot)
+
             ->whereDate('last_activity','<=', Carbon::now()->subDay())->whereDate('last_activity','>=', Carbon::now()->subDay(2))
             ->get();
 
@@ -98,7 +99,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereIn('trello_lists.id',  $trelloListOk)
-            ->whereDate('last_activity', Carbon::now())
+            ->whereDate('last_activity','=', Carbon::today())
             ->get();
 
         $problemsHavEncountered = DB::table('trello_cards')
@@ -107,25 +108,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereNotIn('trello_lists.id',  $trelloListNot)
-            ->whereDate('last_activity','<=', Carbon::now()->subDay())->whereDate('last_activity','>=', Carbon::now()->subDay(2))
+            ->whereDate('last_activity','<=', Carbon::now()->subDay())
+            ->whereDate('last_activity','>', Carbon::now()->subDay(2))
             ->get();
 
-
-        $filtered = $problemsHavEncountered->filter(function ($value) {
-
-            if ($value->estimate > 0)
-            {
-                $minEstimate = ($value->estimate * 20);
-                $minEstimate = $minEstimate + ($minEstimate *0.5);
-
-                if ($minEstimate <= $value->total_time)
-                {
-                    return $value;
-                }
-                else return 0;
-            }
-            else return 0;
-
+        $filtered = $problemsHavEncountered->filter(function ($value){
+            return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
         });
 
         $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Total Time','Is_Archived','Created_at', 'Updated_at']);
