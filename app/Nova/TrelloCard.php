@@ -32,7 +32,7 @@ class TrelloCard extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title ='trello_id';
 
     /**
      * The columns that should be searched.
@@ -40,7 +40,7 @@ class TrelloCard extends Resource
      * @var array
      */
     public static $search = [
-        'id','name'
+        'id','trello_id','name'
     ];
 
     /**
@@ -52,8 +52,12 @@ class TrelloCard extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name'),
+            Text::make('Trello ID','trello_id', function () {
+                return '<a href="trello-cards/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
+            })->asHtml()->sortable(),
+            Text::make('Name')->sortable(),
+//            ID::make(__('ID'), 'id')->sortable(),
+
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             Text::make('Estimate'),

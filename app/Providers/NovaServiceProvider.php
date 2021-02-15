@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -72,6 +73,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
+
         $userRequestId = Auth::id();
 
         $user = User::find($userRequestId);
@@ -81,16 +83,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
 
-        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','DONE','TO BE TESTED'])->pluck('id');
+        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED'])->pluck('id');
 
         $didDoYesterday = DB::table('trello_cards')
             ->select('trello_cards.*','trello_members.name as member_name','trello_lists.name as list_name')
-            ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
-            ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
+            ->join('trello_members', 'trello_cards.member_id', '<=', 'trello_members.id')
+            ->join('trello_lists', 'trello_cards.list_id', '>', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereNotIn('trello_lists.id',  $trelloListNot)
-
-            ->whereDate('last_activity','<=', Carbon::now()->subDay())->whereDate('last_activity','>=', Carbon::now()->subDay(2))
+            ->whereDate('last_activity','=', Carbon::yesterday())
+            ->where('is_archived',0)
             ->get();
 
         $toDoToday = DB::table('trello_cards')
@@ -98,8 +100,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
+            ->where('is_archived',0)
             ->whereIn('trello_lists.id',  $trelloListOk)
-            ->whereDate('last_activity','=', Carbon::today())
             ->get();
 
         $problemsHavEncountered = DB::table('trello_cards')
@@ -108,8 +110,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereNotIn('trello_lists.id',  $trelloListNot)
-            ->whereDate('last_activity','<=', Carbon::now()->subDay())
-            ->whereDate('last_activity','>', Carbon::now()->subDay(2))
+            ->whereDate('last_activity','=', Carbon::yesterday())
+            ->where('is_archived',0)
             ->get();
 
         $filtered = $problemsHavEncountered->filter(function ($value){
