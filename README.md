@@ -1,7 +1,7 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://webmapp.it/wp-content/uploads/2016/07/webamapp-logo-1.png" width="400"></a></p>
 
 ## TRELLO-MONITOR
-TRELLO-MONITOR was born as a bridge between Instances and Servers to improve and increase the generation performance on Webmapp maps
+TRELLO-MONITOR was created to analyze and measure the quality and effectiveness with which the works are carried out within the webmapp. Both to be able to measure and analyze the works commissioned by customers
 
 
 ### Server Requirements
@@ -11,7 +11,7 @@ TRELLO-MONITOR was born as a bridge between Instances and Servers to improve and
 - Laravel Version: >= 8.x
 
 ### Local Installation
-After doing ``` git pull``` and entering the newly downloaded project  ```cd trello-monitor```. Now configure mysql by creating a new DB:
+After downloading the trello-monitor project. enter the project folder with the ```cd trello-monitor``` command. After that check that the git project is updated with the local project, then use the ``` git pull``` command. Now configure mysql by creating a new DB:
 
 #### configure db MySQL:
 - if MySQL is not installed: **[Guide](https://flaviocopes.com/mysql-how-to-install)**
