@@ -8,7 +8,18 @@ use App\Nova\Filters\TrelloIsArchived;
 use App\Nova\Metrics\CardDoneCount;
 use App\Nova\Metrics\CardProgressCount;
 use App\Nova\Metrics\CardRejectedCount;
+use App\Nova\Metrics\CardSumPointTodayDavidePizzato;
+use App\Nova\Metrics\CardSumPointTodayGianmarcoGag;
+use App\Nova\Metrics\CardSumPointTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeRejectTodayDavidePizzato;
+use App\Nova\Metrics\CardToBeRejectTodayGianmarcoGag;
+use App\Nova\Metrics\CardToBeRejectTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeRejectTodayPK;
 use App\Nova\Metrics\CardToBeTestedCount;
+use App\Nova\Metrics\CardToBeTestedTodayDavidePizzato;
+use App\Nova\Metrics\CardToBeTestedTodayGianmarcoGag;
+use App\Nova\Metrics\CardToBeTestedTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeTestedTodayPK;
 use App\Nova\Metrics\CardTodayCount;
 use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
@@ -92,6 +103,15 @@ class Sprint extends Resource
             new CardToBeTestedCount,
             new CardRejectedCount,
             new CardDoneCount,
+            new CardToBeTestedTodayPedramKatanchi,
+            new CardToBeRejectTodayPedramKatanchi,
+            new CardSumPointTodayPedramKatanchi,
+            new CardToBeTestedTodayDavidePizzato,
+            new CardToBeRejectTodayDavidePizzato,
+            new CardSumPointTodayDavidePizzato,
+            new CardToBeTestedTodayGianmarcoGag,
+            new CardToBeRejectTodayGianmarcoGag,
+            new CardSumPointTodayGianmarcoGag,
         ];
     }
 

@@ -2,14 +2,14 @@
 
 namespace App\Nova\Metrics;
 
-
 use App\Models\TrelloCard;
 use App\Models\TrelloList;
-use App\Nova\Sprint;
+use App\Models\TrelloMember;
+use Carbon\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
-class CardDoneCount extends Value
+class CardToBeTestedTodayDavidePizzato extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -19,10 +19,10 @@ class CardDoneCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-    
-        $done = TrelloList::where('name','DONE')->first();
+        $tbt= TrelloList::where('name','TO BE TESTED')->first();
+        $pk= TrelloMember::where('name','Davide Pizzato')->first();
 
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$done->id));
+        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::today()));
     }
 
     /**
@@ -54,6 +54,6 @@ class CardDoneCount extends Value
      */
     public function uriKey()
     {
-        return 'card-done-count';
+        return 'card-to-be-tested-today-davide-pizzato';
     }
 }
