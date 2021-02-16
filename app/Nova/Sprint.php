@@ -8,17 +8,30 @@ use App\Nova\Filters\TrelloIsArchived;
 use App\Nova\Metrics\CardDoneCount;
 use App\Nova\Metrics\CardProgressCount;
 use App\Nova\Metrics\CardRejectedCount;
+use App\Nova\Metrics\CardSumPointTodayDavidePizzato;
+use App\Nova\Metrics\CardSumPointTodayGianmarcoGag;
+use App\Nova\Metrics\CardSumPointTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeRejectTodayDavidePizzato;
+use App\Nova\Metrics\CardToBeRejectTodayGianmarcoGag;
+use App\Nova\Metrics\CardToBeRejectTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeRejectTodayPK;
 use App\Nova\Metrics\CardToBeTestedCount;
+use App\Nova\Metrics\CardToBeTestedTodayDavidePizzato;
+use App\Nova\Metrics\CardToBeTestedTodayGianmarcoGag;
+use App\Nova\Metrics\CardToBeTestedTodayPedramKatanchi;
+use App\Nova\Metrics\CardToBeTestedTodayPK;
 use App\Nova\Metrics\CardTodayCount;
 use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Nemrutco\NovaGlobalFilter\NovaGlobalFilter;
 
 class Sprint extends Resource
 {
@@ -55,7 +68,7 @@ class Sprint extends Resource
     {
         return [
             Text::make('Trello ID','trello_id', function () {
-                return '<a href="trello-cards/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
+                return '<a href="sprints/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
             })->asHtml()->sortable(),
             Text::make('Name')->sortable(),
 //            ID::make(__('ID'), 'id')->sortable(),
@@ -92,6 +105,16 @@ class Sprint extends Resource
             new CardToBeTestedCount,
             new CardRejectedCount,
             new CardDoneCount,
+            new CardToBeTestedTodayPedramKatanchi,
+            new CardToBeRejectTodayPedramKatanchi,
+            new CardSumPointTodayPedramKatanchi,
+            new CardToBeTestedTodayDavidePizzato,
+            new CardToBeRejectTodayDavidePizzato,
+            new CardSumPointTodayDavidePizzato,
+            new CardToBeTestedTodayGianmarcoGag,
+            new CardToBeRejectTodayGianmarcoGag,
+            new CardSumPointTodayGianmarcoGag,
+
         ];
     }
 

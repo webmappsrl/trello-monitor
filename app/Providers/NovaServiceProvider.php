@@ -83,7 +83,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
 
-        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED'])->pluck('id');
+        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
 
         $didDoYesterday = DB::table('trello_cards')
             ->select('trello_cards.*','trello_members.name as member_name','trello_lists.name as list_name')
@@ -110,11 +110,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $a=collect();
 
-        foreach ($filtered as $index=>$item)
+        foreach ($filtered as $item)
         {
             $a->push($item);
-
-         }
+        }
 
         $filtered = $a;
 
@@ -234,6 +233,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
 //            new \Guratr\CommandRunner\CommandRunner,
+            \ChrisWare\NovaBreadcrumbs\NovaBreadcrumbs::make(),
+
         ];
     }
 
