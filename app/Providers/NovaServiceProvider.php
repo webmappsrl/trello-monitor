@@ -234,6 +234,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
 //            new \Guratr\CommandRunner\CommandRunner,
+            \ChrisWare\NovaBreadcrumbs\NovaBreadcrumbs::make(),
+
         ];
     }
 

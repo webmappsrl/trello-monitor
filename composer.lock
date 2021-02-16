@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb9365b786e669813c0c84950c642bfd",
+    "content-hash": "90b82785fc9805757fa1c29983500905",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -216,6 +216,48 @@
                 "time"
             ],
             "time": "2021-02-06T03:37:44+00:00"
+        },
+        {
+            "name": "chris-ware/nova-breadcrumbs",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chris-ware/nova-breadcrumbs.git",
+                "reference": "eeb77b36c6395ae3ffc09005d86d9b91b5e40f78"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chris-ware/nova-breadcrumbs/zipball/eeb77b36c6395ae3ffc09005d86d9b91b5e40f78",
+                "reference": "eeb77b36c6395ae3ffc09005d86d9b91b5e40f78",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": ">=2.7",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ChrisWare\\NovaBreadcrumbs\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ChrisWare\\NovaBreadcrumbs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2020-12-14T20:43:48+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -5922,16 +5964,16 @@
         },
         {
             "name": "facade/flare-client-php",
-            "version": "1.3.7",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/flare-client-php.git",
-                "reference": "fd688d3c06658f2b3b5f7bb19f051ee4ddf02492"
+                "reference": "ef0f5bce23b30b32d98fd9bb49c6fa37b40eb546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/flare-client-php/zipball/fd688d3c06658f2b3b5f7bb19f051ee4ddf02492",
-                "reference": "fd688d3c06658f2b3b5f7bb19f051ee4ddf02492",
+                "url": "https://api.github.com/repos/facade/flare-client-php/zipball/ef0f5bce23b30b32d98fd9bb49c6fa37b40eb546",
+                "reference": "ef0f5bce23b30b32d98fd9bb49c6fa37b40eb546",
                 "shasum": ""
             },
             "require": {
@@ -5979,20 +6021,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-21T16:02:39+00:00"
+            "time": "2021-02-16T12:42:06+00:00"
         },
         {
             "name": "facade/ignition",
-            "version": "2.5.12",
+            "version": "2.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "be73521836f978106b3c3cf57de7eaeb261af520"
+                "reference": "5e9ef386aaad9985cee2ac23281a27568d083b7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/be73521836f978106b3c3cf57de7eaeb261af520",
-                "reference": "be73521836f978106b3c3cf57de7eaeb261af520",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/5e9ef386aaad9985cee2ac23281a27568d083b7e",
+                "reference": "5e9ef386aaad9985cee2ac23281a27568d083b7e",
                 "shasum": ""
             },
             "require": {
@@ -6050,7 +6092,7 @@
                 "laravel",
                 "page"
             ],
-            "time": "2021-02-15T07:55:43+00:00"
+            "time": "2021-02-16T12:46:19+00:00"
         },
         {
             "name": "facade/ignition-contracts",
