@@ -21,7 +21,7 @@ class CardSumPointTodayPedramKatanchi extends Value
     {
         $tbt= TrelloList::where('name','TO BE TESTED')->first();
         $pk= TrelloMember::where('name','pedramkat')->first();
-        return $this->sum($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::yesterday()),'estimate');
+        return $this->sum($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::today()),'estimate');
     }
 
     /**
