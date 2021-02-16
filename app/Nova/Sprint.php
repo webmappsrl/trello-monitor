@@ -25,11 +25,13 @@ use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Nemrutco\NovaGlobalFilter\NovaGlobalFilter;
 
 class Sprint extends Resource
 {
@@ -66,7 +68,7 @@ class Sprint extends Resource
     {
         return [
             Text::make('Trello ID','trello_id', function () {
-                return '<a href="trello-cards/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
+                return '<a href="sprints/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
             })->asHtml()->sortable(),
             Text::make('Name')->sortable(),
 //            ID::make(__('ID'), 'id')->sortable(),
@@ -112,6 +114,7 @@ class Sprint extends Resource
             new CardToBeTestedTodayGianmarcoGag,
             new CardToBeRejectTodayGianmarcoGag,
             new CardSumPointTodayGianmarcoGag,
+
         ];
     }
 

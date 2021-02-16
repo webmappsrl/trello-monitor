@@ -110,11 +110,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $a=collect();
 
-        foreach ($filtered as $index=>$item)
+        foreach ($filtered as $item)
         {
             $a->push($item);
-
-         }
+        }
 
         $filtered = $a;
 

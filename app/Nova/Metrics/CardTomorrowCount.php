@@ -4,11 +4,16 @@ namespace App\Nova\Metrics;
 
 use App\Models\TrelloCard;
 use App\Models\TrelloList;
+use App\Nova\Sprint;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Nemrutco\NovaGlobalFilter\GlobalFilterable;
 
 class CardTomorrowCount extends Value
 {
+    use GlobalFilterable;
+
     /**
      * Calculate the value of the metric.
      *
