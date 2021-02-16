@@ -313,6 +313,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public static function label()
     {
+
         return Str::plural(Str::title(Str::snake(class_basename(get_called_class()), ' ')));
     }
 
@@ -345,7 +346,9 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public function title()
     {
-        return $this->{static::$title};
+        if ($this->is_archived == 1)
+        return '(Archived) '.$this->{static::$title};
+        else return $this->{static::$title};
     }
 
     /**

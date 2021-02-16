@@ -87,8 +87,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $didDoYesterday = DB::table('trello_cards')
             ->select('trello_cards.*','trello_members.name as member_name','trello_lists.name as list_name')
-            ->join('trello_members', 'trello_cards.member_id', '<=', 'trello_members.id')
-            ->join('trello_lists', 'trello_cards.list_id', '>', 'trello_lists.id')
+            ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+            ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->whereNotIn('trello_lists.id',  $trelloListNot)
             ->whereDate('last_activity','=', Carbon::yesterday())
@@ -104,19 +104,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->whereIn('trello_lists.id',  $trelloListOk)
             ->get();
 
-        $problemsHavEncountered = DB::table('trello_cards')
-            ->select('trello_cards.*','trello_members.name as member_name','trello_lists.name as list_name')
-            ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
-            ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-            ->where('member_id',$userId->id)
-            ->whereNotIn('trello_lists.id',  $trelloListNot)
-            ->whereDate('last_activity','=', Carbon::yesterday())
-            ->where('is_archived',0)
-            ->get();
-
-        $filtered = $problemsHavEncountered->filter(function ($value){
+        $filtered = $didDoYesterday->filter(function ($value){
             return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
         });
+
+        $a=collect();
+
+        foreach ($filtered as $index=>$item)
+        {
+            $a->push($item);
+
+         }
+
+        $filtered = $a;
 
         $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Total Time','Is_Archived','Created_at', 'Updated_at']);
 
