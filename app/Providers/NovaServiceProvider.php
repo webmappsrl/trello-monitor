@@ -90,8 +90,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
-            ->whereNotIn('trello_lists.id',  $trelloListNot)
-            ->whereDate('last_activity','=', Carbon::yesterday())
+            ->whereNotIn('list_id',  $trelloListNot)
+            ->whereDate('last_progress_date','=', Carbon::yesterday())
             ->where('is_archived',0)
             ->get();
 
@@ -101,7 +101,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
             ->where('member_id',$userId->id)
             ->where('is_archived',0)
-            ->whereIn('trello_lists.id',  $trelloListOk)
+            ->whereIn('list_id',  $trelloListOk)
             ->get();
 
         $filtered = $didDoYesterday->filter(function ($value){

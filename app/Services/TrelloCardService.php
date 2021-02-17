@@ -47,7 +47,7 @@ class TrelloCardService
             {
                 if (isset($total_time[$i]->data->listAfter->name))
                 {
-                    if ($total_time[$i]->data->listAfter->name == 'PROGRESS')
+                    if ($total_time[$i]->data->listAfter->id == '5dca5317444f365195959d3e')
                     {
                         $minutes = abs(strtotime($total_time[$i]->date) - time()) / 60;
                         $minutes1 = abs(strtotime($total_time[$i-1]->date) - time()) / 60;
@@ -59,6 +59,27 @@ class TrelloCardService
         else $min = 0;
         return round($min);
 
+    }
+
+
+    public function get_date_progress($card_id)
+    {
+        $total_time = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'actions');
+        $check = "2000-02-17T09:04:53.819Z";
+        if (is_array($total_time) && count($total_time)>0)
+        {
+            for ($i =0; $i < count($total_time)-1 && $check == "2000-02-17T09:04:53.819Z"; $i++)
+            {
+                if (isset($total_time[$i]->data->listBefore->name))
+                {
+                    if ($total_time[$i]->data->listBefore->id == '5dca5317444f365195959d3e')
+                    {
+                        $check = $total_time[$i]->date;
+                    }
+                }
+            }
+        }
+        return $check;
     }
 
     public function get_estimate($card_id)
@@ -116,11 +137,10 @@ class TrelloCardService
         $dbCard = TrelloCard::query()->where("trello_id", "=", $card->id)->first();
 
         if(is_null($dbCard)) {
-
             $total_time = $this->get_total_time($card->id);
             $estimate = $this->get_estimate($card->id);
             $customer = $this->get_customer($card->id);
-            $dateFirst = $this->last_date($card);
+            $progress_time = $this->get_date_progress($card->id);
 
             // NON esiste: lo inserisco sicuramente
             $dbCard = new TrelloCard([
@@ -131,6 +151,7 @@ class TrelloCardService
                 'estimate'=>$estimate,
                 'customer'=>$customer,
                 'last_activity'=>date('Y-m-d h:i:s', strtotime($card->dateLastActivity)),
+                'last_progress_date'=>date('Y-m-d h:i:s', strtotime($progress_time)),
             ]);
 
             $dbCard->save();
@@ -144,12 +165,13 @@ class TrelloCardService
                 $dbCard->list_id = $list_id;
                 $dbCard->save();
             }
-
         } else {
             if(strtotime($dbCard->updated_at)<strtotime($card->dateLastActivity)) {
                 $total_time = $this->get_total_time($card->id);
                 $estimate = $this->get_estimate($card->id);
                 $customer = $this->get_customer($card->id);
+                $progress_time = $this->get_date_progress($card->id);
+
 
                 //update
                 $dbCard->name=$card->name;
@@ -159,7 +181,10 @@ class TrelloCardService
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
                 $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
+                $dbCard->last_progress_date = date('Y-m-d h:i:s', strtotime($progress_time));
                 $dbCard->save();
+//                dd($dbCard);
+
             }
         }
         return $dbCard;
