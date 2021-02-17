@@ -21,8 +21,9 @@ class CardToBeRejectTodayGianmarcoGag extends Value
     {
         $tbt= TrelloList::where('name','REJECTED')->first();
         $pk= TrelloMember::where('name','Gianmarco Gagliardi')->first();
-
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::today()));
+        if (!empty($tbt))
+            return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::today()));
+        else return 0;
     }
 
     /**

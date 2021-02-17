@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Models\TrelloCard;
 use App\Models\TrelloList;
 use App\Nova\Metrics\CardDoneCount;
 use App\Nova\Metrics\CardProgressCount;
@@ -57,9 +58,13 @@ class Scrum extends Resource
     public function fields(Request $request)
     {
         return [
+            ID::make(__('ID'), 'id')->sortable(),
+
             Text::make('Name'),
             Text::make('#Card', function () {
-                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->count();
+                $total = TrelloCard::count();
+                $card = TrelloCard::where('member_id',$this->id)->where('is_archived',0)->count();
+                return  $card .' (' .round($card/$total*100) .'%)';
             }),
             Text::make('#Card Today', function () {
                 $listToday= TrelloList::where('name','TODAY')->first();
@@ -67,7 +72,7 @@ class Scrum extends Resource
             }),
             Text::make('∑ Card Points Today', function () {
                 $listToday= TrelloList::where('name','TODAY')->first();
-                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
             }),
             Text::make('#Card Progress', function () {
                 $listProgress= TrelloList::where('name','PROGRESS')->first();
@@ -75,11 +80,15 @@ class Scrum extends Resource
             }),
             Text::make('#Card Rej', function () {
                 $listProgress= TrelloList::where('name','REJECTED')->first();
-                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+                if (!empty($listToday))
+                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+                else return 0;
             }),
             Text::make('∑ Rej Card Points Today ', function () {
                 $listToday= TrelloList::where('name','REJECTED')->first();
-                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
+                if (!empty($listToday))
+                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
+                else return 0;
             }),
             Text::make('#Card TBT', function () {
                 $listTBT= TrelloList::where('name','TO BE TESTED')->first();
