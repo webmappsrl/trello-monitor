@@ -57,7 +57,6 @@ class Scrum extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name'),
             Text::make('#Card', function () {
                 return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->count();
@@ -68,7 +67,7 @@ class Scrum extends Resource
             }),
             Text::make('#Card Today Estimate', function () {
                 $listToday= TrelloList::where('name','TODAY')->first();
-                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->count();
+                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
             }),
             Text::make('#Card Progress', function () {
                 $listProgress= TrelloList::where('name','PROGRESS')->first();
