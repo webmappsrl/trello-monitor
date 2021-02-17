@@ -180,7 +180,7 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card,$member->id,$list->id);
 
-//        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1]);
+        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1]);
 
     }
 

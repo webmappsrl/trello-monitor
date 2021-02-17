@@ -346,7 +346,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public function title()
     {
-        return ($this->is_archived == 1 ? '(Archived) ' : '').$this->{static::$title};
+        return ($this->is_archived == 1 ? '(Archived) ' : '(Active) ').$this->{static::$title};
     }
 
     /**
