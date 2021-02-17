@@ -73,8 +73,9 @@ class trelloCardTest extends TestCase
             $member = $mockedTrelloMemberService->get_member($card->idMembers);
             $mockedTrelloCardService = new TrelloCardService($mock);
             $mockedTrelloCardService->store_card($card,$member->id,$list->id);
+            $dateProgress =date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1]);
+        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1,'last_progress_date'=>$dateProgress]);
 
     }
 
@@ -179,8 +180,9 @@ class trelloCardTest extends TestCase
 
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card,$member->id,$list->id);
+        $dateProgress =date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1]);
+        $this->assertDatabaseHas('trello_cards',['name'=>$card->name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1,'last_progress_date'=>$dateProgress]);
 
     }
 
@@ -268,8 +270,8 @@ class trelloCardTest extends TestCase
 
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card,$member->id,$list->id);
-
-        $this->assertDatabaseHas('trello_cards',['name'=>$card_old_name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1]);
+        $dateProgress =date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
+        $this->assertDatabaseHas('trello_cards',['name'=>$card_old_name,'link'=>$card->shortUrl,'total_time'=>4,'customer'=>'CAMPOS','estimate'=>1,'last_progress_date'=>$dateProgress]);
 
     }
 
