@@ -12,7 +12,6 @@ use Nemrutco\NovaGlobalFilter\GlobalFilterable;
 
 class CardTomorrowCount extends Value
 {
-    use GlobalFilterable;
 
     /**
      * Calculate the value of the metric.

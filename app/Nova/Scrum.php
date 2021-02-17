@@ -94,6 +94,7 @@ class Scrum extends Resource
     public function cards(Request $request)
     {
         return [
+
             new CardTomorrowCount,
             new CardTodayCount,
             new CardProgressCount,
