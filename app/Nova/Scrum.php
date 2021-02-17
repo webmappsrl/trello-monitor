@@ -65,13 +65,21 @@ class Scrum extends Resource
                 $listToday= TrelloList::where('name','TODAY')->first();
                 return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->count();
             }),
-            Text::make('#Card Today Estimate', function () {
+            Text::make('∑ Card Points Today', function () {
                 $listToday= TrelloList::where('name','TODAY')->first();
                     return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
             }),
             Text::make('#Card Progress', function () {
                 $listProgress= TrelloList::where('name','PROGRESS')->first();
                 return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+            }),
+            Text::make('#Card Rej', function () {
+                $listProgress= TrelloList::where('name','REJECTED')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+            }),
+            Text::make('∑ Rej Card Points Today ', function () {
+                $listToday= TrelloList::where('name','REJECTED')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
             }),
             Text::make('#Card TBT', function () {
                 $listTBT= TrelloList::where('name','TO BE TESTED')->first();
