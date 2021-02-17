@@ -2,9 +2,8 @@
 
 namespace App\Nova;
 
-use App\Nova\Filters\Time;
-use App\Nova\Filters\TrelloCustomer;
-use App\Nova\Filters\TrelloIsArchived;
+use App\Models\TrelloCard;
+use App\Models\TrelloList;
 use App\Nova\Metrics\CardDoneCount;
 use App\Nova\Metrics\CardProgressCount;
 use App\Nova\Metrics\CardRejectedCount;
@@ -14,40 +13,32 @@ use App\Nova\Metrics\CardSumPointTodayPedramKatanchi;
 use App\Nova\Metrics\CardToBeRejectTodayDavidePizzato;
 use App\Nova\Metrics\CardToBeRejectTodayGianmarcoGag;
 use App\Nova\Metrics\CardToBeRejectTodayPedramKatanchi;
-use App\Nova\Metrics\CardToBeRejectTodayPK;
 use App\Nova\Metrics\CardToBeTestedCount;
 use App\Nova\Metrics\CardToBeTestedTodayDavidePizzato;
 use App\Nova\Metrics\CardToBeTestedTodayGianmarcoGag;
 use App\Nova\Metrics\CardToBeTestedTodayPedramKatanchi;
-use App\Nova\Metrics\CardToBeTestedTodayPK;
 use App\Nova\Metrics\CardTodayCount;
 use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Nemrutco\NovaGlobalFilter\NovaGlobalFilter;
 
-class Sprint extends Resource
+class Scrum extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\TrelloCard::class;
+    public static $model = \App\Models\TrelloMember::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'trello_id';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -55,7 +46,7 @@ class Sprint extends Resource
      * @var array
      */
     public static $search = [
-        'trello_id','name',
+        'id',
     ];
 
     /**
@@ -67,26 +58,46 @@ class Sprint extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Trello ID','trello_id', function () {
-                return '<a href="sprints/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
-            })->asHtml()->sortable(),
-            Text::make('Name')->sortable(),
-//            ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make('TrelloList'),
-            BelongsTo::make('TrelloMember'),
-            Text::make('Estimate'),
-            Text::make('Customer'),
-            Number::make('Total Time'),
-            Boolean::make('Is_Archived')
-                ->trueValue('On')
-                ->falseValue('Off'),
+            ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make('URL', function () {
-                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
-            })
-                ->asHtml(),
-            DateTime::make('created_at'),
-            DateTime::make('updated_at'),
+            Text::make('Name'),
+            Text::make('#Card', function () {
+                $total = TrelloCard::count();
+                $card = TrelloCard::where('member_id',$this->id)->where('is_archived',0)->count();
+                return  $card .' (' .round($card/$total*100) .'%)';
+            }),
+            Text::make('#Card Today', function () {
+                $listToday= TrelloList::where('name','TODAY')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->count();
+            }),
+            Text::make('∑ Card Points Today', function () {
+                $listToday= TrelloList::where('name','TODAY')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
+            }),
+            Text::make('#Card Progress', function () {
+                $listProgress= TrelloList::where('name','PROGRESS')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+            }),
+            Text::make('#Card Rej', function () {
+                $listProgress= TrelloList::where('name','REJECTED')->first();
+                if (!empty($listToday))
+                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listProgress->id)->count();
+                else return 0;
+            }),
+            Text::make('∑ Rej Card Points Today ', function () {
+                $listToday= TrelloList::where('name','REJECTED')->first();
+                if (!empty($listToday))
+                    return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listToday->id)->sum('estimate');
+                else return 0;
+            }),
+            Text::make('#Card TBT', function () {
+                $listTBT= TrelloList::where('name','TO BE TESTED')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listTBT->id)->count();
+            }),
+            Text::make('#Card Done', function () {
+                $listDone= TrelloList::where('name','Done')->first();
+                return \App\Models\TrelloCard::where('member_id',$this->id)->where('is_archived',0)->where('list_id',$listDone->id)->count();
+            }),
         ];
     }
 
@@ -99,6 +110,7 @@ class Sprint extends Resource
     public function cards(Request $request)
     {
         return [
+
             new CardTomorrowCount,
             new CardTodayCount,
             new CardProgressCount,
@@ -126,13 +138,7 @@ class Sprint extends Resource
      */
     public function filters(Request $request)
     {
-        return [
-            new \App\Nova\Filters\TrelloList(),
-            new TrelloCustomer(),
-            new TrelloIsArchived(),
-            new \App\Nova\Filters\TrelloMember(),
-            new Time(),
-        ];
+        return [];
     }
 
     /**

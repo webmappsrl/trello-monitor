@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\Time;
 use App\Nova\Filters\TrelloCustomer;
 use App\Nova\Filters\TrelloIsArchived;
 use Illuminate\Http\Request;
@@ -102,6 +103,7 @@ class TrelloCard extends Resource
             new TrelloCustomer(),
             new TrelloIsArchived(),
             new \App\Nova\Filters\TrelloMember(),
+            new Time(),
         ];
     }
 

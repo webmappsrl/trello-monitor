@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90b82785fc9805757fa1c29983500905",
+    "content-hash": "aa658e03e6554793e892c44127b7655d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1284,16 +1284,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.27.0",
+            "version": "v8.28.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a6680d98f9dadaa363aa7d5218517a08706cee64"
+                "reference": "73dd43d92fcde6c6abc00658ae33391397ca119d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a6680d98f9dadaa363aa7d5218517a08706cee64",
-                "reference": "a6680d98f9dadaa363aa7d5218517a08706cee64",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/73dd43d92fcde6c6abc00658ae33391397ca119d",
+                "reference": "73dd43d92fcde6c6abc00658ae33391397ca119d",
                 "shasum": ""
             },
             "require": {
@@ -1444,7 +1444,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2021-02-09T15:14:54+00:00"
+            "time": "2021-02-16T18:07:44+00:00"
         },
         {
             "name": "laravel/nova",
@@ -2117,52 +2117,6 @@
             ],
             "abandoned": "brick/math",
             "time": "2020-01-05T04:49:34+00:00"
-        },
-        {
-            "name": "nemrutco/nova-global-filter",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nemrutco/nova-global-filter.git",
-                "reference": "b9ba993ec124ac78bb2a3ac9f1b9ee92241e2b08"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nemrutco/nova-global-filter/zipball/b9ba993ec124ac78bb2a3ac9f1b9ee92241e2b08",
-                "reference": "b9ba993ec124ac78bb2a3ac9f1b9ee92241e2b08",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/nova": ">=2.0",
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Nemrutco\\NovaGlobalFilter\\CardServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nemrutco\\NovaGlobalFilter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "This package allows you to broadcast any of your existing Laravel Nova filters to metrics or custom cards.",
-            "keywords": [
-                "Metrics",
-                "card",
-                "dashboard",
-                "filters",
-                "laravel",
-                "nova"
-            ],
-            "time": "2020-07-30T15:50:34+00:00"
         },
         {
             "name": "nesbot/carbon",

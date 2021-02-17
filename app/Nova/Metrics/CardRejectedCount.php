@@ -18,7 +18,10 @@ class CardRejectedCount extends Value
     public function calculate(NovaRequest $request)
     {
         $rej= TrelloList::where('name','REJECTED')->first();
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$rej->id));    }
+        if (!empty($rej))
+        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$rej->id));
+        else return 0;
+    }
 
     /**
      * Get the ranges available for the metric.
