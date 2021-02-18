@@ -94,7 +94,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->where('member_id',$dvtpzzt)
                 ->whereNotIn('list_id',  $trelloListNot)
                 ->whereDate('last_progress_date','=', Carbon::yesterday())
-                ->where('is_archived',0)
                 ->get();
 
             $toDoTodayDvtpzzt = DB::table('trello_cards')
@@ -132,7 +131,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->where('member_id',$pedramkat)
                 ->whereNotIn('list_id',  $trelloListNot)
                 ->whereDate('last_progress_date','=', Carbon::yesterday())
-                ->where('is_archived',0)
                 ->get();
 
             $toDoTodayPedramkat = DB::table('trello_cards')
@@ -170,7 +168,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->where('member_id',$gg)
                 ->whereNotIn('list_id',  $trelloListNot)
                 ->whereDate('last_progress_date','=', Carbon::yesterday())
-                ->where('is_archived',0)
                 ->get();
 
             $toDoTodayGg = DB::table('trello_cards')
@@ -208,7 +205,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->where('member_id',$mb)
                 ->whereNotIn('list_id',  $trelloListNot)
                 ->whereDate('last_progress_date','=', Carbon::yesterday())
-                ->where('is_archived',0)
                 ->get();
 
             $toDoTodayMb = DB::table('trello_cards')
@@ -609,7 +605,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->where('member_id',$userId->id)
                 ->whereNotIn('list_id',  $trelloListNot)
                 ->whereDate('last_progress_date','=', Carbon::yesterday())
-                ->where('is_archived',0)
                 ->get();
 
             $toDoToday = DB::table('trello_cards')
