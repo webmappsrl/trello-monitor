@@ -30,7 +30,7 @@ class TrelloMemberPolicy
      */
     public function view(User $user, TrelloMember $trelloMember)
     {
-        return true;
+       // return true;
     }
 
     /**

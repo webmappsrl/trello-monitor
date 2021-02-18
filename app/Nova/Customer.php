@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\TrelloCard;
 use App\Models\TrelloList;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -67,6 +68,8 @@ class Customer extends Resource
                 $card = TrelloCard::where('customer_id',$this->id)->orderBy('last_progress_date', 'DESC')->first();
                 return  $card->last_progress_date;
             }),
+            HasMany::make('TrelloCards')
+
         ];
     }
 

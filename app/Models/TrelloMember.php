@@ -12,6 +12,6 @@ class TrelloMember extends Model
     protected $fillable = ["trello_id", "name"];
 
     public function trelloCards() {
-        return $this->hasMany(TrelloCard::class);
+        return $this->hasMany(TrelloCard::class,'member_id');
     }
 }
