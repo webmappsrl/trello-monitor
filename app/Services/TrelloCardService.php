@@ -21,7 +21,7 @@ class TrelloCardService
 
         $res = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'customFieldItems');
         $fields = array();
-        var_dump($res.'\n\n');
+//        var_dump($res.'\n\n');
         if (is_array($res) && count($res)>0)
         {
             foreach ($res as $re)
@@ -31,9 +31,8 @@ class TrelloCardService
 
             if (array_key_exists($customer_key,$fields))
             {
-//                $cf = $fields[$customer_key]->value->text;
 
-                $customer = TrelloCustomer::where("trello_id", $fields[$customer_key]->id)->first();
+                $customer = TrelloCustomer::where("trello_id", $fields[$customer_key]->value->text)->first();
 
                 if (is_null($customer)) {
                     $customer = new TrelloCustomer([
