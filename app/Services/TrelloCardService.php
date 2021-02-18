@@ -18,7 +18,7 @@ class TrelloCardService
 
     public function get_customer($card_id) {
         $customer_key = env('CUSTOMER_KEY');
-
+        $customer = 0;
         $res = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'customFieldItems');
         $fields = array();
 //        var_dump($res.'\n\n');
@@ -32,7 +32,7 @@ class TrelloCardService
             if (array_key_exists($customer_key,$fields))
             {
 
-                $customer = TrelloCustomer::where("trello_id", $fields[$customer_key]->value->text)->first();
+                $customer = TrelloCustomer::where("name", $fields[$customer_key]->value->text)->first();
 
                 if (is_null($customer)) {
                     $customer = new TrelloCustomer([
@@ -41,6 +41,8 @@ class TrelloCardService
                     ]);
 
                     $customer->save();
+
+
                 }
 
             }
@@ -162,7 +164,6 @@ class TrelloCardService
                 'link' => $card->shortUrl,
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
-                'customer_id'=>$customer->id,
                 'last_activity'=>date('Y-m-d h:i:s', strtotime($card->dateLastActivity)),
                 'last_progress_date'=>date('Y-m-d h:i:s', strtotime($progress_time)),
             ]);
@@ -176,6 +177,11 @@ class TrelloCardService
             if ($list_id!='')
             {
                 $dbCard->list_id = $list_id;
+                $dbCard->save();
+            }
+            if (isset($customer->id))
+            {
+                $dbCard->customer_id = $customer->id;
                 $dbCard->save();
             }
         } else {

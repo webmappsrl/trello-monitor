@@ -2,14 +2,13 @@
 
 namespace App\Nova;
 
-use App\Models\TrelloCard;
-use App\Models\TrelloList;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Customer extends Resource
+class TrelloCustomer extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -17,13 +16,15 @@ class Customer extends Resource
      * @var string
      */
     public static $model = \App\Models\TrelloCustomer::class;
+    public static $displayInNavigation = false;
+
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -43,30 +44,9 @@ class Customer extends Resource
     public function fields(Request $request)
     {
         return [
-//            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Trello ID','trello_id', function () {
-                return '<a href="customers/'. $this->id . '" target="_blank">'. $this->name . '</a>';
-            })->asHtml()->sortable(),
-            Text::make('Cards', function () {
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->count();
-                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->count();
-                return  $card .' + '.$cardA;
-            }),
-            Text::make('Todo', function () {
-                $today = TrelloList::where('name','DONE')->first();
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->where('list_id','!=' , $today->id)->count();
-                return  $card;
-            }),
-            Text::make('Done', function () {
-                $today = TrelloList::where('name','DONE')->first();
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->where('list_id' , $today->id)->count();
-                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->where('list_id' , $today->id)->count();
-                return  $card .' + '.$cardA;
-            }),
-            Text::make('Last Activity', function () {
-                $card = TrelloCard::where('customer_id',$this->id)->orderBy('last_progress_date', 'DESC')->first();
-                return  $card->last_progress_date;
-            }),
+            ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Name'),
+            HasMany::make('TrelloCard')
         ];
     }
 

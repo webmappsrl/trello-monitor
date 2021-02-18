@@ -61,8 +61,8 @@ class TrelloCard extends Resource
 
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
+            BelongsTo::make('TrelloCustomer'),
             Text::make('Estimate'),
-            Text::make('Customer'),
             Number::make('Total Time'),
             Boolean::make('Is_Archived')
                 ->trueValue('On')
