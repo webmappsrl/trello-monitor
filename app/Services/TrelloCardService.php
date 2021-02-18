@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Models\TrelloCard;
+use App\Models\TrelloCustomer;
 use App\Services\Api\TrelloCardAPIService;
 
 class TrelloCardService
@@ -20,19 +21,32 @@ class TrelloCardService
 
         $res = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'customFieldItems');
         $fields = array();
-        $cf = '';
+        var_dump($res.'\n\n');
         if (is_array($res) && count($res)>0)
         {
             foreach ($res as $re)
             {
                 $fields[$re->idCustomField] = $re;
             }
+
             if (array_key_exists($customer_key,$fields))
             {
-                $cf = $fields[$customer_key]->value->text;
+//                $cf = $fields[$customer_key]->value->text;
+
+                $customer = TrelloCustomer::where("trello_id", $fields[$customer_key]->id)->first();
+
+                if (is_null($customer)) {
+                    $customer = new TrelloCustomer([
+                        'trello_id' => $fields[$customer_key]->id,
+                        'name' => $fields[$customer_key]->value->text,
+                    ]);
+
+                    $customer->save();
+                }
+
             }
         }
-        return $cf;
+        return $customer;
 
 
     }
@@ -149,7 +163,7 @@ class TrelloCardService
                 'link' => $card->shortUrl,
                 'total_time'=> $total_time,
                 'estimate'=>$estimate,
-                'customer'=>$customer,
+                'customer_id'=>$customer->id,
                 'last_activity'=>date('Y-m-d h:i:s', strtotime($card->dateLastActivity)),
                 'last_progress_date'=>date('Y-m-d h:i:s', strtotime($progress_time)),
             ]);
@@ -177,7 +191,7 @@ class TrelloCardService
                 $dbCard->name=$card->name;
                 $dbCard->total_time=$total_time;
                 $dbCard->estimate=$estimate;
-                $dbCard->customer=$customer;
+                $dbCard->customer_id=$customer->id;
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
                 $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
