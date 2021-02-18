@@ -30,7 +30,7 @@ class TrelloListPolicy
      */
     public function view(User $user, TrelloList $trelloList)
     {
-        //
+
     }
 
     /**

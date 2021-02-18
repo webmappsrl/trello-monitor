@@ -16,7 +16,7 @@ class TrelloCard extends Model
         'trello_id',
         'name',
         'link',
-        'customer',
+        'customer_id',
         'estimate',
         'total_time',
         'board',
@@ -29,36 +29,6 @@ class TrelloCard extends Model
     ];
 
 
-
-
-
-
-//    public function setEstimate() {
-//        $j = new downloadCard();
-//        $res = $j->_downloadCard($this->trello_id,'pluginData');
-//        return $res;
-//    }
-//
-//    public function setEstimateValidate($array_customer) {
-//        $j = new downloadCard();
-//        $estimate = $j->estimate($array_customer);
-//        $this->estimate = $estimate;
-//        return $this->estimate;
-//    }
-//
-//    public function setTotalTime() {
-//        $j = new downloadCard();
-//        $res = $j->_downloadCard($this->trello_id,'actions');
-//        return $res;
-//    }
-//
-//    public function setTotalTimeValidate($array_customer) {
-//        $j = new downloadCard();
-//        $total_time = $j->totalTime($array_customer);
-//        $this->total_time = $total_time;
-//        return $this->total_time;
-//    }
-
     public function trelloList() {
         return $this->belongsTo(TrelloList::class, 'list_id');
     }
@@ -69,5 +39,9 @@ class TrelloCard extends Model
 
     public function trelloMember() {
         return $this->belongsTo(TrelloMember::class, 'member_id');
+    }
+
+    public function Customer() {
+        return $this->belongsTo(TrelloCustomer::class, 'customer_id');
     }
 }

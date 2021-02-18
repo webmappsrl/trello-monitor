@@ -47,7 +47,7 @@ class TrelloMember extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('name'),
-            HasMany::make('TrelloCard')
+            HasMany::make('trelloCards')
         ];
     }
 

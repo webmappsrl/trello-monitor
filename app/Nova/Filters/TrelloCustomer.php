@@ -25,7 +25,7 @@ class TrelloCustomer extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('customer','like', $value);
+        return $query->where('customer_id','like', $value);
     }
 
     /**
@@ -36,11 +36,11 @@ class TrelloCustomer extends Filter
      */
     public function options(Request $request)
     {
-        $customers = \App\Models\TrelloCard::select('customer')->distinct()->get()->toArray();
+        $members = \App\Models\TrelloCustomer::all()->toArray();
         $data=[];
 
-        foreach ($customers as $customer) {
-            if (!empty($customer['customer'])) $data += [$customer['customer'] => $customer['customer']];
+        foreach ($members as $member) {
+            $data += [$member['name'] => $member['id']];
         }
         return $data;
     }

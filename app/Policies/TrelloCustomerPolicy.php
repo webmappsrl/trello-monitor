@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\TrelloMember;
+use App\Models\TrelloCustomer;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TrelloMemberPolicy
+class TrelloCustomerPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class TrelloMemberPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\TrelloMember  $trelloMember
+     * @param  \App\Models\Customer  $customer
      * @return mixed
      */
-    public function view(User $user, TrelloMember $trelloMember)
+    public function view(User $user, TrelloCustomer $customer)
     {
-       // return true;
+        return true;
     }
 
     /**
@@ -48,10 +48,10 @@ class TrelloMemberPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\TrelloMember  $trelloMember
+     * @param  \App\Models\Customer  $customer
      * @return mixed
      */
-    public function update(User $user, TrelloMember $trelloMember)
+    public function update(User $user, TrelloCustomer $customer)
     {
         //
     }
@@ -60,10 +60,10 @@ class TrelloMemberPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\TrelloMember  $trelloMember
+     * @param  \App\Models\Customer  $customer
      * @return mixed
      */
-    public function delete(User $user, TrelloMember $trelloMember)
+    public function delete(User $user, TrelloCustomer $customer)
     {
         //
     }
@@ -72,10 +72,10 @@ class TrelloMemberPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\TrelloMember  $trelloMember
+     * @param  \App\Models\Customer  $customer
      * @return mixed
      */
-    public function restore(User $user, TrelloMember $trelloMember)
+    public function restore(User $user, TrelloCustomer $customer)
     {
         //
     }
@@ -84,10 +84,10 @@ class TrelloMemberPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\TrelloMember  $trelloMember
+     * @param  \App\Models\Customer  $customer
      * @return mixed
      */
-    public function forceDelete(User $user, TrelloMember $trelloMember)
+    public function forceDelete(User $user, TrelloCustomer $customer)
     {
         //
     }
