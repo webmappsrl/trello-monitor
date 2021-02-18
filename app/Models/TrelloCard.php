@@ -41,7 +41,7 @@ class TrelloCard extends Model
         return $this->belongsTo(TrelloMember::class, 'member_id');
     }
 
-    public function trelloCustomer() {
+    public function Customer() {
         return $this->belongsTo(TrelloCustomer::class, 'customer_id');
     }
 }
