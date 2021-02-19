@@ -74,6 +74,7 @@ class TrelloCard extends Resource
                 ->asHtml(),
             DateTime::make('created_at'),
             DateTime::make('updated_at'),
+
         ];
     }
 

@@ -73,35 +73,43 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-
+        //find user and match trello_members
         $userRequestId = Auth::id();
-
         $user = User::find($userRequestId);
+
+        //check day of the week
+        $day_of_the_week = Carbon::now();
+        $day_of_the_week = $day_of_the_week->dayOfWeek;
+
+        if ( $day_of_the_week == 1) $date = Carbon::now()->subDays(3);
+        else $date =  Carbon::yesterday();
+
+        //filter list
+        $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
+        $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
+
 
         if ($user->role == 'admin')
         {
 
             $dvtpzzt  = TrelloMember::where('name','Davide Pizzato')->pluck('id');
 
-            $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
-
-            $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
 
             $didDoYesterdayDvtpzzt = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$dvtpzzt)
                 ->whereNotIn('list_id',  $trelloListNot)
-                ->whereDate('last_progress_date','=', Carbon::yesterday())
+                ->whereDate('last_progress_date','=', $date)
                 ->get();
 
             $toDoTodayDvtpzzt = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$dvtpzzt)
                 ->where('is_archived',0)
                 ->whereIn('list_id',  $trelloListOk)
@@ -122,25 +130,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             $pedramkat  = TrelloMember::where('name','pedramkat')->pluck('id');
 
-            $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
-
-            $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
 
             $didDoYesterdayPedramkat = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$pedramkat)
                 ->whereNotIn('list_id',  $trelloListNot)
-                ->whereDate('last_progress_date','=', Carbon::yesterday())
+                ->whereDate('last_progress_date','=', $date)
                 ->get();
 
             $toDoTodayPedramkat = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$pedramkat)
                 ->where('is_archived',0)
                 ->whereIn('list_id',  $trelloListOk)
@@ -161,25 +166,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             $gg  = TrelloMember::where('name','Gianmarco Gagliardi')->pluck('id');
 
-            $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
-
-            $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
 
             $didDoYesterdayGg = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$gg)
                 ->whereNotIn('list_id',  $trelloListNot)
-                ->whereDate('last_progress_date','=', Carbon::yesterday())
+                ->whereDate('last_progress_date','=', $date)
                 ->get();
 
             $toDoTodayGg = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$gg)
                 ->where('is_archived',0)
                 ->whereIn('list_id',  $trelloListOk)
@@ -200,25 +202,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             $mb  = TrelloMember::where('name','marcobarbieri70')->pluck('id');
 
-            $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
-
-            $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
-
-            $didDoYesterdayMb = DB::table('trello_cards')
+            $didDoYesterdayMb =  DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$mb)
-                ->whereNotIn('list_id',  $trelloListNot)
-                ->whereDate('last_progress_date','=', Carbon::yesterday())
+                ->whereDate('last_progress_date','=', $date)
                 ->get();
+
+//            dd( $didDoYesterdayMb);
 
             $toDoTodayMb = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-                ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$mb)
                 ->where('is_archived',0)
                 ->whereIn('list_id',  $trelloListOk)
@@ -602,10 +601,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         {
             $userId = TrelloMember::where('name',$user->name)->first();
 
-            $trelloListNot = TrelloList::whereIn('name',['CYCLANDO OPTIMIZE','BACKLOG'])->pluck('id');
-
-            $trelloListOk = TrelloList::whereIn('name',['TODAY','PROGRESS','REJECTED','ALMOST THERE'])->pluck('id');
-
             $didDoYesterday = DB::table('trello_cards')
                 ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
                 ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
@@ -613,7 +608,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$userId->id)
                 ->whereNotIn('list_id',  $trelloListNot)
-                ->whereDate('last_progress_date','=', Carbon::yesterday())
+                ->whereDate('last_progress_date','=', $date)
                 ->get();
 
             $toDoToday = DB::table('trello_cards')
