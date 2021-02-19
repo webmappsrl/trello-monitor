@@ -47,7 +47,7 @@ class Customer extends Resource
     {
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name','trello_id', function () {
+            Text::make('Name','name', function () {
                 return '<a href="customers/'. $this->id . '" target="_blank">'. $this->name . '</a>';
             })->asHtml()->sortable(),
             Number::make('Cards')->sortable(),
