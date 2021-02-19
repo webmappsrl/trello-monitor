@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\TrelloCard;
 use App\Models\TrelloList;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -49,9 +50,9 @@ class Customer extends Resource
                 return '<a href="customers/'. $this->id . '" target="_blank">'. $this->name . '</a>';
             })->asHtml()->sortable(),
             Text::make('Cards', function () {
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->count();
-                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->count();
-                return  $card .' + '.$cardA;
+                $card = TrelloCard::where('customer_id',$this->id)->count();
+//                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->count();
+                return  $card ;
             }),
             Text::make('Todo', function () {
                 $today = TrelloList::where('name','DONE')->first();
@@ -59,15 +60,15 @@ class Customer extends Resource
                 return  $card;
             }),
             Text::make('Done', function () {
-                $today = TrelloList::where('name','DONE')->first();
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->where('list_id' , $today->id)->count();
-                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->where('list_id' , $today->id)->count();
-                return  $card .' + '.$cardA;
+                $done = TrelloList::where('name','DONE')->first();
+                $card = TrelloCard::where('customer_id',$this->id)->where('list_id' , $done->id)->count();
+//                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->where('list_id' , $today->id)->count();
+                return  $card ;
             }),
-            Text::make('Last Activity', function () {
+            DateTime::make('Last Activity', function () {
                 $card = TrelloCard::where('customer_id',$this->id)->orderBy('last_progress_date', 'DESC')->first();
                 return  $card->last_progress_date;
-            }),
+            })->format('YYYY-MM-DD'),
             HasMany::make('TrelloCards')
 
         ];
