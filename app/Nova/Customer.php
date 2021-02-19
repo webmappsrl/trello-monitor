@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -46,29 +47,13 @@ class Customer extends Resource
     {
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Trello ID','trello_id', function () {
+            Text::make('Name','trello_id', function () {
                 return '<a href="customers/'. $this->id . '" target="_blank">'. $this->name . '</a>';
             })->asHtml()->sortable(),
-            Text::make('Cards', function () {
-                $card = TrelloCard::where('customer_id',$this->id)->count();
-//                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->count();
-                return  $card ;
-            }),
-            Text::make('Todo', function () {
-                $today = TrelloList::where('name','DONE')->first();
-                $card = TrelloCard::where('customer_id',$this->id)->where('is_archived',0)->where('list_id','!=' , $today->id)->count();
-                return  $card;
-            }),
-            Text::make('Done', function () {
-                $done = TrelloList::where('name','DONE')->first();
-                $card = TrelloCard::where('customer_id',$this->id)->where('list_id' , $done->id)->count();
-//                $cardA = TrelloCard::where('customer_id',$this->id)->where('is_archived',1)->where('list_id' , $today->id)->count();
-                return  $card ;
-            }),
-            DateTime::make('Last Activity', function () {
-                $card = TrelloCard::where('customer_id',$this->id)->orderBy('last_progress_date', 'DESC')->first();
-                return  $card->last_progress_date;
-            })->format('YYYY-MM-DD'),
+            Number::make('Cards')->sortable(),
+            Number::make('Todo')->sortable(),
+            Number::make('Done')->sortable(),
+            DateTime::make('Last Activity Progress')->format('YYYY-MM-DD')->sortable(),
             HasMany::make('TrelloCards')
 
         ];

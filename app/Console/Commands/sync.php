@@ -97,7 +97,7 @@ class sync extends Command
             $card_di->set_archive($cards_archive, $card_single);
         }
 
-
+        $cards_service->add_customer_calculated_values();
         return 0;
     }
 

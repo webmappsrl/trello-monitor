@@ -7,3 +7,7 @@
     white-space: unset !important;
     /*letter-spacing: 1px;*/
 }
+
+svg.fill-current {
+    display: none;
+}
