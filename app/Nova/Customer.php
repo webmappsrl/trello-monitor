@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\TrelloCard;
+use App\Models\TrelloCustomer;
 use App\Models\TrelloList;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
@@ -11,6 +12,8 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use KirschbaumDevelopment\NovaChartjs\InlinePanel;
+
 
 class Customer extends Resource
 {
@@ -53,11 +56,24 @@ class Customer extends Resource
             Number::make('Cards')->sortable(),
             Number::make('Todo')->sortable(),
             Number::make('Done')->sortable(),
-            DateTime::make('Last Activity Progress')->format('YYYY-MM-DD')->sortable(),
-            HasMany::make('TrelloCards')
+            Number::make('All Days Worked','all_days_worked_customer')->sortable(),
+            Number::make('Last 7 Days Worked','seven_days_worked_customer')->sortable(),
+            Number::make('Last 30 Days Worked','thirty_days_worked_customer')->sortable(),
 
+
+
+            DateTime::make('Last Activity Progress')->format('YYYY-MM-DD')->sortable(),
+//            HasMany::make('TrelloCards'),
+
+            HasMany::make('Todo'),
+            HasMany::make('Done'),
+
+
+            new InlinePanel($this, $request, 'Stats'),
         ];
     }
+
+
 
     /**
      * Get the cards available for the request.
@@ -67,7 +83,9 @@ class Customer extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+
+        ];
     }
 
     /**

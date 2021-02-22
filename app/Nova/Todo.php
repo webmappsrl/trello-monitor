@@ -5,22 +5,16 @@ namespace App\Nova;
 use App\Nova\Filters\Time;
 use App\Nova\Filters\TrelloCustomer;
 use App\Nova\Filters\TrelloIsArchived;
-use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-
-
-class TrelloCard extends Resource
+class Todo extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -28,6 +22,7 @@ class TrelloCard extends Resource
      * @var string
      */
     public static $model = \App\Models\TrelloCard::class;
+    public static $displayInNavigation = false;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -103,7 +98,6 @@ class TrelloCard extends Resource
         return [
             new \App\Nova\Filters\TrelloList(),
             new TrelloCustomer(),
-            new TrelloIsArchived(),
             new \App\Nova\Filters\TrelloMember(),
             new Time(),
         ];
