@@ -53,14 +53,16 @@ class TrelloCardsService
 
             $cards = TrelloCard::where('customer_id',$customer)->count();
             $todo = TrelloCard::where('customer_id',$customer)->where('is_archived',0)->where('list_id','!=' , $done->id)->count();
-            $done = TrelloCard::where('customer_id',$customer)->where('list_id', $done->id)->count();
+            $done = TrelloCard::where('customer_id',$customer)->where('is_archived',0)->where('list_id', $done->id)->count();
+            $all_archived = TrelloCard::where('customer_id',$customer)->where('is_archived',1)->count();
+
             $last_activity_progress = TrelloCard::where('customer_id',$customer)->orderBy('last_progress_date', 'DESC')->first();
 
             if(strtotime($last_activity_progress->last_progress_date)!= strtotime("2000-02-17 09:04:53"))
             {
                 $item->	last_activity_progress =  date('Y-m-d h:i:s', strtotime($last_activity_progress->last_progress_date));
             }
-            $item->done = $done;
+            $item->done = $done+$all_archived;
             $item->todo = $todo;
             $item->cards = $cards;
             $item->save();
