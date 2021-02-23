@@ -28,6 +28,10 @@ class TrelloCard extends Model
         'last_progress_date'
     ];
 
+    protected $casts = [
+        'last_progress_date' => 'date:Y-m-d'
+    ];
+
 
     public function trelloList() {
         return $this->belongsTo(TrelloList::class, 'list_id');

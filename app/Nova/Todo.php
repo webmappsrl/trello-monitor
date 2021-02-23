@@ -50,27 +50,15 @@ class Todo extends Resource
     {
         return [
             Text::make('Trello ID','trello_id', function () {
-                return '<a href="trello-cards/'. $this->id . '" target="_blank">'. $this->trello_id . '</a>';
+                return '<a href="' . $this->link . '" target="_blank">'. $this->name . '</a>';
             })->asHtml()->sortable(),
             Text::make('Name')->sortable(),
-//            ID::make(__('ID'), 'id')->sortable(),
-
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             BelongsTo::make('Customer'),
             Text::make('Estimate'),
             Number::make('Total Time'),
-            Boolean::make('Archived','is_archived')
-                ->trueValue('On')
-                ->falseValue('Off'),
-
-            Text::make('URL', function () {
-                return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
-            })
-                ->asHtml(),
-            DateTime::make('created_at'),
-            DateTime::make('updated_at'),
-
+            DateTime::make('Last Activity','last_progress_date')->sortable(),
         ];
     }
 
