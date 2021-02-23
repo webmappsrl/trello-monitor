@@ -27,11 +27,15 @@ class TrelloCustomer extends Model implements Chartable
             ->where('list_id','!=',$list->id);
     }
 
-    public function done() {
+
+    public function done()
+    {
         $list = TrelloList::where('name','DONE')->first();
-        return $this->trelloCards()->where('is_archived',1)->orWhere(function($q) use($list){
-            $q->where('is_archived',0)->where('list_id',$list->id);
-        });
+        return $this->trelloCards()
+            ->where(function ($query) use ($list) {
+                $query->orWhere('is_archived', 1);
+                $query->orWhereIn('list_id', TrelloList::select('id')->where('id', $list->id));
+            });
     }
 
     public function trelloCards() {
