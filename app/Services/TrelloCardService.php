@@ -196,7 +196,10 @@ class TrelloCardService
                 $dbCard->name=$card->name;
                 $dbCard->total_time=$total_time;
                 $dbCard->estimate=$estimate;
-                $dbCard->customer_id=$customer->id;
+                if (isset($customer->id))
+                {
+                    $dbCard->customer_id = $customer->id;
+                }
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
                 $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
