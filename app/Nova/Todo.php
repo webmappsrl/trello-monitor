@@ -60,7 +60,7 @@ class Todo extends Resource
             BelongsTo::make('Customer'),
             Text::make('Estimate'),
             Number::make('Total Time'),
-            Boolean::make('Is_Archived')
+            Boolean::make('Archived','is_archived')
                 ->trueValue('On')
                 ->falseValue('Off'),
 
