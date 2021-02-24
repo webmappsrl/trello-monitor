@@ -68,12 +68,16 @@ class TrelloCustomer extends Model implements Chartable
     }
     public function getAdditionalDatasets(): array
     {
+        $list = TrelloList::where('name','DONE')->first();
         $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
             ->where('customer_id',$this->id)
+            ->where('list_id',$list->id)
+
             ->whereDate('last_activity','>=', Carbon::now()->subMonth())
             ->get();
 
+        $today_day_of_year = Carbon::now()->dayOfYear;
         $names = $r->map(function($item, $key) {
             return  ['last_activity'=>Carbon::parse($item->last_activity)->dayOfYear];
         });
@@ -82,7 +86,7 @@ class TrelloCustomer extends Model implements Chartable
             return $row->count();
         });
         $grouped = $grouped->all();
-//        dd($grouped);
+
         $day = [];
 
         for ($i=1;$i<=30;$i++)
@@ -90,11 +94,9 @@ class TrelloCustomer extends Model implements Chartable
             $day[$i]=0;
         }
 
-        end($grouped);
-        $last_key = key($grouped);
         foreach ($grouped as $index=>$item)
         {
-            $i =  $last_key - $index;
+            $i =  $today_day_of_year - $index;
             $day[$i+1] = ['data'=>$item];
         }
 

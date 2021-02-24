@@ -21,6 +21,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
+
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -42,9 +43,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
@@ -97,8 +98,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
 
             $didDoYesterdayDvtpzzt = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$dvtpzzt)
@@ -106,9 +106,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereDate('last_progress_date','=', $date)
                 ->get();
 
+            $didDoYesterdayDvtpzzt = $didDoYesterdayDvtpzzt->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
+            });
+
+
             $toDoTodayDvtpzzt = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$dvtpzzt)
@@ -116,25 +121,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereIn('list_id',  $trelloListOk)
                 ->get();
 
-            $filteredDvtpzzt = $didDoYesterdayDvtpzzt->filter(function ($value){
-                return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
+            $toDoTodayDvtpzzt = $toDoTodayDvtpzzt->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
             });
 
-            $a=collect();
-
-            foreach ($filteredDvtpzzt as $item)
-            {
-                $a->push($item);
-            }
-
-            $filteredDvtpzzt = $a;
 
             $pedramkat  = TrelloMember::where('name','pedramkat')->pluck('id');
 
 
             $didDoYesterdayPedramkat = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$pedramkat)
@@ -142,9 +139,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereDate('last_progress_date','=', $date)
                 ->get();
 
+            $didDoYesterdayPedramkat =  $didDoYesterdayPedramkat->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
+            });
+
             $toDoTodayPedramkat = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$pedramkat)
@@ -152,25 +153,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereIn('list_id',  $trelloListOk)
                 ->get();
 
-            $filteredPedramkat = $didDoYesterdayPedramkat->filter(function ($value){
-                return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
+
+            $toDoTodayPedramkat =  $toDoTodayPedramkat->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
             });
-
-            $a=collect();
-
-            foreach ($filteredPedramkat as $item)
-            {
-                $a->push($item);
-            }
-
-            $filteredPedramkat = $a;
 
             $gg  = TrelloMember::where('name','Gianmarco Gagliardi')->pluck('id');
 
 
             $didDoYesterdayGg = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$gg)
@@ -178,9 +171,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereDate('last_progress_date','=', $date)
                 ->get();
 
+            $didDoYesterdayGg =   $didDoYesterdayGg->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
+            });
+
             $toDoTodayGg = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$gg)
@@ -188,35 +185,28 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereIn('list_id',  $trelloListOk)
                 ->get();
 
-            $filteredGg = $didDoYesterdayGg->filter(function ($value){
-                return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
+            $toDoTodayGg =   $toDoTodayGg->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
             });
-
-            $a=collect();
-
-            foreach ($filteredGg as $item)
-            {
-                $a->push($item);
-            }
-
-            $filteredGg = $a;
 
             $mb  = TrelloMember::where('name','marcobarbieri70')->pluck('id');
 
             $didDoYesterdayMb =  DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$mb)
                 ->whereDate('last_progress_date','=', $date)
                 ->get();
 
-//            dd( $didDoYesterdayMb);
+            $didDoYesterdayMb =   $didDoYesterdayMb->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
+            });
 
             $toDoTodayMb = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$mb)
@@ -224,20 +214,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereIn('list_id',  $trelloListOk)
                 ->get();
 
-            $filteredMb = $didDoYesterdayMb->filter(function ($value){
-                return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
+            $toDoTodayMb =   $toDoTodayMb->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
             });
 
-            $a=collect();
-
-            foreach ($filteredMb as $item)
-            {
-                $a->push($item);
-            }
-
-            $filteredMb = $a;
-
-            $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Total Time','Is_Archived','Created_at', 'Updated_at']);
+            $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Time','Is_Archived','Last Activity']);
 
             return [
 //            new Help,
@@ -253,26 +235,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
                         new \Mako\CustomTableCard\Table\Cell('Total Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($didDoYesterdayDvtpzzt->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
@@ -281,84 +258,46 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($toDoTodayDvtpzzt->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
                     ->title('Che cosa farò oggi?'),
-                (new \Mako\CustomTableCard\CustomTableCard)
-                    ->header([
-                        new \Mako\CustomTableCard\Table\Cell('Name'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
-                        new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
-                        new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
-                    ])
-                    ->data($filteredDvtpzzt->map(function ($order)
-                    {
-                        return (new \Mako\CustomTableCard\Table\Row(
-                            new \Mako\CustomTableCard\Table\Cell($order->name),
-                            new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
-                            new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
-                            new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
-                        ))->viewLink('/resources/trello-cards/'.$order->id);
-
-                    })->toArray())
-                    ->title('Che problemi ho riscontrato?'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->title('Pedram Katanchi'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($didDoYesterdayPedramkat->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
@@ -367,84 +306,47 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($toDoTodayPedramkat->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
                     ->title('Che cosa farò oggi?'),
-                (new \Mako\CustomTableCard\CustomTableCard)
-                    ->header([
-                        new \Mako\CustomTableCard\Table\Cell('Name'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
-                        new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
-                        new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
-                    ])
-                    ->data($filteredPedramkat->map(function ($order)
-                    {
-                        return (new \Mako\CustomTableCard\Table\Row(
-                            new \Mako\CustomTableCard\Table\Cell($order->name),
-                            new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
-                            new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
-                            new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
-                        ))->viewLink('/resources/trello-cards/'.$order->id);
 
-                    })->toArray())
-                    ->title('Che problemi ho riscontrato?'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->title('Gianmarco Gagliardi'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($didDoYesterdayGg->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
@@ -453,84 +355,46 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($toDoTodayGg->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
                     ->title('Che cosa farò oggi?'),
-                (new \Mako\CustomTableCard\CustomTableCard)
-                    ->header([
-                        new \Mako\CustomTableCard\Table\Cell('Name'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
-                        new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
-                        new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
-                    ])
-                    ->data($filteredGg->map(function ($order)
-                    {
-                        return (new \Mako\CustomTableCard\Table\Row(
-                            new \Mako\CustomTableCard\Table\Cell($order->name),
-                            new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
-                            new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
-                            new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
-                        ))->viewLink('/resources/trello-cards/'.$order->id);
-
-                    })->toArray())
-                    ->title('Che problemi ho riscontrato?'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->title('Marco Barbieri'),
                 (new \Mako\CustomTableCard\CustomTableCard)
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($didDoYesterdayMb->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
@@ -539,58 +403,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($toDoTodayMb->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
-                    ->title('Che cosa farò oggi?'),
-                (new \Mako\CustomTableCard\CustomTableCard)
-                    ->header([
-                        new \Mako\CustomTableCard\Table\Cell('Name'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
-                        new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
-                        new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
-                    ])
-                    ->data($filteredMb->map(function ($order)
-                    {
-                        return (new \Mako\CustomTableCard\Table\Row(
-                            new \Mako\CustomTableCard\Table\Cell($order->name),
-                            new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
-                            new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
-                            new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
-                        ))->viewLink('/resources/trello-cards/'.$order->id);
-
-                    })->toArray())
-                    ->title('Che problemi ho riscontrato?')
+                    ->title('Che cosa farò oggi?')
             ];
 
 
@@ -603,8 +434,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             $userId = TrelloMember::where('name',$user->name)->first();
 
             $didDoYesterday = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$userId->id)
@@ -612,9 +442,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereDate('last_progress_date','=', $date)
                 ->get();
 
+            $didDoYesterday =   $didDoYesterday->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
+            });
+
             $toDoToday = DB::table('trello_cards')
-                ->select('trello_cards.*','trello_customers.name as customer','trello_members.name as member_name','trello_lists.name as list_name')
-                ->join('trello_members', 'trello_cards.member_id', '=', 'trello_members.id')
+                ->select('trello_cards.*','trello_customers.name as customer','trello_lists.name as list_name')
                 ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
                 ->join('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
                 ->where('member_id',$userId->id)
@@ -622,20 +456,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->whereIn('list_id',  $trelloListOk)
                 ->get();
 
-            $filtered = $didDoYesterday->filter(function ($value){
-                return $value->total_time >= (($value->estimate * 20) + (($value->estimate * 20) *0.5));
+            $toDoToday = $toDoToday->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                return $value;
             });
 
-            $a=collect();
 
-            foreach ($filtered as $item)
-            {
-                $a->push($item);
-            }
-
-            $filtered = $a;
-
-            $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Total Time','Is_Archived','Created_at', 'Updated_at']);
+            $header = collect(['Name', 'TrelloList', 'TrelloMember','Estimate','Customer','Time','Is_Archived','Last Activity']);
 
             return [
 //            new Help,
@@ -649,26 +476,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($didDoYesterday->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
@@ -677,58 +499,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->header([
                         new \Mako\CustomTableCard\Table\Cell('Name'),
                         new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
                         new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
+                        new \Mako\CustomTableCard\Table\Cell('Time'),
                         new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
+                        new \Mako\CustomTableCard\Table\Cell('Last Activity'),
+
                     ])
                     ->data($toDoToday->map(function ($order)
                     {
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
                             new \Mako\CustomTableCard\Table\Cell($order->total_time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
+                            new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
 
                     })->toArray())
-                    ->title('Che cosa farò oggi?'),
-                (new \Mako\CustomTableCard\CustomTableCard)
-                    ->header([
-                        new \Mako\CustomTableCard\Table\Cell('Name'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloList'),
-                        new \Mako\CustomTableCard\Table\Cell('TrelloMember'),
-                        new \Mako\CustomTableCard\Table\Cell('Estimate'),
-                        new \Mako\CustomTableCard\Table\Cell('Customer'),
-                        new \Mako\CustomTableCard\Table\Cell('Total Time'),
-                        new \Mako\CustomTableCard\Table\Cell('Is_Archived'),
-                        new \Mako\CustomTableCard\Table\Cell('Created_at'),
-                        new \Mako\CustomTableCard\Table\Cell('Updated_at'),
-                    ])
-                    ->data($filtered->map(function ($order)
-                    {
-                        return (new \Mako\CustomTableCard\Table\Row(
-                            new \Mako\CustomTableCard\Table\Cell($order->name),
-                            new \Mako\CustomTableCard\Table\Cell($order->list_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->member_name),
-                            new \Mako\CustomTableCard\Table\Cell($order->estimate),
-                            new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
-                            new \Mako\CustomTableCard\Table\Cell($order->is_archived),
-                            new \Mako\CustomTableCard\Table\Cell($order->created_at),
-                            new \Mako\CustomTableCard\Table\Cell($order->updated_at),
-                        ))->viewLink('/resources/trello-cards/'.$order->id);
-
-                    })->toArray())
-                    ->title('Che problemi ho riscontrato?')
+                    ->title('Che cosa farò oggi?')
             ];
 
         }
@@ -758,6 +547,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 //            new \Guratr\CommandRunner\CommandRunner,
             \ChrisWare\NovaBreadcrumbs\NovaBreadcrumbs::make(),
 
+
         ];
     }
 
@@ -771,3 +561,4 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         //
     }
 }
+

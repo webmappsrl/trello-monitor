@@ -97,25 +97,14 @@ class TrelloCardService
         return $check;
     }
 
-    public function get_date_done($card_id)
+    public function get_date_done($card)
     {
-        $total_time = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'actions');
-//        dd($total_time);
-        $check = null;
-        if (is_array($total_time) && count($total_time)>0)
+        $date = null;
+        if ($card->idList == '5e82ed2d49bbf61b16f8f313')
         {
-            for ($i =0; $i < count($total_time)-1 && $check == null; $i++)
-            {
-                if (isset($total_time[$i]->data->listBefore->name))
-                {
-                    if ($total_time[$i]->data->listBefore->id == '5e82ed2d49bbf61b16f8f313')
-                    {
-                        $check = $total_time[$i]->date;
-                    }
-                }
-            }
+            $date = $card->dateLastActivity;
         }
-        return $check;
+        return $date;
     }
 
     public function get_estimate($card_id)
@@ -177,7 +166,7 @@ class TrelloCardService
             $estimate = $this->get_estimate($card->id);
             $customer = $this->get_customer($card->id);
             $progress_time = $this->get_date_progress($card->id);
-            $time_done = $this->get_date_done($card->id);
+            $time_done = $this->get_date_done($card);
 
 
             // NON esiste: lo inserisco sicuramente
@@ -218,7 +207,7 @@ class TrelloCardService
                 $estimate = $this->get_estimate($card->id);
                 $customer = $this->get_customer($card->id);
                 $progress_time = $this->get_date_progress($card->id);
-                $time_done = $this->get_date_done($card->id);
+                $time_done = $this->get_date_done($card);
 
 
 
