@@ -37,7 +37,7 @@ class Customer extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'name',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Customer extends Resource
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name','name', function () {
-                return '<a href="customers/'. $this->id . '" target="_blank">'. $this->name . '</a>';
+                return '<a href="customers/'. $this->id . '">'. $this->name . '</a>';
             })->asHtml()->sortable(),
             Number::make('Cards')->sortable(),
             Number::make('Todo')->sortable(),

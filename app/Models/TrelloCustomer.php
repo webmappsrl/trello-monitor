@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use KirschbaumDevelopment\NovaChartjs\Traits\HasChart;
 use KirschbaumDevelopment\NovaChartjs\Contracts\Chartable;
-
+use phpDocumentor\Reflection\Types\Collection;
 
 
 class TrelloCustomer extends Model implements Chartable
@@ -47,38 +48,67 @@ class TrelloCustomer extends Model implements Chartable
 
     public static function getNovaChartjsSettings(): array
     {
+        $day = [];
+        for ($i=1;$i<=30;$i++)
+        {
+            $day[]+=$i;
+        }
         return [
             'default' => [
-                'type' => 'line',
+                'type' => 'bar',
                 'titleProp' => 'name',
                 'identProp' => 'id',
                 'height' => 400,
                 'indexColor' => '#999999',
                 'color' => '#FF0000',
-                'parameters' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                'parameters' => $day,
                 'options' => ['responsive' => true, 'maintainAspectRatio' => false],
             ]
         ];
     }
     public function getAdditionalDatasets(): array
     {
-
-        $r = TrelloCard::selectRaw('year(last_activity) year, monthname(last_activity) month, count(*) data')
-            ->groupBy('year', 'month')
+        $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
             ->where('customer_id',$this->id)
-            ->whereYear('last_activity','2021')
+            ->whereDate('last_activity','>=', Carbon::now()->subMonth())
             ->get();
+
+        $names = $r->map(function($item, $key) {
+            return  ['last_activity'=>Carbon::parse($item->last_activity)->dayOfYear];
+        });
+
+        $grouped = $names->groupBy('last_activity')->map(function ($row) {
+            return $row->count();
+        });
+        $grouped = $grouped->all();
+//        dd($grouped);
+        $day = [];
+
+        for ($i=1;$i<=30;$i++)
+        {
+            $day[$i]=0;
+        }
+
+        end($grouped);
+        $last_key = key($grouped);
+        foreach ($grouped as $index=>$item)
+        {
+            $i =  $last_key - $index;
+            $day[$i+1] = ['data'=>$item];
+        }
+
+        $day = collect($day);
 
         return [
 
             'default' => [
                 [
-                    'label' => 'Cards by Month',
+                    'label' => 'Cards by Day',
                     'borderColor' => '#f87900',
                     'fill' => '+1',
                     'backgroundColor' => 'rgba(20,20,20,0.2)',//For bar charts, this will be the fill color of the bar
-                    'data' => $r->pluck('data'),
+                    'data' => $day->pluck('data'),
                 ]
             ]
         ];

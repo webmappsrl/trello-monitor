@@ -25,7 +25,8 @@ class TrelloCard extends Model
         'member_id',
         'is_archived',
         'last_activity',
-        'last_progress_date'
+        'last_progress_date',
+        'time_done'
     ];
 
     protected $casts = [

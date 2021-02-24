@@ -61,14 +61,18 @@ class TrelloCardsService
             $dt = Carbon::now();
 
             $all_minute_customer = TrelloCard::where('customer_id',$customer)->sum('total_time');
+            $all_minute_customer =  $all_minute_customer * 3;
+
             $all_days_worked_customer = $dt->diffInDays($dt->copy()->addMinutes($all_minute_customer));
 
             $last_seven_days = Carbon::now()->subDays(7);
             $last_seven_days_minute_customer = TrelloCard::where('customer_id',$customer)->whereDate('last_activity','>=',$last_seven_days)->sum('total_time');
+            $last_seven_days_minute_customer = $last_seven_days_minute_customer * 3;
             $last_seven_days_worked_customer = $dt->diffInDays($dt->copy()->addMinutes($last_seven_days_minute_customer));
 
             $last_thirty_days = Carbon::now()->subDays(30);
             $last_thirty_days_minute_customer = TrelloCard::where('customer_id',$customer)->whereDate('last_activity','>=',$last_thirty_days)->sum('total_time');
+            $last_thirty_days_minute_customer = $last_thirty_days_minute_customer * 3;
             $last_thirty_days_worked_customer = $dt->diffInDays($dt->copy()->addMinutes($last_thirty_days_minute_customer));
 
 

@@ -33,6 +33,7 @@ class CardTomorrowCount extends Value
     {
         return [
             365 => __('Today'),
+
         ];
     }
 
