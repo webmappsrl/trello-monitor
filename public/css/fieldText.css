@@ -8,6 +8,12 @@
     /*letter-spacing: 1px;*/
 }
 
+/*#nova > div > div > div> div.relative > div:nth-child(3) > div > div > div > div > div > div> table > tbody > tr > td:nth-child(1) > div > div*/
+/*{*/
+/*    white-space: unset !important;*/
+
+/*}*/
+
 svg.fill-current {
     display: none;
 }

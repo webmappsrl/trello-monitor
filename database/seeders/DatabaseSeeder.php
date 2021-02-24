@@ -51,6 +51,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'developer'
         ]);
 
+        \App\Models\User::factory(1)->create([
+
+            'name' => 'marcobarbieri70',
+            'email' => 'marcobarbieri@webmapp.it',
+            'password' => bcrypt('webmapp2020'),
+            'role' => 'cartographer'
+        ]);
+
 //        Storage::deleteDirectory('test_data');
 //        Storage::makeDirectory('fixtures');
 //

@@ -49,16 +49,15 @@ class Todo extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Trello ID','trello_id', function () {
-                return '<a href="' . $this->link . '" target="_blank">'. $this->name . '</a>';
+            Text::make('Name','trello_id', function () {
+                return '<a href="' . $this->link . '" class="name_link_todo" target="_blank">'. $this->name . '</a>';
             })->asHtml()->sortable(),
-            Text::make('Name')->sortable(),
             BelongsTo::make('TrelloList'),
             BelongsTo::make('TrelloMember'),
             BelongsTo::make('Customer'),
             Text::make('Estimate'),
             Number::make('Total Time'),
-            DateTime::make('Last Activity','last_progress_date')->sortable(),
+            DateTime::make('Last Activity','last_progress_date')->format('YYYY-MM-DD')->sortable(),
         ];
     }
 

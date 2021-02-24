@@ -97,6 +97,27 @@ class TrelloCardService
         return $check;
     }
 
+    public function get_date_done($card_id)
+    {
+        $total_time = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'actions');
+//        dd($total_time);
+        $check = null;
+        if (is_array($total_time) && count($total_time)>0)
+        {
+            for ($i =0; $i < count($total_time)-1 && $check == null; $i++)
+            {
+                if (isset($total_time[$i]->data->listBefore->name))
+                {
+                    if ($total_time[$i]->data->listBefore->id == '5e82ed2d49bbf61b16f8f313')
+                    {
+                        $check = $total_time[$i]->date;
+                    }
+                }
+            }
+        }
+        return $check;
+    }
+
     public function get_estimate($card_id)
     {
         $estimate = $this->trelloCardApiService->_downloadThirdPartCard($card_id,'pluginData');
@@ -156,6 +177,8 @@ class TrelloCardService
             $estimate = $this->get_estimate($card->id);
             $customer = $this->get_customer($card->id);
             $progress_time = $this->get_date_progress($card->id);
+            $time_done = $this->get_date_done($card->id);
+
 
             // NON esiste: lo inserisco sicuramente
             $dbCard = new TrelloCard([
@@ -184,12 +207,19 @@ class TrelloCardService
                 $dbCard->customer_id = $customer->id;
                 $dbCard->save();
             }
+            if (isset($time_done))
+            {
+                $dbCard->time_done = date('Y-m-d h:i:s', strtotime($time_done));
+                $dbCard->save();
+            }
         } else {
             if(strtotime($dbCard->updated_at)<strtotime($card->dateLastActivity)) {
                 $total_time = $this->get_total_time($card->id);
                 $estimate = $this->get_estimate($card->id);
                 $customer = $this->get_customer($card->id);
                 $progress_time = $this->get_date_progress($card->id);
+                $time_done = $this->get_date_done($card->id);
+
 
 
                 //update
@@ -200,12 +230,15 @@ class TrelloCardService
                 {
                     $dbCard->customer_id = $customer->id;
                 }
+                if (isset($time_done))
+                {
+                    $dbCard->time_done =date('Y-m-d h:i:s', strtotime($time_done));
+                }
                 $dbCard->member_id = $member_id;
                 $dbCard->list_id = $list_id;
                 $dbCard->last_activity = date('Y-m-d h:i:s', strtotime($card->dateLastActivity));
                 $dbCard->last_progress_date = date('Y-m-d h:i:s', strtotime($progress_time));
                 $dbCard->save();
-//                dd($dbCard);
 
             }
         }
