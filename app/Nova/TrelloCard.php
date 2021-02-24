@@ -71,9 +71,7 @@ class TrelloCard extends Resource
             Text::make('URL', function () {
                 return '<a href="' . $this->link . '" target="_blank">URL Card</a>';
             })->asHtml(),
-            DateTime::make('created_at'),
-            DateTime::make('updated_at'),
-
+            DateTime::make('Last Activity','last_progress_date')->format('YYYY-MM-DD')->sortable()
         ];
     }
 
