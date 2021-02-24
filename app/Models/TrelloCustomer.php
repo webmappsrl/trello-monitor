@@ -68,9 +68,12 @@ class TrelloCustomer extends Model implements Chartable
     }
     public function getAdditionalDatasets(): array
     {
+        $list = TrelloList::where('name','DONE')->first();
         $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
             ->where('customer_id',$this->id)
+            ->where('list_id',$list->id)
+
             ->whereDate('last_activity','>=', Carbon::now()->subMonth())
             ->get();
 
