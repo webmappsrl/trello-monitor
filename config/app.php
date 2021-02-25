@@ -12,7 +12,7 @@ return [
     */
 
 
-    'version' => "1.0.15",
+    'version' => "1.0.16",
 
 
 
@@ -162,6 +162,8 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Maatwebsite\LaravelNovaExcel\LaravelNovaExcelServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
