@@ -107,7 +107,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $didDoYesterdayDvtpzzt = $didDoYesterdayDvtpzzt->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -122,7 +122,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $toDoTodayDvtpzzt = $toDoTodayDvtpzzt->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -140,7 +140,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $didDoYesterdayPedramkat =  $didDoYesterdayPedramkat->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -155,7 +155,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
 
             $toDoTodayPedramkat =  $toDoTodayPedramkat->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -172,7 +172,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $didDoYesterdayGg =   $didDoYesterdayGg->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -186,7 +186,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $toDoTodayGg =   $toDoTodayGg->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -201,7 +201,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $didDoYesterdayMb =   $didDoYesterdayMb->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -215,7 +215,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $toDoTodayMb =   $toDoTodayMb->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -243,11 +243,33 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayDvtpzzt->map(function ($order)
                     {
+
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -266,11 +288,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayDvtpzzt->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -291,11 +334,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayPedramkat->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -314,11 +378,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayPedramkat->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -340,11 +425,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayGg->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -363,11 +469,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayGg->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -388,11 +515,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayMb->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -411,11 +559,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayMb->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -443,7 +612,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $didDoYesterday =   $didDoYesterday->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -457,7 +626,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->get();
 
             $toDoToday = $toDoToday->map(function ($value, $key) {
-                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN).'/'.$value->estimate : '0/'.$value->estimate;
+                $value->total_time = ($value->total_time > 0 ) ? round(($value->total_time/20), 1, PHP_ROUND_HALF_DOWN): 0;
                 return $value;
             });
 
@@ -484,11 +653,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterday->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
@@ -507,11 +697,32 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoToday->map(function ($order)
                     {
+                        if ($order->total_time == 0 || $order->estimate == 0)
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        {
+                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+                        {
+                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+                        {
+                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+                        else
+                        {
+                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                        }
+
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
                             new \Mako\CustomTableCard\Table\Cell($order->list_name),
                             new \Mako\CustomTableCard\Table\Cell($order->customer),
-                            new \Mako\CustomTableCard\Table\Cell($order->total_time),
+                            new \Mako\CustomTableCard\Table\Cell($time),
                             new \Mako\CustomTableCard\Table\Cell($order->is_archived),
                             new \Mako\CustomTableCard\Table\Cell($order->last_progress_date)
                         ))->viewLink('/resources/trello-cards/'.$order->id);
