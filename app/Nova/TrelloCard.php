@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ExportCard;
 use App\Nova\Filters\Time;
 use App\Nova\Filters\TrelloCustomer;
 use App\Nova\Filters\TrelloIsArchived;
@@ -18,6 +19,7 @@ use Laravel\Nova\Fields\Boolean;
 
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 
 class TrelloCard extends Resource
@@ -125,7 +127,8 @@ class TrelloCard extends Resource
     public function actions(Request $request)
     {
         return [
-
+//            (new DownloadExcel())->askForFilename(),
+            (new ExportCard())
         ];
     }
 }
