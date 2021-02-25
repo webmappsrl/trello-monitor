@@ -248,7 +248,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -258,7 +258,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -292,7 +292,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -302,7 +302,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -338,7 +338,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -348,7 +348,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -382,7 +382,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -392,7 +392,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -429,7 +429,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -439,7 +439,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -473,7 +473,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -483,7 +483,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -519,7 +519,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -529,7 +529,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -563,7 +563,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -573,7 +573,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -657,7 +657,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
+                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
                         {
                             $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
@@ -667,7 +667,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
@@ -711,7 +711,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }
                         elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
                         {
-                            $time = '<p style="color:#9d362c; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
+                            $time = '<p style="color:#c41404; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
                         }
                         else
                         {
