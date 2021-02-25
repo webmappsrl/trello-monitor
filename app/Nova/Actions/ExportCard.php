@@ -57,33 +57,21 @@ class ExportCard extends DownloadExcel implements WithMapping, WithHeadings
 
     public function map($card):array
     {
-        if ($card->is_archivied == 0 && $card->trelloList->name != 'DONE')
-        {
-            return [
-                $card->name,
-                $card->link,
-                'TODO',
-                $card->trelloList->name,
-                $card->trelloMember->name,
-                $card->estimate,
-                $card->total_time,
-                $card->last_activity,
-            ];
-        }
-        else
-        {
-            return [
-                $card->name,
-                $card->link,
-                'DONE',
-                $card->trelloList->name,
-                $card->trelloMember->name,
-                $card->estimate,
-                $card->total_time,
-                $card->last_activity,
-            ];
-        }
 
+        $status = ($card->is_archivied == 0 && $card->trelloList->name != 'DONE' ) ? 'TODO' : 'DONE';
+        $trello_list_name = (isset( $card->trelloList->name) ) ?  $card->trelloList->name : '';
+        $trello_list_member = (isset( $card->trelloMember->name) ) ?  $card->trelloMember->name : '';
+        
+        return [
+            $card->name,
+            $card->link,
+            $status,
+            $trello_list_name,
+            $trello_list_member,
+            $card->estimate,
+            $card->total_time,
+            $card->last_activity,
+        ];
 
 
     }
