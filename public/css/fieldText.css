@@ -18,7 +18,22 @@
 #nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(3) > div > span {
     white-space: unset !important;
 }
-
 svg.fill-current {
     display: none;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(9) > div > svg
+{
+    display: block !important;
+}
+/*svg.fill-current {*/
+/*    display: none;*/
+/*}*/
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > thead > tr > th{
+    min-width: 137px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr> td {
+    /*min-width: 150px;*/
 }

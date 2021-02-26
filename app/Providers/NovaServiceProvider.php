@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Nova;
@@ -32,7 +33,20 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
-        Nova::style('field-text',public_path('css/fieldText.css'));
+        $uri = URL::current();
+        $resource = explode("/", $uri);
+        $resource = $resource[count($resource)-1];
+        if ($resource == 'customers')
+        {
+            Nova::style('customers',public_path('css/customers.css'));
+
+        }
+        else
+        {
+            Nova::style('field-text',public_path('css/fieldText.css'));
+
+        }
+
     }
 
     /**
@@ -74,7 +88,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-
         //find user and match trello_members
         $userRequestId = Auth::id();
         $user = User::find($userRequestId);
