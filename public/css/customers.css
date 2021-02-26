@@ -1,0 +1,92 @@
+#nova > div > div > div > div > div > div > div > table > tbody > tr > td:nth-child(2) > div > span {
+    white-space: unset !important;
+    /*letter-spacing: 1px;*/
+}
+
+#nova > div > div > div > div > div:nth-child(3) > div > div > div > div> div > div> table > tbody > tr > td:nth-child(2) > div > span{
+    white-space: unset !important;
+    /*letter-spacing: 1px;*/
+}
+
+#nova > div > div > div> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(odd) > div > table > tbody > tr > td:nth-child(1) {
+    width: 50% !important;;
+}
+#nova > div > div > div> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(even) > div > table > tbody > tr > td:nth-child(1) {
+    width: 50% !important;;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(3) > div > span {
+    white-space: unset !important;
+}
+
+svg.fill-current {
+    display: none;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > thead > tr > th{
+    min-width: 137px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr> td {
+    /*min-width: 150px;*/
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table {
+    position: relative;
+    display: block;
+    margin-left: 0px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(1)
+{
+    min-width: 150px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(2)
+{
+    min-width: 130px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(3)
+{
+    min-width: 130px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(4)
+{
+    min-width: 150px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(5)
+{
+    min-width: 200px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(6)
+{
+    min-width: 200px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(7)
+{
+    min-width: 150px;
+}
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(8)
+{
+    min-width: 150px;
+}
+
+
+
+#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody {
+    height: 645px;
+    overflow-y: scroll;
+    display: inline-block;
+}
+
+/*#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > thead > tr > th:nth-child(9){*/
+/*    display: none;*/
+/*}*/
