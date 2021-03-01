@@ -13,13 +13,15 @@ TRELLO-MONITOR was created to analyze and measure the quality and effectiveness 
 ### Local Installation
 After downloading the trello-monitor project. enter the project folder with the ```cd trello-monitor``` command. After that check that the git project is updated with the local project, then use the ``` git pull``` command. Now configure mysql by creating a new DB:
 
-#### configure db MySQL:
+#### Configure db MySQL:
+
 - if MySQL is not installed: **[Guide](https://flaviocopes.com/mysql-how-to-install)**
 - open MySQL: ```mysql.server start```
 - enter MySQL if it does not have the password set: ```mysql -u <username>``` otherwise ```mysql -u <username> -p```
 - create db: ```CREATE DATABASE <mydatabasename>;```
 
-#### configure .ENV in project trello-monitor :
+#### Configure .ENV in project trello-monitor
+
 set the connection to the Laravel db, open the .ENV file with ide (VS code, sublime, etc) and modify the following items as follows:
 ```
 DB_CONNECTION=mysql
@@ -34,6 +36,17 @@ Enable or disable registration at the link **[register](http://trello-monitor.te
 - to disable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=false``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
 - to enable the link **[register](http://trello-monitor.test/register)** ```DISABLE_REGISTRATION=true``` in the .ENV,  file then launch the command ```php artisan config:cache``` to enable changes
 
+If you have any problem running the `php artisan trello-monitor:sync` command make sure your .env file has the following values set:
+
+```
+TRELLO_KEY
+TRELLO_TOKEN
+TRELLO_BASE_URL
+TRELLO_API_BASE_URL
+TRELLO_BOARD_SPRINT
+CUSTOMER_KEY
+TRELLO_BOARDS_SPRINT
+```
 
 ## Run TRELLO-MONITOR
 

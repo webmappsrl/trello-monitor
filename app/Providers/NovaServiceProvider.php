@@ -46,6 +46,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Nova::style('field-text',public_path('css/fieldText.css'));
         }
 
+        Nova::style('estimate-colors',public_path('css/estimateColors.css'));
     }
 
     /**
@@ -81,6 +82,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
     }
 
+
+    /**
+     * Return the html to represent the estimate in the frontend
+     *
+     * @param number $total_time
+     * @param number $estimate
+     * @return string
+     */
+    private function getTimeP(float $total_time, float $estimate): string {
+        $class = "estimate-low";
+        if (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+            $class = "estimate-medium";
+        elseif (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
+            $class = "estimate-high";
+        elseif (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1.5)
+            $class = "estimate-superhigh";
+
+        return '<p class="estimate-value ' . $class . '" style="font-weight: 700">' . $total_time.'/'.$estimate.'</p>';
+    }
     /**
      * Get the cards that should be displayed on the default Nova dashboard.
      *
@@ -258,27 +278,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayDvtpzzt->map(function ($order)
                     {
-
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -303,26 +303,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayDvtpzzt->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -349,26 +330,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayPedramkat->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -393,26 +355,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayPedramkat->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -440,26 +383,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayGg->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -484,26 +408,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayGg->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -530,26 +435,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterdayMb->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -574,26 +460,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoTodayMb->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -607,11 +474,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })->toArray())
                     ->title('Che cosa farò oggi?')
             ];
-
-
-
-
-
         }
         else
         {
@@ -668,26 +530,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($didDoYesterday->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#ee1a06; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -712,26 +555,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                     ->data($toDoToday->map(function ($order)
                     {
-                        if ($order->total_time == 0 || $order->estimate == 0)
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else if (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) < 1 || $order->total_time == 0 || $order->estimate == 0 )
-                        {
-                            $time = '<p style="color:#4d812f; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
-                        {
-                            $time = '<p style="color:#ff8300; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        elseif (round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($order->total_time/$order->estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
-                        {
-                            $time = '<p style="color:#c41404; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
-                        else
-                        {
-                            $time = '<p style="color:#3b03a7; font-weight: 700">' .$order->total_time.'/'.$order->estimate.'</p>';
-                        }
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
                         return (new \Mako\CustomTableCard\Table\Row(
                             new \Mako\CustomTableCard\Table\Cell($order->name),
@@ -745,11 +569,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })->toArray())
                     ->title('Che cosa farò oggi?')
             ];
-
         }
-
-
-
     }
 
     /**

@@ -1,0 +1,18 @@
+.estimate-value {
+    border-radius: 15px;
+    padding: 5px 10px;
+    color: #fff;
+}
+
+.estimate-value.estimate-low {
+    background: #4d812f;
+}
+.estimate-value.estimate-medium {
+    background: #ff8300;
+}
+.estimate-value.estimate-high {
+    background: #ee1a06;
+}
+.estimate-value.estimate-superhigh {
+    background: #3b03a7;
+}
