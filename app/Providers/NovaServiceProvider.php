@@ -44,7 +44,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         else
         {
             Nova::style('field-text',public_path('css/fieldText.css'));
-
         }
 
     }
@@ -76,7 +75,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 'alessiopiccioli@webmapp.it',
                 'gianmarcogagliardi@webmapp.it',
                 'davidepizzato@webmapp.it',
-                'pedramkatanchi@webmapp.it'
+                'pedramkatanchi@webmapp.it',
+                'marcobarbieri@webmapp.it'
             ]);
         });
     }
@@ -88,6 +88,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
+
+
         //find user and match trello_members
         $userRequestId = Auth::id();
         $user = User::find($userRequestId);
