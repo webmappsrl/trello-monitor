@@ -166,8 +166,9 @@ class TrelloCustomer extends Model implements Chartable
             $date = Carbon::parse($date);
 //            var_dump(nl2br("\n"));
 
-            $i = $date->diffInMonths($today_month_of_year)-1;
-            $month[12-$i] = ['data'=>$item];
+            $i = $date->diffInMonths($today_month_of_year);
+//            var_dump(12-(12-$i));
+            $month[12-(12-$i)] = ['data'=>$item];
         }
 
         $month = collect($month);
@@ -188,7 +189,7 @@ class TrelloCustomer extends Model implements Chartable
                     'label' => 'Minimum Required',
                     'borderColor' => '#f87900',
                     'fill' => '+1',
-                    'backgroundColor' => 'rgba(20,20,20,0.2)',//For bar charts, this will be the fill color of the bar
+                    'backgroundColor' => 'rgba(25,20,20,0.2)',//For bar charts, this will be the fill color of the bar
                     'data' => $month->pluck('data'),
                 ],
             ]
