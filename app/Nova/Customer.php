@@ -70,6 +70,8 @@ class Customer extends Resource
 
 
             new InlinePanel($this, $request, 'Stats'),
+            new InlinePanel($this, $request, 'Stats Month', false, false, false, 'second_chart'),
+
         ];
     }
 

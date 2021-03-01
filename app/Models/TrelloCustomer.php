@@ -44,7 +44,12 @@ class TrelloCustomer extends Model implements Chartable
 
     }
 
+    public function array():array
+    {
+        $reportOut = TrelloCard::where('id',$this->id)->pluck('id')->toArray();
 
+        return $reportOut;
+    }
 
     public static function getNovaChartjsSettings(): array
     {
@@ -52,6 +57,12 @@ class TrelloCustomer extends Model implements Chartable
         for ($i=1;$i<=30;$i++)
         {
             $day[]+=$i;
+        }
+
+        $month = [];
+        for ($i=1;$i<=12;$i++)
+        {
+            $month[]+=$i;
         }
         return [
             'default' => [
@@ -62,6 +73,16 @@ class TrelloCustomer extends Model implements Chartable
                 'indexColor' => '#999999',
                 'color' => '#FF0000',
                 'parameters' => $day,
+                'options' => ['responsive' => true, 'maintainAspectRatio' => false],
+            ],
+            'second_chart' => [
+                'type' => 'bar',
+                'titleProp' => 'name',
+                'identProp' => 'id',
+                'height' => 400,
+                'indexColor' => '#999999',
+                'color' => '#FF0000',
+                'parameters' => $month,
                 'options' => ['responsive' => true, 'maintainAspectRatio' => false],
             ]
         ];
@@ -102,6 +123,56 @@ class TrelloCustomer extends Model implements Chartable
 
         $day = collect($day);
 
+        //month
+        $listMonth = TrelloList::where('name','DONE')->first();
+        $t = TrelloCard::select('last_activity')
+            ->orderBy('last_activity', 'asc')
+            ->where('customer_id',$this->id)
+            ->where('list_id',$listMonth->id)
+            ->whereDate('last_activity','>=', Carbon::now()->subYear())
+            ->get();
+
+        $today_month_of_year = Carbon::now();
+
+        $month_names = $t->map(function($item) {
+            return  ['last_activity'=>Carbon::parse($item->last_activity)->format('m Y')];
+        });
+
+
+        $month_grouped = $month_names->groupBy('last_activity')->map(function ($row) {
+            return [$row->count()];
+        });
+
+//        dd($month_grouped);
+
+        $month_grouped = $month_grouped->all();
+//        dd($month_grouped);
+
+        $month = [];
+
+        for ($i=1;$i<=12;$i++)
+        {
+            $month[$i]=0;
+        }
+
+        foreach ($month_grouped as $index=>$item)
+        {
+//            var_dump($index);
+            $date = explode(" ", $index);
+//            var_dump($date);
+
+            $date = $date[0].'/01/'.$date[1];
+//            var_dump($date);
+            $date = Carbon::parse($date);
+//            var_dump(nl2br("\n"));
+
+            $i = $date->diffInMonths($today_month_of_year);
+//            var_dump(12-(12-$i));
+            $month[12-(12-$i)] = ['data'=>$item];
+        }
+
+        $month = collect($month);
+
         return [
 
             'default' => [
@@ -109,12 +180,23 @@ class TrelloCustomer extends Model implements Chartable
                     'label' => 'Cards by Day',
                     'borderColor' => '#f87900',
                     'fill' => '+1',
-                    'backgroundColor' => 'rgba(20,20,20,0.2)',//For bar charts, this will be the fill color of the bar
+                    'backgroundColor' => 'rgba(100, 41, 64, 0.5)',//For bar charts, this will be the fill color of the bar
                     'data' => $day->pluck('data'),
                 ]
+            ],
+            'second_chart' => [
+                [
+                    'label' => 'Cards by Month',
+                    'borderColor' => '#f87900',
+                    'fill' => '+1',
+                    'backgroundColor' => 'rgba(200, 54, 54, 0.5)',//For bar charts, this will be the fill color of the bar
+                    'data' => $month->pluck('data'),
+                ],
             ]
+
         ];
     }
+
 
 
 
