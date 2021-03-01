@@ -18,17 +18,19 @@
 #nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(3) > div > span {
     white-space: unset !important;
 }
-svg.fill-current {
-    display: none;
+/*svg.fill-current {*/
+/*    display: none;*/
+/*}*/
+
+div[dusk="trello-cards-index-component"] table td.td-fit span:last-of-type,
+div[dusk="customers-index-component"] table td.td-fit span:last-of-type {
+    display: none !important;
 }
 
 #nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(9) > div > svg
 {
     display: block !important;
 }
-/*svg.fill-current {*/
-/*    display: none;*/
-/*}*/
 
 #nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > thead > tr > th{
     min-width: 137px;
