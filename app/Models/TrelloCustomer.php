@@ -180,16 +180,16 @@ class TrelloCustomer extends Model implements Chartable
                     'label' => 'Cards by Day',
                     'borderColor' => '#f87900',
                     'fill' => '+1',
-                    'backgroundColor' => 'rgba(20,20,20,0.2)',//For bar charts, this will be the fill color of the bar
+                    'backgroundColor' => 'rgba(100, 41, 64, 0.5)',//For bar charts, this will be the fill color of the bar
                     'data' => $day->pluck('data'),
                 ]
             ],
             'second_chart' => [
                 [
-                    'label' => 'Minimum Required',
+                    'label' => 'Cards by Month',
                     'borderColor' => '#f87900',
                     'fill' => '+1',
-                    'backgroundColor' => 'rgba(25,20,20,0.2)',//For bar charts, this will be the fill color of the bar
+                    'backgroundColor' => 'rgba(200, 54, 54, 0.5)',//For bar charts, this will be the fill color of the bar
                     'data' => $month->pluck('data'),
                 ],
             ]
