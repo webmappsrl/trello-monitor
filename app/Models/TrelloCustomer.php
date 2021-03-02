@@ -54,16 +54,22 @@ class TrelloCustomer extends Model implements Chartable
     public static function getNovaChartjsSettings(): array
     {
         $day = [];
-        for ($i=1;$i<=30;$i++)
+        for ($i=0;$i<30;$i++)
         {
-            $day[]+=$i;
+            $today_day_of_year = Carbon::now()->subDays($i);
+            $day[]=$today_day_of_year->format('M-d-D');
         }
+        $day = array_reverse($day);
 
         $month = [];
-        for ($i=1;$i<=12;$i++)
+        for ($i=0;$i<12;$i++)
         {
-            $month[]+=$i;
+            $today_day_of_year = Carbon::now()->subMonths($i);
+            $month[]=$today_day_of_year->format('M Y');
         }
+        $month = array_reverse($month);
+
+
         return [
             'default' => [
                 'type' => 'bar',
@@ -83,17 +89,13 @@ class TrelloCustomer extends Model implements Chartable
                 'indexColor' => '#999999',
                 'color' => '#FF0000',
                 'parameters' => $month,
-                'options' => ['responsive' => true, 'maintainAspectRatio' => false],
+                'options' => ['responsive' => true, 'maintainAspectRatio' => false, 'offsetGridLines'=> false],
             ]
         ];
     }
     public function getAdditionalDatasets(): array
     {
-        $day = [];
-        for ($i=1;$i<=30;$i++)
-        {
-            $day[]+=$i;
-        }
+
         $list = TrelloList::where('name','DONE')->first();
         $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
@@ -125,8 +127,10 @@ class TrelloCustomer extends Model implements Chartable
             $i =  $today_day_of_year - $index;
             $day[$i+1] = ['data'=>$item];
         }
-
         $day = collect($day);
+        $day = $day->pluck('data');
+        $day = $day->all();
+        $day = array_reverse($day);
 
         //month
         $listMonth = TrelloList::where('name','DONE')->first();
@@ -173,7 +177,7 @@ class TrelloCustomer extends Model implements Chartable
 
             $i = $date->diffInMonths($today_month_of_year);
 //            var_dump(12-(12-$i));
-            $month[12-(12-$i)] = ['data'=>$item];
+            $month[(12-$i)] = ['data'=>$item];
         }
 
         $month = collect($month);
@@ -186,7 +190,7 @@ class TrelloCustomer extends Model implements Chartable
                     'borderColor' => '#f87900',
                     'fill' => '+1',
                     'backgroundColor' => 'rgba(100, 41, 64, 0.5)',//For bar charts, this will be the fill color of the bar
-                    'data' => $day->pluck('data'),
+                    'data' => $day,
                 ]
             ],
             'second_chart' => [

@@ -110,6 +110,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
+
         //find user and match trello_members
         $userRequestId = Auth::id();
         $user = User::find($userRequestId);
