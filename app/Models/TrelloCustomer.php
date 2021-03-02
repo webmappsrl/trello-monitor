@@ -21,7 +21,8 @@ class TrelloCustomer extends Model implements Chartable
         'last_activity_progress' => 'datetime'
     ];
 
-    public function todo() {
+    public function todo()
+    {
         $list = TrelloList::where('name','DONE')->first();
         return $this->hasMany(TrelloCard::class,'customer_id')
             ->where('is_archived',0)
@@ -100,8 +101,10 @@ class TrelloCustomer extends Model implements Chartable
         $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
             ->where('customer_id',$this->id)
-            ->where('list_id',$list->id)
-
+            ->where(function ($query) use ($list) {
+                $query->orWhere('is_archived', 1);
+                $query->orWhereIn('list_id', TrelloList::select('id')->where('id', $list->id));
+            })
             ->whereDate('last_activity','>=', Carbon::now()->subMonth())
             ->get();
 
@@ -137,7 +140,10 @@ class TrelloCustomer extends Model implements Chartable
         $t = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')
             ->where('customer_id',$this->id)
-            ->where('list_id',$listMonth->id)
+            ->where(function ($query) use ($list) {
+                $query->orWhere('is_archived', 1);
+                $query->orWhereIn('list_id', TrelloList::select('id')->where('id', $list->id));
+            })
             ->whereDate('last_activity','>=', Carbon::now()->subYear())
             ->get();
 
