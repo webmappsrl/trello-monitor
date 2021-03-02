@@ -89,6 +89,11 @@ class TrelloCustomer extends Model implements Chartable
     }
     public function getAdditionalDatasets(): array
     {
+        $day = [];
+        for ($i=1;$i<=30;$i++)
+        {
+            $day[]+=$i;
+        }
         $list = TrelloList::where('name','DONE')->first();
         $r = TrelloCard::select('last_activity')
             ->orderBy('last_activity', 'asc')

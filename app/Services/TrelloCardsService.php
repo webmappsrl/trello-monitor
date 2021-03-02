@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Models\TrelloCard;
 use App\Models\TrelloCustomer;
 use App\Models\TrelloList;
+use App\Models\TrelloMember;
 use App\Services\Api\TrelloCardsAPIService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class TrelloCardsService
 {
@@ -78,9 +80,13 @@ class TrelloCardsService
 
             $last_activity_progress = TrelloCard::where('customer_id',$customer)->orderBy('last_progress_date', 'DESC')->first();
 
-            if(strtotime($last_activity_progress->last_progress_date)!= strtotime("2000-02-17 09:04:53"))
+            if (isset($last_activity_progress->last_progress_date))
             {
-                $item->	last_activity_progress =  date('Y-m-d h:i:s', strtotime($last_activity_progress->last_progress_date));
+                if(strtotime($last_activity_progress->last_progress_date)!= strtotime("2000-02-17 09:04:53"))
+                {
+                    $item->	last_activity_progress =  date('Y-m-d h:i:s', strtotime($last_activity_progress->last_progress_date));
+                }
+
             }
 
             $item->done = $done+$all_archived;
