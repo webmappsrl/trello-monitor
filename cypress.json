@@ -4,5 +4,5 @@
     "baseUrl": "http://127.0.0.1:8000",
     "chromeWebSecurity": false,
     "parseSpecialCharSequences":false,
-    "retries": 2
+    "retries": 0
 }
