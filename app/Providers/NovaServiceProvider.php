@@ -92,7 +92,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     private function getTimeP(float $total_time, float $estimate): string {
         $class = "estimate-low";
-        if (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
+        if ($total_time==0 ||$estimate==0)
+            $class = "estimate-low";
+        else if (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1 && round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.25)
             $class = "estimate-medium";
         elseif (round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) > 1.25 && round(($total_time/$estimate), 1, PHP_ROUND_HALF_DOWN) <= 1.5)
             $class = "estimate-high";
@@ -108,8 +110,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-
-
         //find user and match trello_members
         $userRequestId = Auth::id();
         $user = User::find($userRequestId);
