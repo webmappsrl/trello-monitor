@@ -12,8 +12,7 @@ return [
     */
 
 
-    'version' => "1.0.21",
-
+    'version' => "1.0.22",
 
 
     /*
@@ -53,7 +52,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -143,8 +142,8 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'trello_base_url'=> env('TRELLO_BASE_URL'),
-    'trello_boards_sprint'=>env('TRELLO_BOARDS_SPRINT'),
+    'trello_base_url' => env('TRELLO_BASE_URL'),
+    'trello_boards_sprint' => env('TRELLO_BOARDS_SPRINT'),
 
     /*
     |--------------------------------------------------------------------------
