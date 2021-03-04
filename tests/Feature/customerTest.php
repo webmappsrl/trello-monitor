@@ -19,8 +19,8 @@ class customerTest extends TestCase
      */
     public function test_check_customer()
     {
-        $card = json_decode(File::get("tests/Fixtures/card_17.json"),FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_17.json"),FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_17.json"), FALSE);
+        $customer = json_decode(File::get("tests/Fixtures/cf_17.json"), FALSE);
 
         $mock_customer = $this->mock(TrelloCardAPIService::class, function ($mock) use ($customer, $card) {
             $mock->shouldReceive('_downloadThirdPartCard')
@@ -32,10 +32,10 @@ class customerTest extends TestCase
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_customer);
         $customer = $mockedTrelloCardService->get_customer($card->id);
-        $this->assertSame('UCVS',$customer);
+        $this->assertSame('UCVS', $customer->name);
 
-        $card = json_decode(File::get("tests/Fixtures/card_47.json"),FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_47.json"),FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_47.json"), FALSE);
+        $customer = json_decode(File::get("tests/Fixtures/cf_47.json"), FALSE);
 
         $mock_customer = $this->mock(TrelloCardAPIService::class, function ($mock) use ($customer, $card) {
             $mock->shouldReceive('_downloadThirdPartCard')
@@ -47,6 +47,6 @@ class customerTest extends TestCase
         //here I print the var mock if I do the DD
         $mockedTrelloCardService = new TrelloCardService($mock_customer);
         $customer = $mockedTrelloCardService->get_customer($card->id);
-        $this->assertSame('WM-TRELLO',$customer);
+        $this->assertSame('WM-TRELLO', $customer->name);
     }
 }
