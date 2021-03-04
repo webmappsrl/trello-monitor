@@ -14,21 +14,10 @@ describe('Not create Card', () => {
         cy.wait(1000)
         cy.get('#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > tbody > tr > td:nth-child(5) > div > span > span').each(($e, index, $list) => {
             const text = $e.text()
-
                 expect(text).to.eq('Davide Pizzato')
-
         })
-
-
 
         cy.get('span.text-90').click()
         cy.contains('Logout').click()
-
-
-
     })
-
-
-
-
 })

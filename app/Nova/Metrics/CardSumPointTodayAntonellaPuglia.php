@@ -9,20 +9,20 @@ use Carbon\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
-class CardSumPointTodayGianmarcoGag extends Value
+class CardSumPointTodayAntonellaPuglia extends Value
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        $tbt= TrelloList::where('name','TO BE TESTED')->first();
-        $pk= TrelloMember::where('name','Gianmarco Gagliardi')->first();
+        $tbt = TrelloList::where('name', 'TO BE TESTED')->first();
+        $pk = TrelloMember::where('name', 'Antonella Puglia')->first();
 
-        return $this->sum($request, TrelloCard::where('is_archived',0)->where('list_id',$tbt->id)->where('member_id',$pk->id)->whereDate('last_activity','=', Carbon::today()),'estimate');
+        return $this->sum($request, TrelloCard::where('is_archived', 0)->where('list_id', $tbt->id)->where('member_id', $pk->id)->whereDate('last_activity', '=', Carbon::today()), 'estimate');
     }
 
     /**
@@ -54,6 +54,6 @@ class CardSumPointTodayGianmarcoGag extends Value
      */
     public function uriKey()
     {
-        return 'card-sum-point-today-gianmarco-gag';
+        return 'card-sum-point-today-antonella-puglia';
     }
 }
