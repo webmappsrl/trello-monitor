@@ -1,12 +1,12 @@
 describe('Not Delete', () => {
 
     it('Not Delete', () => {
-        cy.visit('/nova/login')
+        cy.visit('/')
         cy.get('input[name=email]').type('alessiopiccioli@webmapp.it')
         cy.get('input[name=password]').type('webmapp2020')
         cy.get('button').contains('Login').click()
         cy.url().should('contain', '/')
-        cy.contains('Trello Card').click()
+        cy.contains('Trello Cards').click()
         cy.url().should('contain', '/resources/trello-cards')
 
         for (let i = 1; i <= 25;i++)

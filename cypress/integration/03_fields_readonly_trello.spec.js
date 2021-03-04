@@ -1,12 +1,12 @@
 describe('Field readonly', () => {
 
     it('Field readonly', () => {
-        cy.visit('/nova/login')
+        cy.visit('/')
         cy.get('input[name=email]').type('alessiopiccioli@webmapp.it')
         cy.get('input[name=password]').type('webmapp2020')
         cy.get('button').contains('Login').click()
         cy.url().should('contain', '/')
-        cy.contains('Trello Card').click()
+        cy.contains('Trello Cards').click()
         cy.url().should('contain', '/resources/trello-cards')
 
         cy.get('#nova > div > div.content > div.px-view.py-view.mx-auto > div.relative > div.card > div.relative > div.overflow-hidden.overflow-x-auto.relative > table > thead > tr > th:nth-child(6) > span\n').invoke('text').should((text3) => {

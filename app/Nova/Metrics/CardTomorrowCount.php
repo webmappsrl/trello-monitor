@@ -16,13 +16,14 @@ class CardTomorrowCount extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        $t= TrelloList::where('name','TOMORROW')->first();
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$t->id));     }
+        $t = TrelloList::where('name', 'TOMORROW')->first();
+        return $this->count($request, TrelloCard::where('is_archived', 0)->where('list_id', $t->id));
+    }
 
     /**
      * Get the ranges available for the metric.
@@ -33,7 +34,6 @@ class CardTomorrowCount extends Value
     {
         return [
             365 => __('Today'),
-
         ];
     }
 

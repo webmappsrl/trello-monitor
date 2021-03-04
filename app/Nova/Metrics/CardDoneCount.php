@@ -14,15 +14,14 @@ class CardDoneCount extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-    
-        $done = TrelloList::where('name','DONE')->first();
 
-        return $this->count($request, TrelloCard::where('is_archived',0)->where('list_id',$done->id));
+        $done = TrelloList::where('name', 'DONE')->first();
+        return $this->count($request, TrelloCard::where('is_archived', 0)->where('list_id', $done->id));
     }
 
     /**
