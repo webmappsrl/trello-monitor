@@ -22,7 +22,6 @@ use App\Nova\Metrics\CardTomorrowCount;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Scrum extends Resource
 {
@@ -117,7 +116,6 @@ class Scrum extends Resource
             new CardToBeTestedCount,
             new CardRejectedCount,
             new CardDoneCount,
-            new CardSumPointUser,
             new CardToBeTestedTodayPedramKatanchi,
             new CardToBeRejectTodayPedramKatanchi,
             new CardSumPointTodayPedramKatanchi,
