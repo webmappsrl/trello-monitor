@@ -70,7 +70,7 @@ class trelloCardTest extends TestCase {
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 21, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 
     public function test_update_card_yes() {
@@ -173,7 +173,8 @@ class trelloCardTest extends TestCase {
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 21, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 
     public function test_update_card_no() {
@@ -257,6 +258,6 @@ class trelloCardTest extends TestCase {
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
-        $this->assertDatabaseHas('trello_cards', ['name' => $card_old_name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 21, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card_old_name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 }
