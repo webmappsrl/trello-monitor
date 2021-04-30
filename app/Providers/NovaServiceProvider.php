@@ -68,7 +68,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
                 'antonellapuglia@webmapp.it',
                 'davidepizzato@webmapp.it',
                 'pedramkatanchi@webmapp.it',
-                'marcobarbieri@webmapp.it'
+                'marcobarbieri@webmapp.it',
+                'marco@eniacom.com'
             ]);
         });
     }
