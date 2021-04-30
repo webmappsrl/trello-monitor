@@ -18,22 +18,20 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
-class trelloCardTest extends TestCase
-{
-    public function test_store_card()
-    {
+class trelloCardTest extends TestCase {
+    public function test_store_card() {
         Schema::disableForeignKeyConstraints();
         TrelloCard::truncate();
         TrelloMember::truncate();
         TrelloList::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $card = json_decode(File::get("tests/Fixtures/card_87.json"), FALSE);
-        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), FALSE);
-        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), FALSE);
-        $list = json_decode(File::get("tests/Fixtures/list_87.json"), FALSE);
-        $member = json_decode(File::get("tests/Fixtures/member_87.json"), FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_87.json"), false);
+        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), false);
+        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), false);
+        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), false);
+        $list = json_decode(File::get("tests/Fixtures/list_87.json"), false);
+        $member = json_decode(File::get("tests/Fixtures/member_87.json"), false);
 
         $mock_list = $this->mock(TrelloListAPIService::class, function ($mock) use ($card, $list) {
             $mock->shouldReceive('_downloadListFromCard')
@@ -47,7 +45,6 @@ class trelloCardTest extends TestCase
                 ->with($card->idMembers[0])
                 ->andReturn($member);
         });
-
 
         $mock = $this->mock(TrelloCardAPIService::class, function ($mock) use ($customer, $est, $card, $tot_time) {
             $mock->shouldReceive('_downloadThirdPartCard')
@@ -73,23 +70,22 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 12, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 
-    public function test_update_card_yes()
-    {
+    public function test_update_card_yes() {
         Schema::disableForeignKeyConstraints();
         TrelloCard::truncate();
         TrelloMember::truncate();
         TrelloList::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $card = json_decode(File::get("tests/Fixtures/card_87.json"), FALSE);
-        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), FALSE);
-        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), FALSE);
-        $list = json_decode(File::get("tests/Fixtures/list_87.json"), FALSE);
-        $member = json_decode(File::get("tests/Fixtures/member_87.json"), FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_87.json"), false);
+        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), false);
+        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), false);
+        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), false);
+        $list = json_decode(File::get("tests/Fixtures/list_87.json"), false);
+        $member = json_decode(File::get("tests/Fixtures/member_87.json"), false);
 
         $mock_list = $this->mock(TrelloListAPIService::class, function ($mock) use ($card, $list) {
             $mock->shouldReceive('_downloadListFromCard')
@@ -129,15 +125,15 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService = new TrelloCardService($mock);
         $dbCard = $mockedTrelloCardService->store_card($card, $member->id, $list->id);
 
-        $card = json_decode(File::get("tests/Fixtures/card_87.json"), FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_87.json"), false);
         $card->dateLastActivity = date('Y-m-d H:i:s', strtotime($dbCard->updated_at) + 3600);
         $card->name = (string)rand(1, 99999);
 
-        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), FALSE);
-        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), FALSE);
-        $list = json_decode(File::get("tests/Fixtures/list_87.json"), FALSE);
-        $member = json_decode(File::get("tests/Fixtures/member_87.json"), FALSE);
+        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), false);
+        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), false);
+        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), false);
+        $list = json_decode(File::get("tests/Fixtures/list_87.json"), false);
+        $member = json_decode(File::get("tests/Fixtures/member_87.json"), false);
 
         $mock_list = $this->mock(TrelloListAPIService::class, function ($mock) use ($card, $list) {
             $mock->shouldReceive('_downloadListFromCard')
@@ -177,23 +173,23 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
 
-        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 12, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card->name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 
-    public function test_update_card_no()
-    {
+    public function test_update_card_no() {
         Schema::disableForeignKeyConstraints();
         TrelloCard::truncate();
         TrelloMember::truncate();
         TrelloList::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $card = json_decode(File::get("tests/Fixtures/card_87.json"), FALSE);
-        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), FALSE);
-        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), FALSE);
-        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), FALSE);
-        $list = json_decode(File::get("tests/Fixtures/list_87.json"), FALSE);
-        $member = json_decode(File::get("tests/Fixtures/member_87.json"), FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_87.json"), false);
+        $tot_time = json_decode(File::get("tests/Fixtures/total_time_87.json"), false);
+        $est = json_decode(File::get("tests/Fixtures/estimate_87.json"), false);
+        $customer = json_decode(File::get("tests/Fixtures/cf_87.json"), false);
+        $list = json_decode(File::get("tests/Fixtures/list_87.json"), false);
+        $member = json_decode(File::get("tests/Fixtures/member_87.json"), false);
 
         $mock_list = $this->mock(TrelloListAPIService::class, function ($mock) use ($card, $list) {
             $mock->shouldReceive('_downloadListFromCard')
@@ -206,7 +202,6 @@ class trelloCardTest extends TestCase
                 ->with($card->idMembers[0])
                 ->andReturn($member);
         });
-
 
         $mock = $this->mock(TrelloCardAPIService::class, function ($mock) use ($customer, $est, $card, $tot_time) {
             $mock->shouldReceive('_downloadThirdPartCard')
@@ -230,14 +225,12 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
 
-
-        $card = json_decode(File::get("tests/Fixtures/card_87.json"), FALSE);
+        $card = json_decode(File::get("tests/Fixtures/card_87.json"), false);
         $card_old_name = $card->name;
         $card->name = (string)rand(1, 99999);
 
-
-        $list = json_decode(File::get("tests/Fixtures/list_87.json"), FALSE);
-        $member = json_decode(File::get("tests/Fixtures/member_87.json"), FALSE);
+        $list = json_decode(File::get("tests/Fixtures/list_87.json"), false);
+        $member = json_decode(File::get("tests/Fixtures/member_87.json"), false);
 
         $mock_list = $this->mock(TrelloListAPIService::class, function ($mock) use ($card, $list) {
             $mock->shouldReceive('_downloadListFromCard')
@@ -265,6 +258,6 @@ class trelloCardTest extends TestCase
         $mockedTrelloCardService = new TrelloCardService($mock);
         $mockedTrelloCardService->store_card($card, $member->id, $list->id);
         $dateProgress = date('Y-m-d h:i:s', strtotime($tot_time[0]->date));
-        $this->assertDatabaseHas('trello_cards', ['name' => $card_old_name, 'link' => $card->shortUrl, 'total_time' => 4, 'customer_id' => 12, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
+        $this->assertDatabaseHas('trello_cards', ['name' => $card_old_name, 'link' => $card->shortUrl, 'total_time' => 4, 'estimate' => 1, 'last_progress_date' => $dateProgress]);
     }
 }
