@@ -65,6 +65,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
         Gate::define('viewNova', function ($user) {
             return in_array($user->email, [
                 'alessiopiccioli@webmapp.it',
+                'andreadel84@gmail.com',
                 'antonellapuglia@webmapp.it',
                 'davidepizzato@webmapp.it',
                 'pedramkatanchi@webmapp.it',
@@ -127,6 +128,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
 
         if ($user->role == 'admin') {
             $users = [
+                'Andrea Del Sarto' => 'Andrea Del Sarto',
                 'Antonella Puglia' => 'Antonella Puglia',
                 'Davide Pizzato' => 'Davide Pizzato',
                 'marcobarbieri70' => 'Marco Barbieri',
@@ -163,100 +165,108 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
     }
 
     private function getCustomListsPerUser(string $username, string $name, $lastProgressDate, $inLists, $notInLists): array {
-        $userId = TrelloMember::where('name', $username)->pluck('id');
+        $userId = TrelloMember::where('name', $username)->pluck('id')->toArray();
 
-        $yesterday = DB::table('trello_cards')
-            ->select('trello_cards.*', 'trello_customers.name as customer', 'trello_lists.name as list_name')
-            ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-            ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
-            ->where('member_id', $userId)
-            ->whereNotIn('list_id', $notInLists)
-            ->whereDate('last_progress_date', '=', $lastProgressDate)
-            ->get();
+        if (isset($userId) && is_array($userId) && count($userId) > 0) {
+            $userId = $userId[0];
+            $yesterday = DB::table('trello_cards')
+                ->select('trello_cards.*', 'trello_customers.name as customer', 'trello_lists.name as list_name')
+                ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->where('member_id', $userId);
 
-        $yesterday = $yesterday->map(function ($value, $key) {
-            $value->total_time = ($value->total_time > 0) ? round(($value->total_time / 20), 1, PHP_ROUND_HALF_DOWN) : 0;
+            if (isset($notInLists) && is_array($notInLists))
+                $yesterday = $yesterday->whereNotIn('list_id', $notInLists);
 
-            return $value;
-        });
+            $yesterday = $yesterday->whereDate('last_progress_date', '=', $lastProgressDate)
+                ->get();
 
-        $today = DB::table('trello_cards')
-            ->select('trello_cards.*', 'trello_customers.name as customer', 'trello_lists.name as list_name')
-            ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
-            ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
-            ->where('member_id', $userId)
-            ->where('is_archived', 0)
-            ->whereIn('list_id', $inLists)
-            ->get();
+            $yesterday = $yesterday->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0) ? round(($value->total_time / 20), 1, PHP_ROUND_HALF_DOWN) : 0;
 
-        $today = $today->map(function ($value, $key) {
-            $value->total_time = ($value->total_time > 0) ? round(($value->total_time / 20), 1, PHP_ROUND_HALF_DOWN) : 0;
+                return $value;
+            });
 
-            return $value;
-        });
+            $today = DB::table('trello_cards')
+                ->select('trello_cards.*', 'trello_customers.name as customer', 'trello_lists.name as list_name')
+                ->join('trello_lists', 'trello_cards.list_id', '=', 'trello_lists.id')
+                ->leftJoin('trello_customers', 'trello_cards.customer_id', '=', 'trello_customers.id')
+                ->where('member_id', $userId)
+                ->where('is_archived', 0);
+            if (isset($inLists))
+                $today = $today->whereIn('list_id', $inLists);
 
-        $result = [];
+            $today = $today->get();
 
-        $titleList = (new CustomTableCard())
-            ->title($name);
+            $today = $today->map(function ($value, $key) {
+                $value->total_time = ($value->total_time > 0) ? round(($value->total_time / 20), 1, PHP_ROUND_HALF_DOWN) : 0;
 
-        $result[] = $titleList;
+                return $value;
+            });
 
-        $yesterdayList = new CustomTableCard();
-        $yesterdayList->title('Che cosa ho fatto ieri?');
-        if (count($yesterday) > 0) {
-            $yesterdayList->header([
-                new Cell('Name'),
-                new Cell('TrelloList'),
-                new Cell('Customer'),
-                new Cell('Total Time'),
-                new Cell('Is_Archived'),
-                new Cell('Last Activity'),
-            ])
-                ->data($yesterday->map(function ($order) {
-                    $time = $this->getTimeP($order->total_time, $order->estimate);
+            $result = [];
 
-                    return (new Row(
-                        new Cell($order->name),
-                        new Cell($order->list_name),
-                        new Cell($order->customer),
-                        new Cell($time),
-                        new Cell($order->is_archived),
-                        new Cell($order->last_progress_date)
-                    ))->viewLink('/resources/trello-cards/' . $order->id);
-                })->toArray());
-        } else
-            $yesterdayList->data([new Row(new Cell($name . ' ieri non ha svolto attività su trello'))]);
+            $titleList = (new CustomTableCard())
+                ->title($name);
 
-        $result[] = $yesterdayList;
+            $result[] = $titleList;
 
-        $todayList = new CustomTableCard();
-        $todayList->title('Che cosa farò oggi?');
-        if (count($today) > 0) {
-            $todayList->header([
-                new Cell('Name'),
-                new Cell('TrelloList'),
-                new Cell('Customer'),
-                new Cell('Time'),
-                new Cell('Is_Archived'),
-                new Cell('Last Activity'),
-            ])
-                ->data($today->map(function ($order) {
-                    $time = $this->getTimeP($order->total_time, $order->estimate);
+            $yesterdayList = new CustomTableCard();
+            $yesterdayList->title('Che cosa ho fatto ieri?');
+            if (count($yesterday) > 0) {
+                $yesterdayList->header([
+                    new Cell('Name'),
+                    new Cell('TrelloList'),
+                    new Cell('Customer'),
+                    new Cell('Total Time'),
+                    new Cell('Is_Archived'),
+                    new Cell('Last Activity'),
+                ])
+                    ->data($yesterday->map(function ($order) {
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
 
-                    return (new Row(
-                        new Cell($order->name),
-                        new Cell($order->list_name),
-                        new Cell($order->customer),
-                        new Cell($time),
-                        new Cell($order->is_archived),
-                        new Cell($order->last_progress_date)
-                    ))->viewLink('/resources/trello-cards/' . $order->id);
-                })->toArray());
-        } else $todayList->data([new Row(new Cell($name . ' non ha attività pianificate su trello per oggi'))]);
-        $result[] = $todayList;
+                        return (new Row(
+                            new Cell($order->name),
+                            new Cell($order->list_name),
+                            new Cell($order->customer),
+                            new Cell($time),
+                            new Cell($order->is_archived),
+                            new Cell($order->last_progress_date)
+                        ))->viewLink('/resources/trello-cards/' . $order->id);
+                    })->toArray());
+            } else
+                $yesterdayList->data([new Row(new Cell($name . ' ieri non ha svolto attività su trello'))]);
 
-        return $result;
+            $result[] = $yesterdayList;
+
+            $todayList = new CustomTableCard();
+            $todayList->title('Che cosa farò oggi?');
+            if (count($today) > 0) {
+                $todayList->header([
+                    new Cell('Name'),
+                    new Cell('TrelloList'),
+                    new Cell('Customer'),
+                    new Cell('Time'),
+                    new Cell('Is_Archived'),
+                    new Cell('Last Activity'),
+                ])
+                    ->data($today->map(function ($order) {
+                        $time = $this->getTimeP($order->total_time, $order->estimate);
+
+                        return (new Row(
+                            new Cell($order->name),
+                            new Cell($order->list_name),
+                            new Cell($order->customer),
+                            new Cell($time),
+                            new Cell($order->is_archived),
+                            new Cell($order->last_progress_date)
+                        ))->viewLink('/resources/trello-cards/' . $order->id);
+                    })->toArray());
+            } else $todayList->data([new Row(new Cell($name . ' non ha attività pianificate su trello per oggi'))]);
+            $result[] = $todayList;
+
+            return $result;
+        } else return [];
     }
 
     /**
