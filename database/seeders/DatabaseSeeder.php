@@ -57,5 +57,12 @@ class DatabaseSeeder extends Seeder {
             'password' => bcrypt('webmapp2020'),
             'role' => 'developer'
         ]);
+
+        User::factory(1)->create([
+            'name' => 'Andrea Del Sarto',
+            'email' => 'andreadel84@gmail.com',
+            'password' => bcrypt('webmapp2020'),
+            'role' => 'developer'
+        ]);
     }
 }
